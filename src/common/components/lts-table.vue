@@ -1,9 +1,11 @@
 <template>
   <div>
+    {{searchparams.test}}
     <el-table
       :data="tableData"
       style="width: 100%">
       <el-table-column  v-for="(val, index) in tableField"
+        :key="val.value"
         :type="val.type"
         :prop="val.value"
         :label="index">
@@ -24,7 +26,7 @@
 <script>
   import Request from 'request'
   export  default {
-    name: 'ql-table',
+    name: 'lts-table',
     props: [
       "table"
     ],
@@ -53,9 +55,12 @@
           layout:this.table.pagination.layout,
           pageSizes : this.table.pagination.sizes,// table切换页数的分组
         },
+        //table 定义的字段
         tableField : this.table.tableField,
         // 业务参数
         bizparams : this.table.bizparams,
+        // 搜索参数
+        searchparams:this.table.searchparams,
       }
     },
     mounted(){
@@ -97,6 +102,11 @@
          */
           this.bizparams.pgae = this.currentPage.default;
           this.bizparams.pgaesize = this.pageSize.default;
+          /**
+           * 加入搜索的参数
+           * @type {number|*}
+           */
+          this.bizparams.test = this.searchparams.test;
           return this.bizparams;
       },
 
@@ -123,7 +133,7 @@
       /**
        * 有单选或者是全选
        * 选中前面inputbox 改变时会触发
-       * http://element.eleme.io/#/zh-CN/component/pagination
+       * http://element.eleme.io/#/zh-CN/component/table
        */
       handleSelectionChange(val){
           console.log(val);
@@ -134,6 +144,20 @@
        *
        *
        */
+      /**
+       * 监听table的值的变化
+       *
+       *
+       */
+      watch: {
+        'table.searchparams.test':{
+          handler: function (val, oldVal) {
+            console.log(val);
+          },
+          deep: true
+        },
+
+      }
     },
   }
 </script>

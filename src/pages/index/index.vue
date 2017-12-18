@@ -1,8 +1,12 @@
 <template>
-    <test :table="table"></test>
+    <div>
+      <lts-search-from @get-from="getParameter"></lts-search-from>
+      <lts-table v="table" @refresh></lts-table>
+    </div>
 </template>
 <script>
-  import test from '@/common/components/test-component.vue'
+  import ltsTable from '@/common/components/lts-table.vue'
+  import ltsSearchFrom from '@/common/components/lts-search-from.vue'
   import UserService from '@/services/UserService.js'
   const userService = new UserService();
   const tableField = {
@@ -13,11 +17,11 @@
     "类型": {"value":"discount_type","type":"text"},
     "订单数量":{"value":"order_num","type":"text"},
     "abced" : {"value":"id","type":"text"},
-  }
+  };
   export  default {
     props: '',
     components : {
-      test
+      ltsTable,ltsSearchFrom
     },
     mounted(){
     },
@@ -40,11 +44,16 @@
             cate_id : 9494699,
           },
           tableField : tableField,
+          "searchparams" : {
+            test : 2,
+          },
         },
       }
     },
     methods:{
-
+      getParameter(val){
+         this.table.searchparams.test = val;
+      }
     }
   }
 </script>

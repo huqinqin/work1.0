@@ -1,12 +1,12 @@
 <template>
-    <test></test>
+    <lts-table></lts-table>
 </template>
 <script>
-  import test from '@/common/components/test-component.vue'
+  import ltsTable from '@/common/components/lts-table.vue'
   export  default {
     props: '',
     components : {
-      test
+      ltsTable
     },
     mounted: function(){
     },
