@@ -68,16 +68,9 @@ export default {
         if (Config.isUseMock) {
           resolve(param);
         } else {
-
           if (param.session == undefined || Strings(param.session).isEmpty()) {
-            mui.plusReady(() => {
-              if (Config.isDebug) {
-                console.log('session:' + db.getItem(Config.sessIdName));
-              }
-
               param.session = db.getItem(Config.sessIdName);
               resolve(param);
-            });
           } else {
             resolve(param);
           }
@@ -132,7 +125,6 @@ export default {
       }
       // mock
       if (Config.isUseMock) url = this.getMockUrl(url);
-      console.log(parameter);
       $.ajax({
         type: 'GET',
         url: url,
@@ -158,6 +150,9 @@ export default {
           let errorResult = this.parseErrorResult(url, xhr, type, error);
           if (Config.isDebug && errorResult) {
             console.log(errorResult);
+          }
+          if(errorResult.errorMessage == ''){
+            errorResult.errorMessage = '接口获取失败';
           }
           reject(errorResult);
         }
@@ -186,7 +181,7 @@ export default {
       }
       // mock
       if (Config.isUseMock) url = this.getMockUrl(url);
-      mui.ajax({
+      $.ajax({
         type: 'POST',
         url: url,
         data: parameter,
@@ -290,6 +285,12 @@ export default {
     console.log('Request：' + JSON.stringify(parameter));
     method = 'tp.' + method;
     return this.baseApi(Config.api.tp, method, parameter, isAddRandom);
+  }
+  ,
+
+  wbmApi(method, parameter, isAddRandom) {
+    return this.getRequest(Config.api.wbm + method, parameter);
+    // return this.baseApi(Config.api.wbm, method, parameter, isAddRandom);
   }
   ,
   tpPostApi(method, parameter, isAddRandom) {

@@ -1,3 +1,3 @@
-export default {
-  // 商品常量
+export default class ItemConst {
+
 }

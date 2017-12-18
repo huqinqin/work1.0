@@ -1,7 +1,6 @@
 <template>
     <test></test>
 </template>
-
 <script>
   import test from '@/common/components/test-component.vue'
   export  default {
@@ -9,7 +8,8 @@
     components : {
       test
     },
-    mounted: function(){
+    mounted(){
+
     },
     data() {
       return {

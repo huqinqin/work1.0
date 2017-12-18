@@ -11,9 +11,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
-
 const env = require('../config/prod.env')
-
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({
@@ -131,7 +129,7 @@ for (var pathname in pages) {
     filename: pathname + '.html',
     template:'./index.html', // 模板路径
     inject: true,
-    chunks: ['vendors', pathname, 'manifest'],
+    chunks: ['vendor', pathname, 'manifest'],
     minify: {
       removeComments: true,
       collapseWhitespace: true,

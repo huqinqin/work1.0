@@ -60,7 +60,7 @@ for (var pathname in pages) {
   var conf = {
     filename: pathname + '.html',
     template:'./index.html', // 模板路径
-    chunks: ['vendors', pathname, 'manifest'], // 每个html引用的js模块
+    chunks: ['vendor', pathname, 'manifest'], // 每个html引用的js模块
     inject: true              // js插入位置
   };
   console.log(JSON.stringify(conf) + '111');
