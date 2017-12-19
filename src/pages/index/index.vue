@@ -1,7 +1,7 @@
 <template>
     <div>
       <lts-search-from @get-from="getParameter"></lts-search-from>
-      <lts-table v="table" @refresh></lts-table>
+      <lts-table :table="table" @refresh></lts-table>
     </div>
 </template>
 <script>
@@ -32,7 +32,8 @@
           "method": '/mobile/consumer/item/searchItem',
           "pagination": {
             total : 0,
-            layout : "total, sizes, prev, pager, next, jumper" // total 总条目数  prev 上一页 next 下一页 sizes 支持分组
+            layout : "total, sizes, prev, pager, next, jumper", // total 总条目数  prev 上一页 next 下一页 sizes 支持分组
+            sizes : [10,20,30],
           },
           "comparams":{
             page : 1,
@@ -45,7 +46,7 @@
           },
           tableField : tableField,
           "searchparams" : {
-            test : 2,
+            test : 2
           },
         },
       }

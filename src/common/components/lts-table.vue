@@ -150,7 +150,7 @@
        *
        */
       watch: {
-        'table.searchparams.test':{
+        'searchparams.test':{
           handler: function (val, oldVal) {
             console.log(val);
           },

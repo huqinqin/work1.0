@@ -15,6 +15,7 @@
   </el-form>
 </template>
 <script>
+  import Loading from './lts-loading';
   export default{
     name:'lts-form',
     props: "",
@@ -23,12 +24,23 @@
         formInline: {
           user: '123',
           region: '',
+        },
+        options: {
+          text: 'jiazaizhong',
+          spinner: null,
+          background: 'rgba(0,0,0,0,7)',
+          fullscreen: true,
+          visible: false,
+          customClass: ''
         }
       }
     },
     methods: {
       onSubmit() {
         this.$emit('get-from',this.formInline.user);
+
+        console.log(Loading);
+        Loading.service(this.options);
       }
     }
   }
