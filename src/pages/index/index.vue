@@ -10,6 +10,7 @@
   import UserService from '@/services/UserService.js'
   const userService = new UserService();
   const tableField = {
+    "":{"value":"","type":"selection"},
     "名称":{"value":"item_name","type":"text"},
     "ID":{"value":"puser_id","type":"text"},
     "类目ID":{"value":"category_id","type":"text"},

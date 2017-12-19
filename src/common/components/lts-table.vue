@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{searchparams.test}}
     <el-table
       :data="tableData"
       style="width: 100%">
@@ -63,6 +62,7 @@
         searchparams:this.table.searchparams,
       }
     },
+
     mounted(){
       this.getUserItemList()
     },
@@ -104,10 +104,11 @@
           this.bizparams.pgaesize = this.pageSize.default;
           /**
            * 加入搜索的参数
+           * Object.assign 后一个参数会覆盖前面的
            * @type {number|*}
            */
-          this.bizparams.test = this.searchparams.test;
-          return this.bizparams;
+          let parameter = Object.assign({}, this.bizparams, this.searchparams);
+          return parameter;
       },
 
       /**
@@ -144,20 +145,21 @@
        *
        *
        */
+
       /**
        * 监听table的值的变化
        *
        *
        */
-      watch: {
-        'searchparams.test':{
-          handler: function (val, oldVal) {
-            console.log(val);
-          },
-          deep: true
+    },
+    watch: {
+      searchparams:{
+        handler:function(){
+          this.getUserItemList()
         },
+        deep:true,
 
-      }
+      },
     },
   }
 </script>
