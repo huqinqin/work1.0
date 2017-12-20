@@ -1,29 +1,58 @@
 <template>
-  <el-form :inline="true" :model="formInline" class="demo-form-inline" if="formInline">
-    <el-form-item v-for="(val,key) in formFileds" :label="val.label" >
-      <div v-if="key == 'date'">
-        <el-date-picker
-          v-model="datelist"
-          type="datetimerange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          align="right">
-        </el-date-picker>
+  <div>
+    <div  v-for="bar in formFileds">
+      <div v-for="(menubar,menukey) in bar">
+        <el-form :inline="true" :model="formInline" class="demo-form-inline" if="formInline" v-if="menukey == 'search'">
+          <el-form-item  v-for="(val,key) in menubar" :label="val.label" :key="val.label"  >
+            <div v-if="key == 'date'">
+              <el-date-picker
+                v-model="datelist"
+                type="datetimerange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                align="right">
+              </el-date-picker>
+            </div>
+            <div v-else-if="key == 'input'">
+              <el-input v-model="formInline[val.bindValue]" :placeholder="val.bindPlaceholder"></el-input>
+            </div>
+            <div v-else-if="key == 'select'">
+              <el-select v-model="formInline[val.bindValue]" placeholder="活动区域">
+                <el-option v-for="(opt,index) in val.children" :label="opt.label" :key="opt.bindValue" :value="opt.bindValue"></el-option>
+              </el-select>
+            </div>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit" icon="el-icon-search">{{$t('productButton.search')}}</el-button>
+          </el-form-item>
+        </el-form>
+        <el-form :inline="true" :model="formInline" class="demo-form-inline" if="formInline" v-else-if="menukey == 'toolbar'">
+          <el-form-item  v-for="(val,key) in menubar" :label="val.label" :key="val.label"  >
+            <div v-if="key == 'date'">
+              <el-date-picker
+                v-model="datelist"
+                type="datetimerange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                align="right">
+              </el-date-picker>
+            </div>
+            <div v-else-if="key == 'input'">
+              <el-input v-model="formInline[val.bindValue]" :placeholder="val.bindPlaceholder"></el-input>
+            </div>
+            <div v-else-if="key == 'select'">
+              <el-select v-model="formInline[val.bindValue]" placeholder="活动区域">
+                <el-option v-for="(opt,index) in val.children" :label="opt.label" :key="opt.bindValue" :value="opt.bindValue"></el-option>
+              </el-select>
+            </div>
+          </el-form-item>
+        </el-form>
       </div>
-      <div v-else-if="key == 'input'">
-        <el-input v-model="formInline[val.bindValue]" :placeholder="val.bindPlaceholder"></el-input>
-      </div>
-      <div v-else-if="key == 'select'">
-        <el-select v-model="formInline[val.bindValue]" placeholder="活动区域">
-          <el-option v-for="(opt,index) in val.children" :label="opt.label" :value="opt.bindValue"></el-option>
-        </el-select>
-      </div>
-    </el-form-item>
-    <el-form-item align="right">
-      <el-button type="primary" @click="onSubmit" icon="el-icon-search">{{$t('productButton.search')}}</el-button>
-    </el-form-item>
-  </el-form>
+    </div>
+
+  </div>
 </template>
 <script>
 

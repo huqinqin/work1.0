@@ -2,12 +2,33 @@
   <div>
     <el-table
       :data="table.tableData"
+      v-loading="loading"
       style="width: 100%">
-      <el-table-column  v-for="(val, index) in table.tableField"
+      <el-table-column  v-for="(val, index) in table.tableField" v-if="val.type !== 'menu'"
         :key="val.value"
         :type="val.type"
         :prop="val.value"
         :label="index">
+      </el-table-column>
+      <el-table-column  v-for="(val, index) in table.tableField" v-if="val.type === 'menu'"
+          :key="val.value"
+          :label="index"
+          :width="val.width">
+        <template slot-scope="scope" >
+          <div v-for="(menu,key) in val.menulist" style="display: inline-block;margin-right: 10px">
+            <el-dropdown @command="handleCommand"  :key="menu.value" v-if="menu.children">
+              <el-button type="primary" size="small">
+                {{menu.value}}<i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+              <el-dropdown-menu slot="dropdown" v-if="menu.children">
+                <el-dropdown-item v-for="(items,index) in menu.children" :key="items.command" :command="items.command" :data="scope.row">{{items.value}}</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+            <el-button v-else type="primary" size="medium" :background-color="menu.backgroundColor" @click="menuClick(menu.command,scope.row)">
+              {{menu.value}}
+            </el-button>
+          </div>
+        </template>
       </el-table-column>
     </el-table>
     <el-pagination
@@ -27,13 +48,13 @@
   export  default {
     name: 'lts-table',
     props: [
-      "tApi","tFormInline","tTable","TPagination"
+      "tApi","tForm","tTable","TPagination"
     ],
     data(){
       return{
         api : this.tApi,
         // FORM搜索参数
-        formInline:this.tFormInline,
+        formInline:this.tForm,
 
         table : {
           //渲染TABLE列表LIST
@@ -43,8 +64,6 @@
           // TABLE显示需要的业务参数
 
         },
-
-
         pagination:{
           page: {
             type: Number,
@@ -61,6 +80,7 @@
           pageSizes : this.TPagination.sizes,// table切换页数的分组
           layout:this.TPagination.layout,
         },
+        loading : false,
       }
     },
 
@@ -73,22 +93,26 @@
        * 参数定义 {}
        * 直接渲染列表
        */
-      getUserItemList() {
+      getUserItemList(){
         let link = "";
+        this.loading = true;
         switch (this.tApi.api){
           case 'wbmApi':
-             link = Request.wbmApi(this.tApi.method,this.getParameter())
+             link = Request.wbmApi(this.tApi.method,this.getParameter());
              break;
           case 'tp':
-             link = Request.tp(this.tApi.method,this.getParameter())
+             link = Request.tp(this.tApi.method,this.getParameter());
              break;
         }
         link.then((data)=>{
+            this.loading = false;
+            this.loading = false;
             const resp = JSON.parse(data);
             this.table.tableData = resp.item_list;
             this.pagination.total.default = resp.total;
         },(msg)=>{
-          this.$message(msg);
+          this.loading = false;
+          this.$ltsMessage({type:'error',message:msg});
         });
       },
 
@@ -142,8 +166,20 @@
       },
 
       /**
-       * 自定义封装的事件
+       * 自定义封装 TABLE 下拉菜单点击传递数据给父类做处理
        */
+      handleCommand(command,data){
+        const item = data.$vnode.data.attrs.data;
+        this.$emit("menuClick",command,item);
+      },
+      /**
+       * 自定义封装 TABLE 单个菜单点击传递数据给父类做处理
+       */
+      menuClick(command,data){
+        this.$emit("menuClick",command,data);
+      },
+
+
     },
     /**
      * 监听FORM变化
@@ -155,7 +191,6 @@
           this.getUserItemList()
         },
         deep:true,
-
       },
     },
   }

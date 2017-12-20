@@ -39,6 +39,10 @@
    }
 </script>
 <style lang="less">
+  html,body{
+    margin: 0;
+    padding:0;
+  }
   .container{
     .container-box{
       position: absolute;
@@ -61,6 +65,9 @@
     }
     .el-footer{
       text-align: center;
+    }
+    .el-main{
+      min-height:500px;
     }
   }
 </style>
