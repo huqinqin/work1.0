@@ -1,9 +1,9 @@
 <template>
   <div>
     <el-table
-      :data="tableData"
+      :data="table.tableData"
       style="width: 100%">
-      <el-table-column  v-for="(val, index) in tableField"
+      <el-table-column  v-for="(val, index) in table.tableField"
         :key="val.value"
         :type="val.type"
         :prop="val.value"
@@ -14,9 +14,9 @@
     background
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
-    :current-page="currentPage.default"
+    :current-page="pagination.page.default"
     :page-sizes="pagination.pageSizes"
-    :page-size="pageSize.default"
+    :page-size="pagination.pageSize.default"
     :layout="pagination.layout"
     :total="pagination.total.default">
   </el-pagination>
@@ -27,39 +27,40 @@
   export  default {
     name: 'lts-table',
     props: [
-      "table"
+      "tApi","tFormInline","tTable","TPagination"
     ],
     data(){
       return{
-        tableData: [],//渲染table的列表
-        // table的总条数
-        tableTotal: {
-          type: Number,
-          default: 0
+        api : this.tApi,
+        // FORM搜索参数
+        formInline:this.tFormInline,
+
+        table : {
+          //渲染TABLE列表LIST
+          tableData: [],
+          //TABLE显示定义的字段
+          tableField : this.tTable.tableField,
+          // TABLE显示需要的业务参数
+
         },
-        // table的当前页
-        currentPage: {
-          type: Number,
-          default: this.table.comparams.page
-        },
-        pageSize: {
-          type: Number,
-          default: this.table.comparams.pagesize,
-        },
+
+
         pagination:{
+          page: {
+            type: Number,
+            default: this.TPagination.page
+          },
+          pageSize: {
+            type: Number,
+            default: this.TPagination.pagesize,
+          },
           total:{
             type: Number,
-            default: this.table.pagination.total,
+            default: this.TPagination.total,
           },
-          layout:this.table.pagination.layout,
-          pageSizes : this.table.pagination.sizes,// table切换页数的分组
+          pageSizes : this.TPagination.sizes,// table切换页数的分组
+          layout:this.TPagination.layout,
         },
-        //table 定义的字段
-        tableField : this.table.tableField,
-        // 业务参数
-        bizparams : this.table.bizparams,
-        // 搜索参数
-        searchparams:this.table.searchparams,
       }
     },
 
@@ -74,17 +75,17 @@
        */
       getUserItemList() {
         let link = "";
-        switch (this.table.api){
+        switch (this.tApi.api){
           case 'wbmApi':
-             link = Request.wbmApi(this.table.method,this.getParameter())
+             link = Request.wbmApi(this.tApi.method,this.getParameter())
              break;
           case 'tp':
-             link = Request.tp(this.table.method,this.getParameter())
+             link = Request.tp(this.tApi.method,this.getParameter())
              break;
         }
         link.then((data)=>{
             const resp = JSON.parse(data);
-            this.tableData = resp.item_list;
+            this.table.tableData = resp.item_list;
             this.pagination.total.default = resp.total;
         },(msg)=>{
           this.$message(msg);
@@ -100,14 +101,14 @@
          * 加入公共的参数
          * @type {number|*}
          */
-          this.bizparams.pgae = this.currentPage.default;
-          this.bizparams.pgaesize = this.pageSize.default;
+          this.tApi.bizparams.page = this.pagination.page.default;
+          this.tApi.bizparams.pgaesize = this.pagination.pageSize.default;
           /**
            * 加入搜索的参数
            * Object.assign 后一个参数会覆盖前面的
            * @type {number|*}
            */
-          let parameter = Object.assign({}, this.bizparams, this.searchparams);
+          let parameter = Object.assign({}, this.tApi.bizparams, this.formInline);
           return parameter;
       },
 
@@ -117,7 +118,7 @@
        * http://element.eleme.io/#/zh-CN/component/pagination
        */
       handleSizeChange(val) {
-        this.pageSize.default = val;
+        this.pagination.pageSize.default = val;
         this.getUserItemList();
       },
 
@@ -127,7 +128,7 @@
        * http://element.eleme.io/#/zh-CN/component/pagination
        */
       handleCurrentChange(val) {
-        this.currentPage.default = val;
+        this.pagination.page.default = val;
         this.getUserItemList();
       },
 
@@ -142,18 +143,14 @@
 
       /**
        * 自定义封装的事件
-       *
-       *
-       */
-
-      /**
-       * 监听table的值的变化
-       *
-       *
        */
     },
+    /**
+     * 监听FORM变化
+     * 若变化则直接调取接口
+     */
     watch: {
-      searchparams:{
+      formInline:{
         handler:function(){
           this.getUserItemList()
         },

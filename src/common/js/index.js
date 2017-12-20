@@ -7,7 +7,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 Vue.use(VueI18n)
 Vue.use(VueResource)
-Vue.config.lang = 'cn'
+Vue.config.lang = 'en'
 Vue.config.productionTip = false
 const i18n = new VueI18n({
   locale: Vue.config.lang,    // 语言标识

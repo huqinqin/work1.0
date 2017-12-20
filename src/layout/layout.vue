@@ -6,7 +6,7 @@
         <el-aside width="150px">
           <el-menu :default-openeds="['1', '3']">
             <el-submenu index="1">
-              <template slot="title"><i class="el-icon-message"></i>商品列表</template>
+              <template slot="title"><i class="el-icon-message"></i>{{$t('menu.product')}}</template>
               <el-menu-item-group>
                 <el-menu-item index="1-1">{{$t('name')}}</el-menu-item>
                 <el-menu-item index="1-2">{{$t('menu.order')}}</el-menu-item>
