@@ -15,10 +15,12 @@
     <el-form-item>
       <dropdown :options="dropdown" />
     </el-form-item>
+    <el-button @click="bounce">dianwo</el-button>
   </el-form>
 </template>
 <script>
   import dropdown from './lts-dropdown'
+  import _ from 'lodash'
   export default{
     name: 'lts-form',
     props: '',
@@ -43,7 +45,10 @@
     methods: {
       onSubmit () {
         this.$emit('get-from', this.formInline.user)
-      }
+      },
+      bounce: _.debounce(function () {
+        console.log('点击了一次')
+      }, 500)
     }
-  }
+}
 </script>

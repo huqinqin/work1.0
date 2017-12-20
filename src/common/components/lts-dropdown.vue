@@ -1,5 +1,5 @@
 <template>
-  <el-dropdown trigger="click" placement="top">
+  <el-dropdown trigger="click" placement="bottom">
     <el-button :type="type">{{ title }}<i class="el-icon-arrow-down el-icon--right"></i>
     </el-button>
     <el-dropdown-menu slot="dropdown">
