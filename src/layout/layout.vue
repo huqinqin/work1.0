@@ -5,19 +5,25 @@
         <el-row type="flex" justify="space-between" calss="row-bg">
           <el-col :span="4"><a href="#"><img src="../../static/icon/logo_2.png" alt="logo" class="logo"></a></el-col>
           <el-col :span="4">
-            <el-row class="icons" type="flex" justify="end" calss="row-bg">
+            <el-row height="60px" class="icons" type="flex" justify="end" calss="row-bg">
               <el-col class="user"><span>user</span></el-col>
               <el-col class="avatar"><a href="#"><img src="../../static/icon/wode.png" alt=""></a></el-col>
               <el-col class="contact"><a href="#"><img src="../../static/icon/kefu.png" alt=""></a></el-col>
               <el-col class="setting"><a href="#"><img src="../../static/icon/shezhi.png" alt=""></a></el-col>
-              <el-col class="message"><a href="#"><img src="../../static/icon/xiaoxi.png" alt=""></a></el-col>
+              <el-col class="message">
+                <a href="#"><img src="../../static/icon/xiaoxi.png" alt="">
+                  <div class="message-round">12</div>
+                </a>
+
+              </el-col>
+
             </el-row>
           </el-col>
         </el-row>
       </el-header>
       <el-container>
         <el-aside width="180px">
-          <el-menu :default-openeds="['1']">
+          <el-menu :default-openeds="[]">
             <el-submenu index="1">
               <template slot="title"><img src="../../static/icon/dingdan2.png" alt="">订单</template>
               <el-menu-item-group>
@@ -112,13 +118,17 @@
         position: relative;
         z-index: 10;
         line-height: 60px;
-        box-shadow: 0 3px 15px #f2f2f2;
+        height: 60px;
+        box-shadow: 0 3px 10px #f2f2f2;
+        .el-row{
+          height:100%;
+        }
         .logo{
           width:115px;
           height: 40px;
           vertical-align: middle;
         }
-        .el-col .icons{
+        .icons{
           font-size: 16px;
           color: #777;
           margin-right: -20px;
@@ -127,12 +137,26 @@
             width: 24px;
             height: 26px;
           }
+          // 消息右上角的红点
+          .message-round{
+            position: relative;
+            top:-50px;
+            left:13px;
+            width:24px;
+            line-height: 24px;
+            height: 24px;
+            color:white;
+            border:1px solid red;
+            border-radius: 50%;
+            background: red;
+          }
         }
       }
       .el-aside{
         font-size: 22px;
         height:100%;
-        .el-submenu{
+        margin-top: 10px;
+        .el-submenu__title{
           font-size: 22px;
           overflow: hidden;
           border-bottom:1px solid #e5e5e5;
@@ -143,9 +167,12 @@
           width:21px;
           height:21px;
           margin-right: 20px;
+          position: relative;
         }
+
         .el-menu-item{
           font-size: 18px;
+          width:180px;
         }
       }
       .el-footer{
