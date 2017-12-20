@@ -12,23 +12,37 @@
     <el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form-item>
+    <el-form-item>
+      <dropdown :options="dropdown" />
+    </el-form-item>
   </el-form>
 </template>
 <script>
+  import dropdown from './lts-dropdown'
   export default{
-    name:'lts-form',
-    props: "",
-    data() {
+    name: 'lts-form',
+    props: '',
+    components: { dropdown },
+    data () {
       return {
         formInline: {
           user: '123',
-          region: '',
+          region: ''
+        },
+        dropdown: {
+          type: '',
+          title: 'xiala',
+          content: {
+            'a': 'aaa',
+            'b': 'bbb',
+            'c': 'ccc'
+          }
         }
       }
     },
     methods: {
-      onSubmit() {
-        this.$emit('get-from',this.formInline.user);
+      onSubmit () {
+        this.$emit('get-from', this.formInline.user)
       }
     }
   }
