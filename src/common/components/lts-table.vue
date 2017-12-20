@@ -1,22 +1,43 @@
 <template>
   <div>
     <el-table
-      :data="tableData"
+      :data="table.tableData"
+      v-loading="loading"
       style="width: 100%">
-      <el-table-column  v-for="(val, index) in tableField"
+      <el-table-column  v-for="(val, index) in table.tableField" v-if="val.type !== 'menu'"
         :key="val.value"
         :type="val.type"
         :prop="val.value"
         :label="index">
+      </el-table-column>
+      <el-table-column  v-for="(val, index) in table.tableField" v-if="val.type === 'menu'"
+          :key="val.value"
+          :label="index"
+          :width="val.width">
+        <template slot-scope="scope" >
+          <div v-for="(menu,key) in val.menulist" style="display: inline-block;margin-right: 10px">
+            <el-dropdown @command="handleCommand"  :key="menu.value" v-if="menu.children">
+              <el-button type="primary" size="small">
+                {{menu.value}}<i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+              <el-dropdown-menu slot="dropdown" v-if="menu.children">
+                <el-dropdown-item v-for="(items,index) in menu.children" :key="items.command" :command="items.command" :data="scope.row">{{items.value}}</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+            <el-button v-else type="primary" size="medium" :background-color="menu.backgroundColor" @click="menuClick(menu.command,scope.row)">
+              {{menu.value}}
+            </el-button>
+          </div>
+        </template>
       </el-table-column>
     </el-table>
     <el-pagination
     background
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
-    :current-page="currentPage.default"
+    :current-page="pagination.page.default"
     :page-sizes="pagination.pageSizes"
-    :page-size="pageSize.default"
+    :page-size="pagination.pageSize.default"
     :layout="pagination.layout"
     :total="pagination.total.default">
   </el-pagination>
@@ -27,39 +48,39 @@
   export  default {
     name: 'lts-table',
     props: [
-      "table"
+      "tApi","tForm","tTable","TPagination"
     ],
     data(){
       return{
-        tableData: [],//渲染table的列表
-        // table的总条数
-        tableTotal: {
-          type: Number,
-          default: 0
-        },
-        // table的当前页
-        currentPage: {
-          type: Number,
-          default: this.table.comparams.page
-        },
-        pageSize: {
-          type: Number,
-          default: this.table.comparams.pagesize,
+        api : this.tApi,
+        // FORM搜索参数
+        formInline:this.tForm,
+
+        table : {
+          //渲染TABLE列表LIST
+          tableData: [],
+          //TABLE显示定义的字段
+          tableField : this.tTable.tableField,
+          // TABLE显示需要的业务参数
+
         },
         pagination:{
+          page: {
+            type: Number,
+            default: this.TPagination.page
+          },
+          pageSize: {
+            type: Number,
+            default: this.TPagination.pagesize,
+          },
           total:{
             type: Number,
-            default: this.table.pagination.total,
+            default: this.TPagination.total,
           },
-          layout:this.table.pagination.layout,
-          pageSizes : this.table.pagination.sizes,// table切换页数的分组
+          pageSizes : this.TPagination.sizes,// table切换页数的分组
+          layout:this.TPagination.layout,
         },
-        //table 定义的字段
-        tableField : this.table.tableField,
-        // 业务参数
-        bizparams : this.table.bizparams,
-        // 搜索参数
-        searchparams:this.table.searchparams,
+        loading : false,
       }
     },
 
@@ -72,22 +93,26 @@
        * 参数定义 {}
        * 直接渲染列表
        */
-      getUserItemList() {
+      getUserItemList(){
         let link = "";
-        switch (this.table.api){
+        this.loading = true;
+        switch (this.tApi.api){
           case 'wbmApi':
-             link = Request.wbmApi(this.table.method,this.getParameter())
+             link = Request.wbmApi(this.tApi.method,this.getParameter());
              break;
           case 'tp':
-             link = Request.tp(this.table.method,this.getParameter())
+             link = Request.tp(this.tApi.method,this.getParameter());
              break;
         }
         link.then((data)=>{
+            this.loading = false;
+            this.loading = false;
             const resp = JSON.parse(data);
-            this.tableData = resp.item_list;
+            this.table.tableData = resp.item_list;
             this.pagination.total.default = resp.total;
         },(msg)=>{
-          this.$message(msg);
+          this.loading = false;
+          this.$ltsMessage({type:'error',message:msg});
         });
       },
 
@@ -100,14 +125,14 @@
          * 加入公共的参数
          * @type {number|*}
          */
-          this.bizparams.pgae = this.currentPage.default;
-          this.bizparams.pgaesize = this.pageSize.default;
+          this.tApi.bizparams.page = this.pagination.page.default;
+          this.tApi.bizparams.pgaesize = this.pagination.pageSize.default;
           /**
            * 加入搜索的参数
            * Object.assign 后一个参数会覆盖前面的
            * @type {number|*}
            */
-          let parameter = Object.assign({}, this.bizparams, this.searchparams);
+          let parameter = Object.assign({}, this.tApi.bizparams, this.formInline);
           return parameter;
       },
 
@@ -117,7 +142,7 @@
        * http://element.eleme.io/#/zh-CN/component/pagination
        */
       handleSizeChange(val) {
-        this.pageSize.default = val;
+        this.pagination.pageSize.default = val;
         this.getUserItemList();
       },
 
@@ -127,7 +152,7 @@
        * http://element.eleme.io/#/zh-CN/component/pagination
        */
       handleCurrentChange(val) {
-        this.currentPage.default = val;
+        this.pagination.page.default = val;
         this.getUserItemList();
       },
 
@@ -141,24 +166,31 @@
       },
 
       /**
-       * 自定义封装的事件
-       *
-       *
+       * 自定义封装 TABLE 下拉菜单点击传递数据给父类做处理
        */
-
+      handleCommand(command,data){
+        const item = data.$vnode.data.attrs.data;
+        this.$emit("menuClick",command,item);
+      },
       /**
-       * 监听table的值的变化
-       *
-       *
+       * 自定义封装 TABLE 单个菜单点击传递数据给父类做处理
        */
+      menuClick(command,data){
+        this.$emit("menuClick",command,data);
+      },
+
+
     },
+    /**
+     * 监听FORM变化
+     * 若变化则直接调取接口
+     */
     watch: {
-      searchparams:{
+      formInline:{
         handler:function(){
           this.getUserItemList()
         },
         deep:true,
-
       },
     },
   }
