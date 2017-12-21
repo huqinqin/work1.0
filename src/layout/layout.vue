@@ -3,16 +3,16 @@
     <el-container class="container-box">
       <el-header height="60px">
         <el-row type="flex" justify="space-between" calss="row-bg">
+
           <el-col :span="4"><a href="#"><img src="../../static/icon/logo_2.png" alt="logo" class="logo"></a></el-col>
           <el-col :span="4">
             <el-row height="60px" class="icons" type="flex" justify="end" calss="row-bg">
               <el-col class="user"><span>user</span></el-col>
-              <el-col class="avatar"><a href="#"><img src="../../static/icon/wode.png" alt=""></a></el-col>
-              <el-col class="contact"><a href="#"><img src="../../static/icon/kefu.png" alt=""></a></el-col>
-              <el-col class="setting"><a href="#"><img src="../../static/icon/shezhi.png" alt=""></a></el-col>
-              <el-col class="message">
-                <a href="#"><img src="../../static/icon/xiaoxi.png" alt="">
-                  <div class="message-round">12</div>
+              <el-col class="avatar"><a href="#"><i class="icon-lianxiren"></i></a></el-col>
+              <el-col class="contact"><a href="#"><i class="icon-shezhi"></i></a></el-col>
+              <el-col class="setting"><a href="#"><i class="icon-tongzhi"></i></a></el-col>
+              <el-col class="message"><a href="#"><i class="icon-fuwu2"></i>
+                <!--<div class="message-round">12</div>-->
                 </a>
               </el-col>
             </el-row>
@@ -23,49 +23,49 @@
         <el-aside width="180px" >
           <el-menu :default-openeds="['1']" unique-opened="true" active-text-color="#ce2127">
             <el-submenu index="1">
-              <template slot="title" color="red"><img src="../../static/icon/dingdan2.png" alt="">订单</template>
+              <template slot="title"><i class="icon-dingdan"></i><span>订单</span></template>
               <el-menu-item-group>
                 <el-menu-item index="1-1">{{$t('name')}}</el-menu-item>
                 <el-menu-item index="1-2">{{$t('menu.order')}}</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-submenu index="2">
-              <template slot="title"><img src="../../static/icon/shangpin.png" alt="">商品</template>
+              <template slot="title"><i class="icon-icon--"></i><span>商品</span></template>
               <el-menu-item-group>
                 <el-menu-item index="2-1">{{$t('name')}}</el-menu-item>
                 <el-menu-item index="2-2">{{$t('menu.order')}}</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-submenu index="3">
-              <template slot="title"><img src="../../static/icon/kehu.png" alt="">客户</template>
+              <template slot="title"><i class="icon-customer"></i><span>客户</span></template>
               <el-menu-item-group>
                 <el-menu-item index="3-1">{{$t('name')}}</el-menu-item>
                 <el-menu-item index="3-2">{{$t('menu.order')}}</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-submenu index="4">
-              <template slot="title"><img src="../../static/icon/caigou.png" alt="">采购</template>
+              <template slot="title"><i class="icon-caigou"></i><span>采购</span></template>
               <el-menu-item-group>
                 <el-menu-item index="4-1">{{$t('name')}}</el-menu-item>
                 <el-menu-item index="4-2">{{$t('menu.order')}}</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-submenu index="5">
-              <template slot="title"><img src="../../static/icon/cangku.png" alt="">仓库</template>
+              <template slot="title"><i class="icon-cangku1"></i><span>仓库</span></template>
               <el-menu-item-group>
                 <el-menu-item index="5-1">{{$t('name')}}</el-menu-item>
                 <el-menu-item index="5-2">{{$t('menu.order')}}</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-submenu index="6">
-              <template slot="title"><img src="../../static/icon/caiwu.png" alt="">财务</template>
+              <template slot="title"><i class="icon-caiwu"></i><span>财务</span></template>
               <el-menu-item-group>
                 <el-menu-item index="6-1">{{$t('name')}}</el-menu-item>
                 <el-menu-item index="6-2">{{$t('menu.order')}}</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-submenu index="7">
-              <template slot="title"><img src="../../static/icon/yinxiao.png" alt="">营销</template>
+              <template slot="title"><i class="icon-yingxiao"></i><span>营销</span></template>
               <el-menu-item-group>
                 <el-menu-item index="7-1">{{$t('name')}}</el-menu-item>
                 <el-menu-item index="7-2">{{$t('menu.order')}}</el-menu-item>
@@ -84,6 +84,7 @@
   </div>
 </template>
 <script>
+  import '../../static/font_516449_wdlmisobbd2njyvi.css'
    export default{
       name : 'Layout',
       props : '',
@@ -106,10 +107,7 @@
   ul,ol{list-style: none;}
   a{color:inherit;text-decoration: none;}
   .container{
-<<<<<<< HEAD
     margin: 0 auto;
-=======
->>>>>>> 05dfa15409c466c06c6975735d371820571404fa
     .container-box{
       height:100%;
       width:100%;
@@ -131,10 +129,15 @@
           font-size: 16px;
           color: #777;
           margin-right: -20px;
+          i::before{
+            border:1px solid red;
+            width:20px;
+            height: 20px;
+          }
           img{
             vertical-align: middle;
             width: 24px;
-            height: 26px;
+            height: 24px;
           }
           // 消息右上角的红点
           .message-round{
@@ -151,14 +154,21 @@
           }
         }
       }
+
       .el-aside{
         height:100%;
         margin-top: 10px;
         .el-submenu__title{
-          font-size: 18px;
           overflow: hidden;
           line-height: 70px;
           height:70px;
+          span{
+            font-size: 18px;
+            margin-left: 30px;
+          }
+        }
+        .el-menu{
+          padding-left: 20px;
         }
         .el-submenu.opened{
           .el-submenu__title{
@@ -182,18 +192,21 @@
           font-size: 16px;
           width:180px;
         }
+        .is-opened{
+          .el-submenu__title{
+            color:red;
+          }
+          i{
+            color:red;
+          }
+        }
       }
       .el-footer{
         text-align: center;
       }
-<<<<<<< HEAD
-      .content-container{
-
-=======
       .el-footer{
         font-size: 14px;
         line-height: 30px;
->>>>>>> 05dfa15409c466c06c6975735d371820571404fa
       }
     }
   }
