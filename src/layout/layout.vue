@@ -9,10 +9,10 @@
             <el-row height="60px" class="icons" type="flex" justify="end" calss="row-bg">
               <el-col class="user"><span>user</span></el-col>
               <el-col class="avatar"><a href="#"><i class="iconfont icon-lianxiren"></i></a></el-col>
-              <el-col class="contact"><a href="#"><i class="iconfont icon-shezhi"></i></a></el-col>
-              <el-col class="setting"><a href="#"><i class="iconfont icon-tongzhi"></i></a></el-col>
-              <el-col class="message"><a href="#"><i class="iconfont icon-fuwu2"></i>
-                <!--<div class="message-round">12</div>-->
+              <el-col class="contact"><a href="#"><i class="iconfont icon-fuwu2"></i></a></el-col>
+              <el-col class="setting"><a href="#"><i class="iconfont icon-shezhi"></i></a></el-col>
+              <el-col class="message"><a href="#"><i class="iconfont icon-tongzhi"></i>
+                <div class="message-round">12</div>
                 </a>
               </el-col>
             </el-row>
@@ -20,56 +20,17 @@
         </el-row>
       </el-header>
       <el-container>
-        <el-aside width="180px" >
-          <el-menu :default-openeds="['1']" unique-opened="true" active-text-color="#ce2127">
+        <el-aside width="180px">
+          <el-menu class="el-menu-vertical" :default-openeds="['1']" :unique-opened="isUniqueOpened" active-text-color="#ce2127">
             <el-submenu index="1">
-              <template slot="title"><i class="icon-dingdan"></i><span>订单</span></template>
-              <el-menu-item-group>
-                <el-menu-item index="1-1">{{$t('name')}}</el-menu-item>
-                <el-menu-item index="1-2">{{$t('menu.order')}}</el-menu-item>
-              </el-menu-item-group>
+              <template slot="title" color="red"><i class="iconfont icon-dingdan"></i>订单</template>
+              <el-menu-item index="1-1" width="140px">{{$t('name')}}</el-menu-item>
+              <el-menu-item index="1-2">{{$t('menu.order')}}</el-menu-item>
             </el-submenu>
             <el-submenu index="2">
-              <template slot="title"><i class="iconfont icon-icon--"></i><span>商品</span></template>
-              <el-menu-item-group>
-                <el-menu-item index="2-1">{{$t('name')}}</el-menu-item>
-                <el-menu-item index="2-2">{{$t('menu.order')}}</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-            <el-submenu index="3">
-              <template slot="title"><i class="iconfont icon-customer"></i><span>客户</span></template>
-              <el-menu-item-group>
-                <el-menu-item index="3-1">{{$t('name')}}</el-menu-item>
-                <el-menu-item index="3-2">{{$t('menu.order')}}</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-            <el-submenu index="4">
-              <template slot="title"><i class="iconfont icon-caigou"></i><span>采购</span></template>
-              <el-menu-item-group>
-                <el-menu-item index="4-1">{{$t('name')}}</el-menu-item>
-                <el-menu-item index="4-2">{{$t('menu.order')}}</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-            <el-submenu index="5">
-              <template slot="title"><i class="iconfont icon-cangku1"></i><span>仓库</span></template>
-              <el-menu-item-group>
-                <el-menu-item index="5-1">{{$t('name')}}</el-menu-item>
-                <el-menu-item index="5-2">{{$t('menu.order')}}</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-            <el-submenu index="6">
-              <template slot="title"><i class="iconfont icon-caiwu"></i><span>财务</span></template>
-              <el-menu-item-group>
-                <el-menu-item index="6-1">{{$t('name')}}</el-menu-item>
-                <el-menu-item index="6-2">{{$t('menu.order')}}</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-            <el-submenu index="7">
-              <template slot="title"><i class="iconfont icon-yingxiao"></i><span>营销</span></template>
-              <el-menu-item-group>
-                <el-menu-item index="7-1">{{$t('name')}}</el-menu-item>
-                <el-menu-item index="7-2">{{$t('menu.order')}}</el-menu-item>
-              </el-menu-item-group>
+              <template slot="title" color="red"><i class="iconfont icon-dingdan"></i>订单</template>
+              <el-menu-item index="1-1">{{$t('name')}}</el-menu-item>
+              <el-menu-item index="1-2">{{$t('menu.order')}}</el-menu-item>
             </el-submenu>
           </el-menu>
         </el-aside>
@@ -77,7 +38,7 @@
           <el-main>
             <lts-content/>
           </el-main>
-          <el-footer height="30px">copyright @ 2017 LTS Security Inc. All Rights Reserved</el-footer>
+          <el-footer height="30px">Copyright @ 2017 LTS Security Inc. All Rights Reserved</el-footer>
         </el-container>
       </el-container>
     </el-container>
@@ -91,6 +52,7 @@
       data(){
         return {
           test : "LTS底部标识",
+          isUniqueOpened : true,
         }
       },
       methods:{
@@ -103,12 +65,26 @@
    }
 </script>
 <style lang="less">
-  @import '//at.alicdn.com/t/font_516449_wdlmisobbd2njyvi.css';
-  *{margin:0;padding:0;box-sizing: border-box;}
-  ul,ol{list-style: none;}
-  a{color:inherit;text-decoration: none;}
+
+  html,body{
+    margin: 0;
+    padding:0;
+  }
+  a{
+    text-decoration: none;
+    color:inherit;
+  }
+  .el-menu-vertical:not(.el-menu--collapse) {
+    width:179px;
+  }
+  .content-container{
+    background-color: #eeeeee;
+    padding: 20px;
+    .el-main{
+      background-color: white;
+    }
+  }
   .container{
-    margin: 0 auto;
     .container-box{
       height:100%;
       width:100%;
@@ -130,19 +106,16 @@
           font-size: 16px;
           color: #777;
           margin-right: -20px;
-          i::before{
-            position: relative;
-            width:20px;
-            height: 20px;
+          .iconfont{
+            font-size: 24px;
           }
           // 消息右上角的红点
           .message-round{
             position: relative;
             top:-50px;
-            left:13px;
+            left:8px;
             width:24px;
             line-height: 24px;
-            height: 24px;
             color:white;
             border-radius: 50%;
             background: #e8293f;
@@ -154,52 +127,30 @@
         color:#666666;
         height:100%;
         margin-top: 10px;
+        }
         .el-submenu{
-          .el-submenu__title{
-            border-left: 4px solid rgba(0,0,0,0);
-            overflow: hidden;
-            margin:5px 0;
-            line-height: 60px;
-            height:60px;
-            span{
-              font-size: 18px;
-              margin-left: 30px;
-            }
-            i{
-              width:22px;
-              height: 22px;
-              border:1px solid green;
-            }
-            i::before{
-              border:1px solid red;
-            }
+          .el-submenu_title{
+            line-height: 70px;
+            height: 70px;
           }
-          border-bottom:1px solid #e5e5e5;
-        }
-        .el-submenu.is-opened{
-          .el-submenu__title{
-            border-left: 4px solid #ce2127;
-            color:#ce2127;
+          .el-menu-item{
+            min-width:100px;
           }
-         }
-        .el-menu-item{
-          margin-left: 20px;
         }
-        img{
-          width:21px;
-          height:21px;
-          margin-right: 20px;
-          position: relative;
+        .iconfont{
+          font-size: 24px;
+          margin-right: 10px;
         }
-        .el-menu-item{
+        .el-icon-arrow-down{
           font-size: 16px;
         }
       }
       .el-footer{
-        font-size: 14px;
+        font-size: 12px;
+        line-height: 30px;
         text-align: center;
+        background-color: white;
         color:#999999;
       }
-    }
   }
 </style>

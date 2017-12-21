@@ -1,4 +1,5 @@
 export default {
+    name : '123',
     title: '工作台',
     menu: {
       product : '商品管理',
