@@ -61,9 +61,9 @@ for (var pathname in pages) {
     filename: pathname + '.html',
     template:'./index.html', // 模板路径
     chunks: ['vendor', pathname, 'manifest'], // 每个html引用的js模块
-    inject: true              // js插入位置
+    inject: true,              // js插入位置
+    title: 'LTS工作台123'
   };
-  console.log(JSON.stringify(conf) + '111');
   if (!baseWebpackConfig.plugins) baseWebpackConfig.plugins = [];
   devWebpackConfig.plugins.push(new HtmlWebpackPlugin(conf));
   // 需要生成几个html文件，就配置几个HtmlWebpackPlugin对象

@@ -1,5 +1,5 @@
 export default {
-    name: 'test',
+    title: 'Video Solutions for Security Professionals',
     menu: {
       product : 'Product List',
       goods: 'OODS',
@@ -8,5 +8,6 @@ export default {
     productButton : {
         search : 'Search',
     },
+
 }
 

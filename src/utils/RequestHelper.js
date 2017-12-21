@@ -129,7 +129,7 @@ export default {
         type: 'GET',
         url: url,
         data: parameter,
-        timeout: 30 * 1000,
+        timeout: 5 * 1000,
         cache: false,
         // status: "success", "notmodified", "error", "timeout", "abort", "parsererror"
         success(data, status, xhr) {

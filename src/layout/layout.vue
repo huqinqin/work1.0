@@ -14,9 +14,7 @@
                 <a href="#"><img src="../../static/icon/xiaoxi.png" alt="">
                   <div class="message-round">12</div>
                 </a>
-
               </el-col>
-
             </el-row>
           </el-col>
         </el-row>
@@ -104,14 +102,8 @@
   ul,ol{list-style: none;}
   a{color:inherit;text-decoration: none;}
   .container{
-    width: 1500px;
     margin: 0 auto;
     .container-box{
-      /*position: absolute;*/
-      /*top:0;*/
-      /*bottom:0;*/
-      /*left:0;*/
-      /*right:0;*/
       height:100%;
       width:100%;
       .el-header{
@@ -179,7 +171,7 @@
         text-align: center;
       }
       .content-container{
-        background: #ddd;
+
       }
     }
   }

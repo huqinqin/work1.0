@@ -112,7 +112,7 @@
             this.pagination.total.default = resp.total;
         },(msg)=>{
           this.loading = false;
-          this.$ltsMessage({type:'error',message:msg});
+          this.$ltsMessage.show({type:'error',message:msg.errorMessage});
         });
       },
 
