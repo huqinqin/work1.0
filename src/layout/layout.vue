@@ -70,6 +70,14 @@
     margin: 0;
     padding:0;
   }
+  body{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height:100%;
+  }
   a{
     text-decoration: none;
     color:inherit;

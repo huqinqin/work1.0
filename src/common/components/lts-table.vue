@@ -35,6 +35,7 @@
     background
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
+    style="text-align: right;margin-top:20px"
     :current-page="pagination.page.default"
     :page-sizes="pagination.pageSizes"
     :page-size="pagination.pageSize.default"
