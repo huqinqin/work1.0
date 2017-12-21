@@ -1,8 +1,8 @@
 <template>
-    <div>
-      <lts-search-from @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-from>
-      <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination"  @menuClick="handleMenuItemClick"></lts-table>
-    </div>
+  <div>
+    <lts-search-from @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-from>
+    <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination"  @menuClick="handleMenuItemClick"></lts-table>
+  </div>
 </template>
 <script>
   import ltsTable from '@/common/components/lts-table.vue'
