@@ -68,7 +68,6 @@ export default{
     }
   },
   mounted(){
-    console.log(this.formFiled);
   },
   methods: {
     onSubmit() {

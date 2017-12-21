@@ -20,56 +20,17 @@
         </el-row>
       </el-header>
       <el-container>
-        <el-aside width="180px" >
-          <el-menu :default-openeds="['1']" unique-opened="true" active-text-color="#ce2127">
+        <el-aside width="180px">
+          <el-menu class="el-menu-vertical" :default-openeds="['1']" :unique-opened="isUniqueOpened" active-text-color="#ce2127">
             <el-submenu index="1">
               <template slot="title" color="red"><img src="../../static/icon/dingdan2.png" alt="">订单</template>
-              <el-menu-item-group>
-                <el-menu-item index="1-1">{{$t('name')}}</el-menu-item>
-                <el-menu-item index="1-2">{{$t('menu.order')}}</el-menu-item>
-              </el-menu-item-group>
+              <el-menu-item index="1-1" width="140px">{{$t('name')}}</el-menu-item>
+              <el-menu-item index="1-2">{{$t('menu.order')}}</el-menu-item>
             </el-submenu>
             <el-submenu index="2">
-              <template slot="title"><img src="../../static/icon/shangpin.png" alt="">商品</template>
-              <el-menu-item-group>
-                <el-menu-item index="2-1">{{$t('name')}}</el-menu-item>
-                <el-menu-item index="2-2">{{$t('menu.order')}}</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-            <el-submenu index="3">
-              <template slot="title"><img src="../../static/icon/kehu.png" alt="">客户</template>
-              <el-menu-item-group>
-                <el-menu-item index="3-1">{{$t('name')}}</el-menu-item>
-                <el-menu-item index="3-2">{{$t('menu.order')}}</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-            <el-submenu index="4">
-              <template slot="title"><img src="../../static/icon/caigou.png" alt="">采购</template>
-              <el-menu-item-group>
-                <el-menu-item index="4-1">{{$t('name')}}</el-menu-item>
-                <el-menu-item index="4-2">{{$t('menu.order')}}</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-            <el-submenu index="5">
-              <template slot="title"><img src="../../static/icon/cangku.png" alt="">仓库</template>
-              <el-menu-item-group>
-                <el-menu-item index="5-1">{{$t('name')}}</el-menu-item>
-                <el-menu-item index="5-2">{{$t('menu.order')}}</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-            <el-submenu index="6">
-              <template slot="title"><img src="../../static/icon/caiwu.png" alt="">财务</template>
-              <el-menu-item-group>
-                <el-menu-item index="6-1">{{$t('name')}}</el-menu-item>
-                <el-menu-item index="6-2">{{$t('menu.order')}}</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-            <el-submenu index="7">
-              <template slot="title"><img src="../../static/icon/yinxiao.png" alt="">营销</template>
-              <el-menu-item-group>
-                <el-menu-item index="7-1">{{$t('name')}}</el-menu-item>
-                <el-menu-item index="7-2">{{$t('menu.order')}}</el-menu-item>
-              </el-menu-item-group>
+              <template slot="title" color="red"><img src="../../static/icon/dingdan2.png" alt="">订单</template>
+              <el-menu-item index="1-1">{{$t('name')}}</el-menu-item>
+              <el-menu-item index="1-2">{{$t('menu.order')}}</el-menu-item>
             </el-submenu>
           </el-menu>
         </el-aside>
@@ -77,7 +38,7 @@
           <el-main>
             <lts-content/>
           </el-main>
-          <el-footer>copyright @ 2017 LTS Security Inc. All Rights Reserved</el-footer>
+          <el-footer height="30px">Copyright @ 2017 LTS Security Inc. All Rights Reserved</el-footer>
         </el-container>
       </el-container>
     </el-container>
@@ -90,6 +51,7 @@
       data(){
         return {
           test : "LTS底部标识",
+          isUniqueOpened : true,
         }
       },
       methods:{
@@ -102,14 +64,20 @@
    }
 </script>
 <style lang="less">
-  *{margin:0;padding:0;box-sizing: border-box;}
-  ul,ol{list-style: none;}
-  a{color:inherit;text-decoration: none;}
+  html,body{
+    margin: 0;
+    padding:0;
+  }
+  .el-menu-vertical:not(.el-menu--collapse) {
+  }
+  .content-container{
+    background-color: #eeeeee;
+    padding: 20px;
+    .el-main{
+      background-color: white;
+    }
+  }
   .container{
-<<<<<<< HEAD
-    margin: 0 auto;
-=======
->>>>>>> 05dfa15409c466c06c6975735d371820571404fa
     .container-box{
       height:100%;
       width:100%;
@@ -154,23 +122,8 @@
       .el-aside{
         height:100%;
         margin-top: 10px;
-        .el-submenu__title{
-          font-size: 18px;
-          overflow: hidden;
-          line-height: 70px;
-          height:70px;
-        }
-        .el-submenu.opened{
-          .el-submenu__title{
-            border-left: 4px solid #ce2127;
-            color:#ce2127;
-            .el-icon-arrow-down{
-              color:inherit;
-            }
-          }
-         }
-        .el-menu-item{
-          padding:0;
+        .el-submenu .el-menu-item{
+          min-width: 100px;
         }
         img{
           width:21px;
@@ -178,22 +131,12 @@
           margin-right: 20px;
           position: relative;
         }
-        .el-menu-item{
-          font-size: 16px;
-          width:180px;
-        }
       }
       .el-footer{
-        text-align: center;
-      }
-<<<<<<< HEAD
-      .content-container{
-
-=======
-      .el-footer{
-        font-size: 14px;
+        font-size: 12px;
         line-height: 30px;
->>>>>>> 05dfa15409c466c06c6975735d371820571404fa
+        text-align: center;
+        background-color: white;
       }
     }
   }
