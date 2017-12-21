@@ -20,10 +20,10 @@
         </el-row>
       </el-header>
       <el-container>
-        <el-aside width="180px">
-          <el-menu :default-openeds="[]">
+        <el-aside width="180px" >
+          <el-menu :default-openeds="['1']" unique-opened="true" active-text-color="#ce2127">
             <el-submenu index="1">
-              <template slot="title"><img src="../../static/icon/dingdan2.png" alt="">订单</template>
+              <template slot="title" color="red"><img src="../../static/icon/dingdan2.png" alt="">订单</template>
               <el-menu-item-group>
                 <el-menu-item index="1-1">{{$t('name')}}</el-menu-item>
                 <el-menu-item index="1-2">{{$t('menu.order')}}</el-menu-item>
@@ -77,7 +77,7 @@
           <el-main>
             <lts-content/>
           </el-main>
-          <el-footer>底部菜单</el-footer>
+          <el-footer>copyright @ 2017 LTS Security Inc. All Rights Reserved</el-footer>
         </el-container>
       </el-container>
     </el-container>
@@ -93,8 +93,12 @@
         }
       },
       methods:{
-
       },
+      watch:{
+        open:function(){
+          consoel.log(this.open)
+        }
+      }
    }
 </script>
 <style lang="less">
@@ -102,7 +106,10 @@
   ul,ol{list-style: none;}
   a{color:inherit;text-decoration: none;}
   .container{
+<<<<<<< HEAD
     margin: 0 auto;
+=======
+>>>>>>> 05dfa15409c466c06c6975735d371820571404fa
     .container-box{
       height:100%;
       width:100%;
@@ -140,20 +147,30 @@
             color:white;
             border:1px solid red;
             border-radius: 50%;
-            background: red;
+            background: #e8293f;
           }
         }
       }
       .el-aside{
-        font-size: 22px;
         height:100%;
         margin-top: 10px;
         .el-submenu__title{
-          font-size: 22px;
+          font-size: 18px;
           overflow: hidden;
-          border-bottom:1px solid #e5e5e5;
           line-height: 70px;
           height:70px;
+        }
+        .el-submenu.opened{
+          .el-submenu__title{
+            border-left: 4px solid #ce2127;
+            color:#ce2127;
+            .el-icon-arrow-down{
+              color:inherit;
+            }
+          }
+         }
+        .el-menu-item{
+          padding:0;
         }
         img{
           width:21px;
@@ -161,17 +178,22 @@
           margin-right: 20px;
           position: relative;
         }
-
         .el-menu-item{
-          font-size: 18px;
+          font-size: 16px;
           width:180px;
         }
       }
       .el-footer{
         text-align: center;
       }
+<<<<<<< HEAD
       .content-container{
 
+=======
+      .el-footer{
+        font-size: 14px;
+        line-height: 30px;
+>>>>>>> 05dfa15409c466c06c6975735d371820571404fa
       }
     }
   }
