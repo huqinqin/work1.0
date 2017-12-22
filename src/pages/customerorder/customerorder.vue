@@ -1,8 +1,11 @@
 <template>
-    <div>
-      <lts-search-from @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-from>
-      <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination"  @menuClick="handleMenuItemClick"></lts-table>
-    </div>
+  <div>
+    <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-bottom:12px;margin-bottom:12px;border-bottom:solid 1px #eeeeee">
+      <el-breadcrumb-item ><a href="http://www.baidu.com">首页</a></el-breadcrumb-item>
+      <el-breadcrumb-item>待客下单</el-breadcrumb-item>
+    </el-breadcrumb>
+    <lts-search-from @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-from>
+  </div>
 </template>
 <script>
   import ltsTable from '@/common/components/lts-table.vue'
@@ -13,7 +16,7 @@
       ltsTable,ltsSearchFrom
     },
     mounted(){
-
+         console.log(this.form.formFileds);
     },
     data() {
       return {
@@ -38,11 +41,11 @@
                   "children": [{"label": "上海", "bindValue": "shanghai"}, {"label": "北京", "bindValue": "beijing"}]
                 },
                 custom_type: {
-                  "label": "搜索类型",
-                  "type" : "select",
-                  "bindValue": "custom_type",
-                  "bindPlaceholder": "所有类型",
-                  "children": [{"label": "网店名称", "bindValue": "1"}, {"label": "网店联系人", "bindValue": "2"},{"label": "手机", "bindValue": "3"}]
+                 "label": "搜索类型",
+                 "type" : "select",
+                 "bindValue": "custom_type",
+                 "bindPlaceholder": "所有类型",
+                 "children": [{"label": "网店名称", "bindValue": "1"}, {"label": "网店联系人", "bindValue": "2"},{"label": "手机", "bindValue": "3"}]
                 },
                 user: {"label": "","type" : "autocomplete", "bindValue": "user", "bindPlaceholder": "搜索客户"},
                 search:{"bindValue":"确定","type" : "submitbutton"},
@@ -51,11 +54,9 @@
           ],
           // 若需要把form参数供其他组件使用。需要把这些参数传给使用的组件
           formInline : {
-            test : 2,
-            region : '',
+            custom_vip : '',
+            custom_type : '',
             user : '',
-            start_date : '',
-            end_date : '',
           },
         },
         table : {
@@ -97,7 +98,7 @@
     methods:{
       getParameter(val){
         console.log(val);
-         this.form.formInline = val;
+        this.form.formInline = val;
       },
       handleMenuItemClick(command,item){
         switch(command){
