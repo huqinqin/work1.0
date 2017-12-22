@@ -1,5 +1,5 @@
 <template>
-  <div class="container" type="flex" justify="center" align="center">
+  <div class="container">
     <lts-content />
   </div>
 </template>
@@ -12,8 +12,7 @@
 
 <style lang="less" scoped>
   .container{
-    height:100vh;
-    width:100vw;
-    border:1px solid red;
+    height:100%;
+    width:100%;
   }
 </style>

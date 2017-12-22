@@ -1,4 +1,9 @@
 import Lib from '@/common/js/login.js'
+import Vue from 'vue'
 import App from '@/pages/login/login.vue'
-const routerView = routerView ? routerView : '';
-Lib(App,routerView);
+import routerView from './router'
+
+Vue.config.productionTip = false
+
+const RouterView = routerView ? routerView : ''
+Lib(App, RouterView)
