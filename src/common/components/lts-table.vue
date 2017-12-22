@@ -115,7 +115,6 @@
         }
         link.then((data)=>{
             this.loading = false;
-            this.loading = false;
             const resp = JSON.parse(data);
             this.table.tableData = resp.item_list;
             this.pagination.total.default = resp.total;
