@@ -35,6 +35,7 @@
     background
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
+    style="text-align: right;margin-top:20px"
     :current-page="pagination.page.default"
     :page-sizes="pagination.pageSizes"
     :page-size="pagination.pageSize.default"
@@ -43,6 +44,14 @@
   </el-pagination>
   </div>
 </template>
+<style>
+  .el-pagination{
+    position: absolute;
+    bottom:10px;
+    right:20px;
+    z-index: 111;
+  }
+</style>
 <script>
   import Request from 'request'
   export  default {

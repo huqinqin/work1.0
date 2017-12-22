@@ -14,7 +14,7 @@
     <el-row><el-input placeholder="请再次输入您的新密码" v-model="email" clearable></el-input></el-row>
 
 
-    
+
     <el-button class="next" type="primary" @click="finish">完成</el-button>
   </div>
 </template>
