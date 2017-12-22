@@ -4,14 +4,23 @@
       <el-col><img class="svg" src="../../../../static/icon/logo.png" alt="logo"></el-col>
       <el-col><span>找回密码</span></el-col>
     </el-row>
-    <el-row type="flex" justify="start"><p>用户名</p></el-row>
-    <el-row><el-input placeholder="请输入您的用户名" v-model="user" clearable></el-input></el-row>
-    <el-row type="flex" justify="start"><p>邮箱</p></el-row>
-    <el-row><el-input placeholder="请输入您注册账号时预留的邮箱" v-model="email" clearable></el-input></el-row>
-    <el-row class="code" type="flex" justify="space-between">
-      <el-col><el-input placeholder="请输入验证码"></el-input></el-col>
-      <el-col><el-button type="primary" @click="getCode">获取验证码</el-button></el-col>
-    </el-row>
+
+    <el-form :model="form" :rules="rules" ref="form">
+      <el-form-item  label="用户名" prop="name">
+        <el-input placeholder="请输入您的用户名" v-model="form.name" clearable></el-input>
+      </el-form-item>
+      <el-form-item  label="邮箱" prop="email">
+        <el-input placeholder="请输入您注册账号时预留的邮箱" v-model="form.email" clearable></el-input>
+      </el-form-item>
+      <!--<el-row type="flex" justify="start"><p>用户名</p></el-row>-->
+      <!--<el-row><el-input placeholder="请输入您的用户名" v-model="user" clearable></el-input></el-row>-->
+      <!--<el-row type="flex" justify="start"><p>邮箱</p></el-row>-->
+      <!--<el-row><el-input placeholder="请输入您注册账号时预留的邮箱" v-model="email" clearable></el-input></el-row>-->
+      <el-row class="code" type="flex" justify="space-between">
+        <el-col><el-input placeholder="请输入验证码" v-model="form.code"></el-input></el-col>
+        <el-col><el-button type="primary" @click="getCode">获取验证码</el-button></el-col>
+      </el-row>
+    </el-form>
     <router-link to="/confirmPassword"><el-button class="next" type="primary" @click="next">下一步</el-button></router-link>
   </div>
 </template>
@@ -21,8 +30,25 @@
     name: 'forgetPassword',
     data () {
       return {
-        user: '',
-        email: ''
+        form:{
+          name: '',
+          email: '',
+          code:''
+        },
+        rules:{
+          name: [
+            { required: true, message: '请输入用户名', trigger: 'blur' },
+            { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+          ],
+          email: [
+            { required: true, message: '请输入邮箱', trigger: 'blur' },
+            { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          ],
+          code:[
+            { required: true, message: '请输入验证码', trigger: 'blur' },
+            { min: 6, max: 6, message: '6个数字', trigger: 'blur' }
+          ]
+        }
       }
     },
     methods: {
@@ -73,7 +99,7 @@
       }
     }
     .el-row.code{
-      margin-top: 24px;
+      margin-top: 40px;
       .el-input{
         width:160px;
       }
