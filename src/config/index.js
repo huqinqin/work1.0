@@ -10,7 +10,7 @@ export default {
   },
   api: {
     tp: 'http://tp.api.500mi.com:8080/gateway/api',
-    wbm: 'http://work.lts.com:8085',
+    wbm: 'http://work.local.lts.com:8085',
   },
   // 用户session在本地存储名
   sessIdName: 'SESSION_ID',

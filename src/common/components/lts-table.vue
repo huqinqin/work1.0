@@ -44,6 +44,14 @@
   </el-pagination>
   </div>
 </template>
+<style>
+  .el-pagination{
+    position: absolute;
+    bottom:10px;
+    right:20px;
+    z-index: 111;
+  }
+</style>
 <script>
   import Request from 'request'
   export  default {

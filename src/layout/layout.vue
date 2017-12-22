@@ -3,7 +3,6 @@
     <el-container class="container-box">
       <el-header height="60px">
         <el-row type="flex" justify="space-between" calss="row-bg">
-
           <el-col :span="4"><a href="#"><img src="../../static/icon/logo_2.png" alt="logo" class="logo"></a></el-col>
           <el-col :span="4">
             <el-row height="60px" class="icons" type="flex" justify="end" calss="row-bg">
@@ -19,7 +18,7 @@
           </el-col>
         </el-row>
       </el-header>
-      <el-container>
+      <el-container class="lts-main">
         <el-aside width="180px">
           <el-menu class="el-menu-vertical" :default-openeds="['1']" :unique-opened="isUniqueOpened" active-text-color="#ce2127">
             <el-submenu index="1">
@@ -38,7 +37,6 @@
           <el-main>
             <lts-content/>
           </el-main>
-          <el-footer height="30px">Copyright @ 2017 LTS Security Inc. All Rights Reserved</el-footer>
         </el-container>
       </el-container>
     </el-container>
@@ -65,18 +63,9 @@
    }
 </script>
 <style lang="less">
-
   html,body{
     margin: 0;
     padding:0;
-  }
-  body{
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height:100%;
   }
   a{
     text-decoration: none;
@@ -87,78 +76,88 @@
   }
   .content-container{
     background-color: #eeeeee;
-    padding: 20px;
+    padding: 20px 0 0 20px;
     .el-main{
       background-color: white;
     }
   }
-  .container{
-    .container-box{
+  .el-header{
+    position: fixed;
+    z-index: 10001;
+    line-height: 60px;
+    height: 60px;
+    box-shadow: 0 3px 10px #f2f2f2;
+    background-color: white;
+    top:0;
+    width:100%;
+    .el-row{
       height:100%;
-      width:100%;
-      .el-header{
+    }
+    .logo{
+      width:115px;
+      height: 40px;
+      vertical-align: middle;
+    }
+    .icons{
+      font-size: 16px;
+      color: #777;
+      margin-right: -20px;
+      .iconfont{
+        font-size: 24px;
+      }
+      // 消息右上角的红点
+      .message-round{
         position: relative;
-        z-index: 10;
-        line-height: 60px;
-        height: 60px;
-        box-shadow: 0 3px 10px #f2f2f2;
-        .el-row{
-          height:100%;
+        top:-50px;
+        left:8px;
+        width:24px;
+        line-height: 24px;
+        color:white;
+        border-radius: 50%;
+        background: #e8293f;
+      }
+    }
+  }
+  .lts-main{
+    padding-top: 60px;
+    background-color: #eeeeee;
+    height:100%;
+    width:100%;
+    .el-aside {
+      color: #666666;
+      position: fixed;
+      background-color: white;
+      height:100%;
+      .el-submenu {
+        .el-submenu_title {
+          line-height: 70px;
+          height: 70px;
         }
-        .logo{
-          width:115px;
-          height: 40px;
-          vertical-align: middle;
-        }
-        .icons{
-          font-size: 16px;
-          color: #777;
-          margin-right: -20px;
-          .iconfont{
-            font-size: 24px;
-          }
-          // 消息右上角的红点
-          .message-round{
-            position: relative;
-            top:-50px;
-            left:8px;
-            width:24px;
-            line-height: 24px;
-            color:white;
-            border-radius: 50%;
-            background: #e8293f;
-          }
+        .el-menu-item {
+          min-width: 100px;
         }
       }
-
-      .el-aside{
-        color:#666666;
-        height:100%;
-        margin-top: 10px;
-        }
-        .el-submenu{
-          .el-submenu_title{
-            line-height: 70px;
-            height: 70px;
-          }
-          .el-menu-item{
-            min-width:100px;
-          }
-        }
-        .iconfont{
-          font-size: 24px;
-          margin-right: 10px;
-        }
-        .el-icon-arrow-down{
-          font-size: 16px;
-        }
+      .iconfont {
+        font-size: 24px;
+        margin-right: 10px;
       }
-      .el-footer{
-        font-size: 12px;
-        line-height: 30px;
-        text-align: center;
-        background-color: white;
-        color:#999999;
+      .el-icon-arrow-down {
+        font-size: 16px;
       }
+    }
+    .content-container{
+      position: absolute;
+      left: 181px;
+      right: 0;
+      top: 60px;
+      bottom: 0;
+    }
+    .el-footer{
+      font-size: 12px;
+      line-height: 30px;
+      text-align: center;
+      background-color: white;
+      color:#999999;
+    }
   }
 </style>
