@@ -6,10 +6,11 @@
 
 <script>
   import ForgetPassword from './components/forgetPassword'
+  import ConfirmPassword from './components/confirmPassword'
   import InputForm from './components/inputForm'
   export default {
     name: 'Login',
-    components: { InputForm, ForgetPassword }
+    components: { InputForm, ForgetPassword, ConfirmPassword}
   }
 </script>
 

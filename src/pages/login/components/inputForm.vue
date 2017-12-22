@@ -4,15 +4,12 @@
     <el-row type="flex" justify="start"><p>用户名</p></el-row>
     <el-row><el-input placeholder="请输入您的用户名" v-model="user" clearable></el-input></el-row>
     <el-row type="flex" justify="start"><p>密码</p></el-row>
-    <el-row><el-input type="password" placeholder="请输入你的密码" v-model="password" clearable></el-input></el-row>
+    <el-row><el-input type="password" placeholder="请输入您的密码" v-model="password" clearable></el-input></el-row>
     <el-row type="flex" justify="end"><router-link to="/forgetPassword">忘记密码</router-link></el-row>
     <el-button type="primary" @click="login">登录</el-button>
-
   </div>
 </template>
 <script>
-
-
   export default {
     props: '',
     name: 'inputForm',
@@ -36,7 +33,7 @@
     height:465px;
     margin:100px auto;
     padding: 0 50px;
-    box-shadow:0 0 50px #d5d5d5;
+    box-shadow: 0 3px 30px #d5d5d5;
     border-radius: 10px;
     img.svg{
       display: block;

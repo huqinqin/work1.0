@@ -3,7 +3,7 @@
     <el-container class="container-box">
       <el-header height="60px">
         <el-row type="flex" justify="space-between" calss="row-bg">
-          <el-col :span="4"><a href="#"><img src="../../static/icon/logo_2.png" alt="logo" class="logo"></a></el-col>
+          <el-col :span="4"><a href="#"><img src="../../static/icon/logo.png" alt="logo" class="logo"></a></el-col>
           <el-col :span="4">
             <el-row height="60px" class="icons" type="flex" justify="end" calss="row-bg">
               <el-col class="user"><span>user</span></el-col>
