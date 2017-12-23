@@ -4,18 +4,17 @@
       <el-col><img class="svg" src="../../../../static/icon/logo.png" alt="logo"></el-col>
       <el-col><span>找回密码</span></el-col>
     </el-row>
-
-
-
-
-    <el-row type="flex" justify="start"><p>新密码</p></el-row>
-    <el-row><el-input placeholder="请输入您的新密码" v-model="user" clearable></el-input></el-row>
-    <el-row type="flex" justify="start"><p>确认密码</p></el-row>
-    <el-row><el-input placeholder="请再次输入您的新密码" v-model="email" clearable></el-input></el-row>
-
-
-
-    <el-button class="next" type="primary" @click="finish">完成</el-button>
+    <el-form :model="form" status-icon :rules="rules" ref="form">
+      <el-form-item prop="pass">
+        <el-row type="flex" justify="start"><p>新密码</p></el-row>
+        <el-input type="password" v-model="form.pass" auto-complete="off" placeholder="请输入您的密码"></el-input>
+      </el-form-item>
+      <el-form-item prop="checkPass">
+        <el-row type="flex" justify="start"><p>确认密码</p></el-row>
+        <el-input type="password" v-model="form.checkPass" auto-complete="off" placeholder="请再次输入您的密码"></el-input>
+      </el-form-item>
+    </el-form>
+    <el-button class="finish" type="primary" @click="submit('form')">完成</el-button>
   </div>
 </template>
 <script>
@@ -23,14 +22,50 @@
     props: '',
     name: 'confirmPassword',
     data () {
-      return {
-        user: '',
-        email: ''
+      var validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'))
+        } else {
+          if (this.form.checkPass !== '') {
+            this.$refs.form.validateField('checkPass')
+          }
+          callback()
+        }
       }
+      var validatePass2 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请再次输入密码'))
+        } else if (value !== this.form.pass) {
+          callback(new Error('两次输入密码不一致!'))
+        } else {
+          callback()
+        }
+      }
+      return {
+        form: {
+          pass: '',
+          checkPass: ''
+        },
+        rules: {
+          pass: [
+            { validator: validatePass, trigger: 'blur' }
+          ],
+          checkPass: [
+            { validator: validatePass2, trigger: 'blur' }
+          ]
+        }
+      };
     },
     methods: {
-      next () {
-        console.log(this.user)
+      submit(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            console.log('submit!')
+          } else {
+            console.log('error submit!!')
+            return false;
+          }
+        });
       }
     }
   }
@@ -50,32 +85,29 @@
       height: 61px;
       margin-top: 56px;
     }
-    .el-row{
-      p{
-        font-size: 16px;
-        color:rgba(0,0,0,0.7);
-        margin-top: 12px;
-        margin-bottom: 6px;
-        margin-left: 9px;
-      }
-      a{
-        margin: 6px 6px 12px;
-        font-size: 14px;
-      }
-    }
     .el-row.header{
-      margin-bottom: 16px;
+      margin-bottom: 30px;
       span{
         margin-right: -45px;
         font-size: 20px;
       }
     }
-    .el-button.next{
+    .el-form{
+      .el-form-item{
+        margin-bottom: 12px;
+      }
+      p{
+        font-size: 16px;
+        color:rgba(0,0,0,0.7);
+        margin-top: 12px;
+        margin-bottom: 12px;
+        margin-left: 9px;
+        line-height: 16px;
+      }
+    }
+    .el-button.finish{
+      margin-top: 12px;
       width:300px;
-      height: 40px;
-      font-weight: bold;
-      font-size: 18px;
-      margin-top: 24px;
     }
   }
 </style>

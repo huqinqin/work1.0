@@ -69,10 +69,10 @@
 </template>
 <script>
   import '../../static/font_516449_wdlmisobbd2njyvi.css'
-   export default{
+    export default {
       name : 'Layout',
       props : '',
-      data(){
+      data () {
         return {
           test : "LTS底部标识",
           isUniqueOpened : true,
