@@ -56,6 +56,13 @@
             user : '',
             start_date : '',
             end_date : '',
+            //需要从处理结果另外带回来的参数 存这里 默认返回一条对象。若返回多个。自己
+            callbackParameter : {},
+          },
+          // 若需要使用搜索插件 autocomplete  需要定义好接口来获取后端数据
+          autocomplete : {
+            api: 'wbmApi',
+            method: '/mobile/consumer/item/searchItem',
           },
         },
         table : {
@@ -68,11 +75,11 @@
             "类型": {"value":"discount_type","type":"text"},
             "订单数量":{"value":"order_num","type":"text"},
             "abced" : {"value":"id","type":"text"},
-            "功能":{"value":"","type":"menu","width":"300","menulist":[
+            "输入数量":{"value":"","type":"inputNumber"},
+            "功能":{"value":"","type":"menu","width":"200","menulist":[
               {
                 value:"查看详情",
                 command: 'link',
-                backgroundColor : 'red'
               },
               {
                 value:"测试多个菜单",
@@ -83,6 +90,7 @@
                 ]
               }
             ]},
+
           },
         },
         pagination: {

@@ -108,7 +108,6 @@
   }
   .el-header{
     position: fixed;
-    z-index: 10001;
     line-height: 60px;
     height: 60px;
     box-shadow: 0 3px 10px #f2f2f2;
