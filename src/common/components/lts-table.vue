@@ -1,34 +1,39 @@
 <template>
-  <div>
+  <div style="position: relative;padding-bottom: 60px">
     <el-table
       :data="table.tableData"
       v-loading="loading"
       style="width: 100%">
-      <el-table-column  v-for="(val, index) in table.tableField" v-if="val.type !== 'menu'"
+      <el-table-column  v-for="(val, index) in table.tableField" v-if="val.type === 'text' || val.type === 'selection'"
         :key="val.value"
         :type="val.type"
         :prop="val.value"
         :label="index">
       </el-table-column>
-      <el-table-column  v-for="(val, index) in table.tableField" v-if="val.type === 'menu'"
+      <el-table-column  v-for="(val, index) in table.tableField" v-if="val.type == 'menu' || val.type == 'inputNumber'"
           :key="val.value"
           :label="index"
           :width="val.width">
-        <template slot-scope="scope" >
-          <div v-for="(menu,key) in val.menulist" style="display: inline-block;margin-right: 10px">
-            <el-dropdown @command="handleCommand"  :key="menu.value" v-if="menu.children">
-              <el-button type="primary" size="small">
-                {{menu.value}}<i class="el-icon-arrow-down el-icon--right"></i>
-              </el-button>
-              <el-dropdown-menu slot="dropdown" v-if="menu.children">
-                <el-dropdown-item v-for="(items,index) in menu.children" :key="items.command" :command="items.command" :data="scope.row">{{items.value}}</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-            <el-button v-else type="primary" size="medium" :background-color="menu.backgroundColor" @click="menuClick(menu.command,scope.row)">
-              {{menu.value}}
-            </el-button>
-          </div>
-        </template>
+          <template slot-scope="scope" >
+            <div v-if="val.type == 'menu'">
+              <div v-for="(menu,key) in val.menulist" style="display: inline-block;margin-right: 10px">
+                <el-dropdown @command="handleCommand"  :key="menu.value" v-if="menu.children">
+                  <el-button type="primary" size="small">
+                    {{menu.value}}<i class="el-icon-arrow-down el-icon--right"></i>
+                  </el-button>
+                  <el-dropdown-menu slot="dropdown" v-if="menu.children">
+                    <el-dropdown-item v-for="(items,index) in menu.children" :key="items.command" :command="items.command" :data="scope.row">{{items.value}}</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+                <el-button v-else type="primary" size="medium" :background-color="menu.backgroundColor" @click="menuClick(menu.command,scope.row)">
+                  {{menu.value}}
+                </el-button>
+              </div>
+            </div>
+            <div v-else-if="val.type == 'inputNumber'">
+              <el-input-number v-model="scope.row[val.value]" size="small" @change="inputNumberhandleChange(scope.row)" :min="0"></el-input-number>
+            </div>
+          </template>
       </el-table-column>
     </el-table>
     <el-pagination
@@ -64,7 +69,7 @@
         api : this.tApi,
         // FORM搜索参数
         formInline:this.tForm,
-
+        num : 1,
         table : {
           //渲染TABLE列表LIST
           tableData: [],
@@ -94,6 +99,7 @@
     },
 
     mounted(){
+      console.log(this.formInline);
       this.getUserItemList()
     },
     methods:{
@@ -171,6 +177,14 @@
        */
       handleSelectionChange(val){
           console.log(val);
+      },
+      /**
+       * inpueNumber
+       * inpueNumber num 改变时会触发
+       * http://element.eleme.io/#/zh-CN/component/input-number
+       */
+      inputNumberhandleChange(item){
+        this.$emit("inputNumberChang",item);
       },
 
       /**
