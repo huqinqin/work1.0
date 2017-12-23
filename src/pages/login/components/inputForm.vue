@@ -1,32 +1,57 @@
 <template>
   <div class="login" type="flex" align="center">
-    <el-row><img class="svg" src="../../../../static/icon/logo.png" alt="logo"></el-row>
-    <el-row type="flex" justify="start"><p>用户名</p></el-row>
-    <el-row><el-input placeholder="请输入您的用户名" v-model="user" clearable></el-input></el-row>
-    <el-row type="flex" justify="start"><p>密码</p></el-row>
-    <el-row><el-input type="password" placeholder="请输入您的密码" v-model="password" clearable></el-input></el-row>
-    <el-row type="flex" justify="end"><router-link to="/forgetPassword">忘记密码</router-link></el-row>
-    <el-button type="primary" @click="login">登录</el-button>
+    <el-form :model="form" :rules="rules" ref="form">
+      <el-row><img class="svg" src="../../../../static/icon/logo.png" alt="logo"></el-row>
+      <el-form-item  label="用户名" prop="name">
+        <el-input placeholder="请输入您的用户名" v-model="form.name" clearable></el-input>
+      </el-form-item>
+      <el-form-item  label="密码" prop="password">
+        <el-input placeholder="请输入您的密码" v-model="form.password" clearable></el-input>
+      </el-form-item>
+      <el-row type="flex" justify="end"><router-link to="/forgetPassword">忘记密码</router-link></el-row>
+      <el-button type="primary" @click="login">登录</el-button>
+    </el-form>
+
   </div>
 </template>
 <script>
+  import $ from 'jquery'
   export default {
     props: '',
     name: 'inputForm',
     data () {
       return {
-        user: '',
-        password: ''
+        form: {
+          name: '',
+          password: ''
+        },
+        rules: {
+          name: [
+            { required: true, message: '请输入用户名', trigger: 'blur' },
+            { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+          ],
+          password: [
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          ]
+        }
       }
     },
     methods: {
       login () {
-        console.log(this.user)
+        console.log(this.form.user)
+        $.ajax({
+          url:"//www.baidu.com/s?ie=utf-8&f=8&rsv_bp=0&rsv_idx=1&tn=baidu&wd=qwe",
+          async:false
+        })
       }
     }
   }
 </script>
 <style lang="less" scoped>
+  .el-input:focus{
+    background: red;
+  }
   a{color: inherit;text-decoration: none;}
   .login{
     width:300px;
