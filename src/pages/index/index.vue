@@ -63,9 +63,14 @@
           autocomplete : {
             api: 'wbmApi',
             method: '/mobile/consumer/item/searchItem',
+            //定义一个转换的key autocomplete插件需要把显示的字段的key定义成value
+            autoShowKey : 'item_name',
+            //参数回调函数 目前的用法是来处理返回结果
+            callBack : this.getJsonData,
           },
         },
         table : {
+          tableDataForm : 'api', // json
           tableField : {
             "":{"value":"","type":"selection"},
             "名字":{"value":"item_name","type":"text"},
@@ -90,7 +95,6 @@
                 ]
               }
             ]},
-
           },
         },
         pagination: {

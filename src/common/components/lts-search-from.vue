@@ -20,10 +20,13 @@
             <div v-else-if="val.type == 'autocomplete'">
               <el-autocomplete
                 class="inline-input"
+                id="ltsFormAutocomplete"
+                ref="ltsFormAutocomplete"
                 v-model="formInline[val.bindValue]"
                 :fetch-suggestions="querySearch"
                 :placeholder="val.bindPlaceholder"
                 :trigger-on-focus="false"
+                :key="val.bindValue"
                 @select="handleSelect"
               ></el-autocomplete>
             </div>
@@ -73,6 +76,7 @@ export default{
       this.$emit('get-from',this.formInline);
       if(this.formInline.callbackParameter){
         this.formInline.callbackParameter = {};
+        console.log(this.$refs.ltsFormAutocomplete);
       }
     },
     loadAutoCompleteData(keywords) {
@@ -87,9 +91,10 @@ export default{
             break;
         }
         link.then((data) => {
-          const resp = JSON.parse(data);
-          this.restaurants = resp.item_list;
-          resolve(resp.item_list);
+          data = JSON.parse(data);
+          this.restaurants = data.item_list;
+          let resp = this.autocomplete.callBack ? this.autocomplete.callBack(data.item_list) : data.item_list;
+          resolve(resp);
         }, (msg) => {
           this.$ltsMessage.show({type: 'error', message: msg.errorMessage});
         });
@@ -101,10 +106,11 @@ export default{
     querySearch(queryString, cb) {
       this.loadAutoCompleteData("keywords").then((restaurants)=>{
         const results = restaurants;
-        for(const value of results){
-          value.value = value.item_name;
+        if(this.autocomplete.autoShowKey && !this.autocomplete.callBack){
+          for(const value of restaurants){
+            value.value = value.item_name;
+          }
         }
-        // 调用 callback 返回建议列表的数据
         cb(results);
       });
     },
