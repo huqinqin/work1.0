@@ -111,7 +111,6 @@ export default {
         errorResult.errorCode = 9005;
         errorResult.errorMessage = '请求异常';
     }
-
     return errorResult;
   }
   ,

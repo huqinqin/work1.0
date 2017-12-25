@@ -41,8 +41,8 @@
       login () {
         console.log(this.form.user)
         $.ajax({
-          url:"//www.baidu.com/s?ie=utf-8&f=8&rsv_bp=0&rsv_idx=1&tn=baidu&wd=qwe",
-          async:false
+          url: '',
+          async: false
         })
       }
     }

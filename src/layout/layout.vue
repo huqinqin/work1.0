@@ -69,23 +69,23 @@
 </template>
 <script>
   import '../../static/font_516449_wdlmisobbd2njyvi.css'
-    export default {
-      name : 'Layout',
-      props : '',
-      data () {
-        return {
-          test : "LTS底部标识",
-          isUniqueOpened : true,
-        }
-      },
-      methods:{
-      },
-      watch:{
-        open:function(){
-          consoel.log(this.open)
-        }
+  export default {
+    name: 'Layout',
+    props: '',
+    data () {
+      return {
+        test: 'LTS底部标识',
+        isUniqueOpened: true
       }
-   }
+    },
+    methods: {
+    },
+    watch: {
+      open: function () {
+        console.log(this.open)
+      }
+    }
+  }
 </script>
 <style lang="less">
   html,body{

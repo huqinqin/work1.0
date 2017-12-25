@@ -56,7 +56,7 @@
     },
 
     methods: {
-      finish() {
+      finish () {
       }
     }
   }
@@ -66,7 +66,6 @@
     color: inherit;
     text-decoration: none;
   }
-
   .confirmPassword {
     width: 300px;
     height: 437px;
