@@ -4,7 +4,7 @@
       :data="table.tableData"
       v-loading="loading"
       style="width: 100%">
-      <el-table-column  v-for="(val, index) in table.tableField" v-if="val.type === 'text' || val.type === 'selection'"
+      <el-table-column v-for="(val, index) in table.tableField" v-if="val.type === 'text' || val.type === 'selection'"
         :key="val.value"
         :type="val.type"
         :prop="val.value"
@@ -68,7 +68,7 @@
       return{
         api : this.tApi,
         // FORM搜索参数
-        formInline:this.tForm,
+        formInline: this.tForm,
         num : 1,
         table : {
           //渲染TABLE列表LIST

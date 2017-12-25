@@ -57,7 +57,7 @@
             start_date : '',
             end_date : '',
             //需要从处理结果另外带回来的参数 存这里 默认返回一条对象。若返回多个。自己
-            callbackParameter : {},
+            callbackParameter : {}
           },
           // 若需要使用搜索插件 autocomplete  需要定义好接口来获取后端数据
           autocomplete : {

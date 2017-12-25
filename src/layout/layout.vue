@@ -11,7 +11,7 @@
               <el-col class="contact"><a href="#"><i class="iconfont icon-fuwu2"></i></a></el-col>
               <el-col class="setting"><a href="#"><i class="iconfont icon-shezhi"></i></a></el-col>
               <el-col class="message"><a href="#"><i class="iconfont icon-tongzhi"></i>
-                <div class="message-round">n+</div>
+                <div class="message-round">13</div>
                 </a>
               </el-col>
             </el-row>
@@ -128,17 +128,19 @@
       margin-right: -20px;
       .iconfont{
         font-size: 24px;
+        margin-right: 24px;
       }
       // 消息右上角的红点
       .message-round{
         position: relative;
         top:-50px;
         left:8px;
-        width:24px;
-        line-height: 24px;
+        width:22px;
+        line-height: 22px;
         color:white;
         border-radius: 50%;
         background: #e8293f;
+        text-align: center;
       }
     }
   }
@@ -160,6 +162,9 @@
         .el-menu-item {
           min-width: 100px;
         }
+      }
+      .user{
+        margin-right: 6px;
       }
       .iconfont {
         font-size: 24px;

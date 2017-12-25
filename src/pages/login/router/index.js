@@ -8,6 +8,7 @@ import ConfirmPassword from '../components/confirmPassword'
 Vue.use(Router)
 
 export default new Router({
+  hashbang: false,
   routes: [
     {
       path: '/',
