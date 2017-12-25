@@ -255,6 +255,10 @@
       },
       handleClose(index){
          this.customerList.splice(index,1);
+         if(this.customerList.length == 0){
+           this.cartItemList = [];
+           this.isShowOrder = false;
+         }
       },
       showOrder(){
         this.isShowOrder = true;
