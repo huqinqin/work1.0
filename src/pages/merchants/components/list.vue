@@ -1,6 +1,5 @@
 <template>
   <div>
-    <router-link to="./add">123</router-link>
     <lts-search-from @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-from>
     <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination"></lts-table>
     <!--@menuClick="handleMenuItemClick"-->
