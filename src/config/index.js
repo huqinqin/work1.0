@@ -4,6 +4,7 @@
  */
 const isDebug = false
 const isUseMock = false
+const ip = ''
 export default {
   url: {
 

@@ -1,5 +1,5 @@
 export default class BaseService {
-  constructor() {
+  constructor () {
 
   }
 
@@ -13,7 +13,7 @@ export default class BaseService {
         //   reject(resp.errorMessage);
         // }
       }, (resp) => {
-        reject(resp.errorMessage);
+        reject(resp.errorMessage)
       })
     })
   }

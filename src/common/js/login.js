@@ -4,9 +4,10 @@ import VueI18n from 'vue-i18n'
 import VueResource from 'vue-resource'
 import layoutLogin from '@/layout/layoutLogin.vue'
 import 'element-ui/lib/theme-chalk/index.css'
-import Loading from  '@/common/components/lts-loading'
-import Message from  '@/common/components/lts-message'
-import 'element-ui/lib/theme-chalk/index.css'
+import Loading from '@/common/components/lts-loading'
+import Message from '@/common/components/lts-message'
+import  'element-ui/lib/theme-chalk/index.css'
+
 Vue.use(ElementUI)
 Vue.use(VueI18n)
 Vue.prototype.$ltsLoading = Loading
@@ -21,6 +22,7 @@ const i18n = new VueI18n({
     en: require('@/lang/en').default
   }
 })
+
 export default function (App, router) {
   layoutLogin.components = {'lts-content': App}
   new Vue({

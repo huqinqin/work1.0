@@ -62,7 +62,7 @@
   export  default {
     name: 'lts-table',
     props: [
-      "tApi","tForm","tTable","TPagination"
+      'tApi', 'tForm', 'tTable', 'TPagination', 'tTabledata'
     ],
     data(){
       return{
@@ -76,7 +76,6 @@
           //TABLE显示定义的字段
           tableField : this.tTable.tableField,
           // TABLE显示需要的业务参数
-
         },
         pagination:{
           page: {
@@ -99,8 +98,12 @@
     },
 
     mounted(){
-      console.log(this.formInline);
-      this.getUserItemList()
+      if(this.tTable.tableDataForm && this.tTable.tableDataForm == 'json'){
+        this.table.tableData = this.tTabledata;
+      }else{
+        this.getTableList();
+      }
+
     },
     methods:{
       /**
@@ -108,7 +111,7 @@
        * 参数定义 {}
        * 直接渲染列表
        */
-      getUserItemList(){
+      getTableList(){
         let link = "";
         this.loading = true;
         switch (this.tApi.api){
@@ -122,6 +125,7 @@
         link.then((data)=>{
             this.loading = false;
             const resp = JSON.parse(data);
+            console.log(resp)
             this.table.tableData = resp.item_list;
             this.pagination.total.default = resp.total;
         },(msg)=>{
@@ -200,7 +204,6 @@
       menuClick(command,data){
         this.$emit("menuClick",command,data);
       },
-
 
     },
     /**

@@ -38,8 +38,7 @@
             </el-submenu>
             <el-submenu index="4">
               <template slot="title"><i class="iconfont icon-caigou"></i>采购</template>
-              <el-menu-item index="4-1">{{$t('name')}}</el-menu-item>
-              <el-menu-item index="4-2">{{$t('menu.order')}}</el-menu-item>
+              <el-menu-item index="4-1"><a href="/pages/customerorder.html">代客下单</a></el-menu-item>
             </el-submenu>
             <el-submenu index="5">
               <template slot="title"><i class="iconfont icon-cangku1"></i>仓库</template>

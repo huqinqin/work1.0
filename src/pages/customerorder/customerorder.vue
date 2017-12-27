@@ -1,38 +1,97 @@
 <template>
   <div>
+
     <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-bottom:12px;margin-bottom:12px;border-bottom:solid 1px #eeeeee">
       <el-breadcrumb-item ><a href="http://www.baidu.com">首页</a></el-breadcrumb-item>
-      <el-breadcrumb-item>待客下单</el-breadcrumb-item>
+      <el-breadcrumb-item>代客下单</el-breadcrumb-item>
+      <router-link to="/order">忘记密码</router-link>
     </el-breadcrumb>
+
     <lts-search-from @get-from="getCustomerParameter" :form-fileds="customerform.formFileds" :form-inlines="customerform.formInline" :autocomplete="customerform.autocomplete"></lts-search-from>
     <!--customerlist show 抄单模块-->
     <div v-if="customerList.length > 0">
-      <el-card class="box-card">
-       <div slot="header" class="clearfix">
-         <span>您正在为<el-tag v-for="(val,index) in customerList" :key="val.id" type="success" style="margin:0 5px" @close="handleClose(index)" closable>{{val.value}}</el-tag>抄单</span>
-         <el-badge :value="cartTotal" class="item" style="float: right; padding: 3px 0" ><el-button type="primary" icon="el-icon-goods"></el-button></el-badge>
-       </div>
-       <div>
-         <lts-search-from @get-from="getItemParameter" :form-fileds="itemform.formFileds" :form-inlines="itemform.formInline"></lts-search-from>
-         <lts-table :t-api="itemTable.api" :t-form="itemform.formInline" :t-table="itemTable" :t-pagination="itemTable.pagination" @inputNumberChang="getCartItem"></lts-table>
-       </div>
-      </el-card>
+
+      <!--下单-->
+      <transition name="slide-fade">
+        <el-card class="box-card" v-show="!isShowOrder">
+
+          <router-view
+            :customerList="customerList" :cartItemList="cartItemList" :cart="cart"
+            :itemform="itemform" :itemTable="itemTable"
+
+          />
+
+        </el-card>
+      </transition>
+
+      <!--购物车-->
+      <transition name="slide-fade">
+        <el-card class="box-card" v-if="isShowOrder">
+          <div slot="header" class="clearfix">
+            <span>您正在为<el-tag v-for="(val,index) in customerList" :key="val.id" type="success" style="margin:0 5px" @close="handleClose(index)" closable>{{val.value}}</el-tag>下单</span>
+            <div style="float: right; padding: 3px 0" @click="closeOrder"><el-button type="primary" >继续下单</el-button></div>
+          </div>
+          <div class="cart-box">
+            <lts-table :t-api="cartItemTable.api" :t-table="cartItemTable" :t-pagination="cartItemTable.pagination" :t-tabledata="cartItemList"  @inputNumberChang="getCartItem"></lts-table>
+            <div class="cartbottom">
+              <el-tag>
+                共<span class="num">{{cart.cartTotal}}</span>
+                <span>合计$<span class="num">{{cart.cartPriceTotal}}</span>元</span>
+              </el-tag>
+              <span class="cart-price"></span>
+              <el-button type="primary" >确认订单</el-button>
+            </div>
+          </div>
+        </el-card>
+      </transition>
+
     </div>
   </div>
 </template>
+<style lang="less">
+  .slide-fade-enter-active {
+    transition: all .3s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .slide-fade-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active for below version 2.1.8 */ {
+    transform: translateX(10px);
+    opacity: 0;
+  }
+  .cart-box{
+    position: relative;
+  }
+  .cartbottom{
+    position: absolute;
+    right:3px;
+    bottom:0;
+    color: #000;
+    .el-tag{
+      color: #333;
+    }
+    .num{
+      color: #409EFF;
+    }
+  }
+</style>
 <script>
   import ltsTable from '@/common/components/lts-table.vue'
   import ltsSearchFrom from '@/common/components/lts-search-from.vue'
-  export  default {
+  import order from './components/order.vue'
+  export default {
     props: '',
-    components : {
-      ltsTable,ltsSearchFrom
+    name: 'merchants',
+    components: {
+      ltsTable, ltsSearchFrom, order
     },
-    mounted(){
+    mounted () {
+      console.log(this.cartItemTable.api)
     },
-    data() {
+    data () {
       return {
-        customerform:{
+        customerform: {
           formFileds: [
             {
               "search": {
@@ -67,6 +126,10 @@
           autocomplete : {
             api: 'wbmApi',
             method: '/mobile/consumer/item/searchItem',
+            //定义一个转换的key autocomplete插件需要把显示的字段的key定义成value
+            autoShowKey : 'item_name',
+            //参数回调函数 目前的用法是来处理返回结果
+            callBack : this.getJsonData,
           },
         },
         itemform : {
@@ -133,11 +196,38 @@
             layout : "total, sizes, prev, pager, next, jumper" // total 总条目数  prev 上一页 next 下一页 sizes 支持分组
           },
         },
+        cartItemTable:{
+          tableDataForm : 'json',
+          tableField : {
+            "名字":{"value":"item_name","type":"text"},
+            "ID":{"value":"puser_id","type":"text"},
+            "类目ID":{"value":"category_id","type":"text"},
+            "价格": {"value":"price_value","type":"text"},
+            "类型": {"value":"discount_type","type":"text"},
+            "订单数量":{"value":"order_num","type":"text"},
+            "abced" : {"value":"id","type":"text"},
+            "输入数量":{"value":"num","type":"inputNumber","width":"200px"},
+          },
+          pagination: {
+            page : 1,
+            pagesize : 10,
+            total : 0,
+            sizes : [10,20,30],
+            layout : "" // total 总条目数  prev 上一页 next 下一页 sizes 支持分组
+          },
+        },
         // 抄单客户
         customerList : [],
         // 购物车商品
         cartItemList : [],
-        cartTotal : 0,
+        cart: {
+          cartTotal : 0,
+          cartPriceTotal : 0,
+        },
+
+        isShowOrder :false,
+
+        callBack : Function,
       }
     },
     methods:{
@@ -168,19 +258,41 @@
           }
         }
       },
-      handleClose(index){
-         this.customerList.splice(index,1);
+      handleClose (index) {
+         this.customerList.splice(index, 1)
+         if (this.customerList.length === 0) {
+           this.cartItemList = []
+           this.isShowOrder = false
+         }
+      },
+      showOrder(){
+        this.isShowOrder = true;
+      },
+      closeOrder(){
+        this.isShowOrder = false;
+      },
+      getJsonData : function(json){
+        if(json){
+          for(const value of json){
+            value.value = value.item_name;
+          }
+          return json;
+        }
       },
     },
     watch:{
       cartItemList:{
         deep:true,
         handler(newval,oldval) {
-          console.log(newval);
-          this.cartTotal = 0;
-          for(let value in newval){
-            this.cartTotal = parseInt(newval[value].num) + parseInt(this.cartTotal);
-          }
+          this.cart.cartTotal = 0;
+          this.cart.cartPriceTotal = 0;
+          newval.forEach((value,index,array)=>{
+            if(value.num == 0){
+              array.splice(index,1);
+            }
+            this.cart.cartTotal = parseInt(value.num) + parseInt(this.cart.cartTotal);
+            this.cart.cartPriceTotal += parseInt(value.num) * parseInt(value.price_real_value);
+          })
         }
       }
     }

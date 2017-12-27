@@ -182,6 +182,7 @@ export default {
         url: url,
         data: parameter,
         timeout: 30 * 1000,
+        traditional: true,
         cache: false,
         success(data, status, xhr) {
           if (Config.isDebug) {
