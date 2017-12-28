@@ -11,7 +11,7 @@
     </div>
     <div>
       <lts-search-from @get-from="getItemParameter" :form-fileds="itemform1.formFileds" :form-inlines="itemform1.formInline"></lts-search-from>
-      <lts-table :t-api="itemTable1.api" :t-form="itemform1.formInline" :t-table="itemTable1" :t-pagination="itemTable1.pagination" @inputNumberChang="getCartItem"></lts-table>
+      <lts-table :t-api="itemTable1.api" :t-form="itemform1.formInline" :t-table="itemTable1" :t-pagination="itemTable1.pagination" @inputNumberChang="inputNumberChang"></lts-table>
     </div>
   </div>
 </template>
@@ -40,6 +40,12 @@
     methods: {
       inputNumberChang (item) {
         this.$emit('inputNumberChang', item)
+      },
+      getItemParameter (val) {
+        this.itemform.formInline = val
+      },
+      handleClose (index) {
+        this.$emit('handleClose', index)
       }
     }
   }

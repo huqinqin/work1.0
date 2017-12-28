@@ -7,7 +7,9 @@ import 'element-ui/lib/theme-chalk/index.css'
 import Loading from '@/common/components/lts-loading'
 import Message from '@/common/components/lts-message'
 import  'element-ui/lib/theme-chalk/index.css'
+import MessageBox from '@/common/components/lts-messageBox'
 
+Vue.prototype.$ltsMessageBox = MessageBox
 Vue.use(ElementUI)
 Vue.use(VueI18n)
 Vue.prototype.$ltsLoading = Loading

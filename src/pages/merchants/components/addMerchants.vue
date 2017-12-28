@@ -1,9 +1,14 @@
 <template>
-  <div>
+  <div class="addMerchants">
+    <el-breadcrumb separator="/" style="margin-bottom:20px;">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item >新增工程商</el-breadcrumb-item>
+      <el-button @click="test">123</el-button>
+    </el-breadcrumb>
     <el-form ref="form" :model="form" :rules="rules" label-position="left">
       <el-form-item label="登陆账号" label-width="100px" prop="account" class="form-button" position="relative">
-        <el-input v-model="form.account"></el-input>
-        <el-button @click="checkName" class="form-button">检测</el-button>
+        <el-input v-model="form.account" @input="checkName" debounce="1000"></el-input>
+        <div class="message">{{checkApi.message}}</div>
         <span>注：登陆账号不可填手机号码，如需手机登陆，后续可以自主绑定手机登陆</span>
         <span class="checkResult">{{this.checkResult}}</span>
       </el-form-item>
@@ -26,7 +31,7 @@
       </el-form-item>
 
       <el-form-item label="详细地址" label-width="100px" class="address"
-                    :rules="[{required: true, message: '请输入详细地址', trigger: 'blur'}]">
+         :rules="[{required: true, message: '请输入详细地址', trigger: 'blur'}]">
         <el-input v-model="moreAddress"></el-input>
         <el-button @click="getLocation" class="location form-button">定位</el-button>
       </el-form-item>
@@ -102,6 +107,20 @@
         }
       }
       return {
+        box:{
+          action: '删除',
+          title: '提示',
+          option: {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'success',
+            center: false,
+            successType: 'success',
+            successMessage: '删除成功2333!',
+            cancelType: 'info',
+            cancelMessage: '已取消删除2333'
+          }
+        },
         isRequired: true,
         checkResult: '',
         locationOptions: [{
@@ -184,16 +203,31 @@
           address: [{required: true, message: '请输入详细地址', trigger: 'blur'}
           ]
         },
-        app_key: '00000-500mi',
-        method: 'wbm.tp.merchant.store.add',
-        session: '1111',
         api: {
-          api: 'tp',
-          method: '/gateway/api'
+          api: '',
+          method: '/gateway/api',
+          bizparams: {
+            app_key: '00000-500mi',
+            method: 'wbm.tp.merchant.store.add',
+            session: '1111'
+          }
+        },
+        checkApi: {
+          api: '',
+          method: '/gateway/api',
+          message: '',
+          bizparams: {
+            app_key: '00000-500mi',
+            method: 'wbm.tp.merchant.check.add', // ??????
+            session: '1111'
+          }
         }
       }
     },
     methods: {
+      test(){
+        this.$ltsMessageBox.show(this,this.box.action,this.box.title,this.box.option)
+      },
       getAddress () {
         return {
           address: this.address
@@ -210,32 +244,38 @@
         alert('自动填入经纬度')
       },
       checkName () {
-        var account = this.form.account.trim()
+        var account = {acount: this.form.account.trim()}
+        var param = Object.assign({}, account, this.checkApi.bizparams)
+        let link = Request.wbmApi(this.checkApi.method, param)
+        link.then((data) => {
+          console.log(data)
+          this.checkApi.message = '该账号不可用，请重新输入'
+        }, (msg) => {
+          console.log(msg)
+          this.checkApi.message = '该账号不可用，请重新输入'
+        })
       },
       changeLocation (value) {
         console.log(value)
       },
       submit () {
         let formData = Object.assign({}, this.getAddress(), this.form)
-        delete formData.checkPass
         formData.type = this.form.type ? '加盟' : '直营'
-
-        let para = {}
-        para.app_key = this.app_key
-        para.method = this.method
-        para.session = this.session
+        let para = Object.assign({}, this.api.bizparams)
         para.store_request = JSON.stringify(formData)
-
-        console.log(para)
         let link = Request.wbmApi(this.api.method, para)
-
         link.then((data) => {
           console.log(data)
         }, (msg) => {
           this.$ltsMessage.show({type: 'error', message: '新建工程商出错，请稍后重试'})
         })
       }
-    }
+    },
+    mounted(){
+      this.$on('confirm',function(msg){
+        alert(msg)
+      })
+    },
   }
 </script>
 <style lang="less">
@@ -270,6 +310,13 @@
       margin-left: 12px;
       height: 30px;
       padding-top: 7px;
+    }
+    .message{
+      position: absolute;
+      top:90%;
+      left:0;
+      line-height: 12px;
+      font-size: 12px;
     }
   }
   .el-form-item.is-required{

@@ -1,19 +1,18 @@
 <template>
   <div>
-    <router-link to="/add">add</router-link>||||||<router-link to="/list">list</router-link>
     <router-view></router-view>
   </div>
 </template>
 <script>
-  import list from './components/list'
+  import merchantsList from './components/merchantsList'
   import addMerchants from './components/addMerchants'
+  import editMerchants from './components/editMerchants'
   export default {
     props: '',
     name: 'merchants',
-    components: {list, addMerchants},
+    components: {merchantsList, addMerchants, editMerchants},
     data () {
       return {
-
       }
     },
     methods: {

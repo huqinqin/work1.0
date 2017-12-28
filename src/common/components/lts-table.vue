@@ -18,7 +18,7 @@
             <div v-if="val.type == 'menu'">
               <div v-for="(menu,key) in val.menulist" style="display: inline-block;margin-right: 10px">
                 <el-dropdown @command="handleCommand"  :key="menu.value" v-if="menu.children">
-                  <el-button type="primary" size="small">
+                  <el-button type="primary" size="medium">
                     {{menu.value}}<i class="el-icon-arrow-down el-icon--right"></i>
                   </el-button>
                   <el-dropdown-menu slot="dropdown" v-if="menu.children">
@@ -59,23 +59,24 @@
 </style>
 <script>
   import Request from 'request'
-  export  default {
+  export default {
     name: 'lts-table',
     props: [
       'tApi', 'tForm', 'tTable', 'TPagination', 'tTabledata'
     ],
-    data(){
-      return{
-        api : this.tApi,
+    data () {
+      return {
+        api: this.tApi,
         // FORM搜索参数
         formInline: this.tForm,
-        num : 1,
-        table : {
-          //渲染TABLE列表LIST
+        num: 1,
+        table: {
+          // 渲染TABLE列表LIST
           tableData: [],
-          //TABLE显示定义的字段
-          tableField : this.tTable.tableField,
+          // TABLE显示定义的字段
+          tableField: this.tTable.tableField,
           // TABLE显示需要的业务参数
+          datalist: this.tTable.datalist
         },
         pagination:{
           page: {
@@ -93,7 +94,7 @@
           pageSizes : this.TPagination.sizes,// table切换页数的分组
           layout:this.TPagination.layout,
         },
-        loading : false,
+        loading: false
       }
     },
 
@@ -103,7 +104,6 @@
       }else{
         this.getTableList();
       }
-
     },
     methods:{
       /**
@@ -111,47 +111,52 @@
        * 参数定义 {}
        * 直接渲染列表
        */
-      getTableList(){
-        let link = "";
-        this.loading = true;
-        switch (this.tApi.api){
+      getTableList () {
+        let link = ''
+        this.loading = true
+        switch (this.tApi.api) {
           case 'wbmApi':
-             link = Request.wbmApi(this.tApi.method,this.getParameter());
-             break;
+            link = Request.wbmApi(this.tApi.method, this.getParameter())
+            break
           case 'tp':
-             link = Request.tp(this.tApi.method,this.getParameter());
-             break;
+            link = Request.tp(this.tApi.method, this.getParameter())
+            break
         }
-        link.then((data)=>{
-            this.loading = false;
-            const resp = JSON.parse(data);
-            console.log(resp)
-            this.table.tableData = resp.item_list;
-            this.pagination.total.default = resp.total;
-        },(msg)=>{
-          this.loading = false;
-          this.$ltsMessage.show({type:'error',message:msg.errorMessage});
-        });
+        link.then((data) => {
+          this.loading = false
+          const resp = JSON.parse(data)
+          console.log(resp)
+          this.table.tableData = resp.item_list
+          if (this.table.datalist === true) {
+            this.table.tableData = resp.data || resp.datalist
+          }
+          this.pagination.total.default = resp.total
+        }, (msg) => {
+          this.loading = false
+          this.$ltsMessage.show({type: 'error', message: msg.errorMessage})
+        })
       },
 
       /**
        * 封装table接口需要的参数
        * @return JSON.stringify(Object)
        */
-      getParameter(){
+      getParameter () {
         /**
          * 加入公共的参数
          * @type {number|*}
          */
-          this.tApi.bizparams.page = this.pagination.page.default;
-          this.tApi.bizparams.pgaesize = this.pagination.pageSize.default;
-          /**
-           * 加入搜索的参数
-           * Object.assign 后一个参数会覆盖前面的
-           * @type {number|*}
-           */
-          let parameter = Object.assign({}, this.tApi.bizparams, this.formInline);
-          return parameter;
+
+        this.tApi.bizparams.page = this.pagination.page.default
+        this.tApi.bizparams.pageSize = this.pagination.pageSize.default
+        /**
+         * 加入搜索的参数
+         * Object.assign 后一个参数会覆盖前面的
+         * @type {number|*}
+         */
+        console.log(this.tApi.bizparams)
+        let parameter = Object.assign({},this.tApi.bizparams,this.formInline)
+        return parameter
       },
 
       /**
@@ -159,9 +164,9 @@
        * pageSize 改变时会触发
        * http://element.eleme.io/#/zh-CN/component/pagination
        */
-      handleSizeChange(val) {
-        this.pagination.pageSize.default = val;
-        this.getUserItemList();
+      handleSizeChange (val) {
+        this.pagination.pageSize.default = val
+        this.getTableList()
       },
 
       /**
@@ -169,9 +174,9 @@
        * currentPage 改变时会触发
        * http://element.eleme.io/#/zh-CN/component/pagination
        */
-      handleCurrentChange(val) {
-        this.pagination.page.default = val;
-        this.getUserItemList();
+      handleCurrentChange (val) {
+        this.pagination.page.default = val
+        this.getTableList()
       },
 
       /**
@@ -179,45 +184,43 @@
        * 选中前面inputbox 改变时会触发
        * http://element.eleme.io/#/zh-CN/component/table
        */
-      handleSelectionChange(val){
-          console.log(val);
+      handleSelectionChange (val) {
+        console.log(val)
       },
       /**
        * inpueNumber
        * inpueNumber num 改变时会触发
        * http://element.eleme.io/#/zh-CN/component/input-number
        */
-      inputNumberhandleChange(item){
-        this.$emit("inputNumberChang",item);
+      inputNumberhandleChange (item) {
+        this.$emit('inputNumberChang', item)
       },
-
       /**
        * 自定义封装 TABLE 下拉菜单点击传递数据给父类做处理
        */
-      handleCommand(command,data){
-        const item = data.$vnode.data.attrs.data;
-        this.$emit("menuClick",command,item);
+      handleCommand (command, data) {
+        const item = data.$vnode.data.attrs.data
+        this.$emit('menuClick', command, item)
       },
       /**
        * 自定义封装 TABLE 单个菜单点击传递数据给父类做处理
        */
-      menuClick(command,data){
-        this.$emit("menuClick",command,data);
-      },
-
+      menuClick (command, data) {
+        this.$emit('menuClick', command, data)
+      }
     },
     /**
      * 监听FORM变化
      * 若变化则直接调取接口
      */
     watch: {
-      formInline:{
-        handler:function(){
-          this.getUserItemList()
+      formInline: {
+        handler: function () {
+          this.getTableList()
         },
-        deep:true,
-      },
-    },
+        deep: true
+      }
+    }
   }
 </script>
 <style>

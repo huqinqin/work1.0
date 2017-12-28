@@ -33,7 +33,7 @@
             </el-submenu>
             <el-submenu index="3">
               <template slot="title"><i class="iconfont icon-customer"></i>客户</template>
-              <el-menu-item index="3-1">{{$t('name')}}</el-menu-item>
+              <el-menu-item index="3-1"><a href="/pages/merchants.html">工程商</a></el-menu-item>
               <el-menu-item index="3-2">{{$t('menu.order')}}</el-menu-item>
             </el-submenu>
             <el-submenu index="4">

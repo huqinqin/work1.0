@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div  v-for="bar in formFileds">
-      <div v-for="(menubar,menukey) in bar">
+    <div  v-for="(bar,key) in formFileds" :key="key">
+      <div v-for="(menubar,menukey) in bar" >
         <el-form :inline="true" :model="formInline" class="demo-form-inline" if="formInline">
-          <el-form-item  v-for="(val,key) in menubar" :label="val.label" :key="val.label"  >
+          <el-form-item  v-for="(val,key) in menubar" :label="val.label" :key="val.bindValue"  >
             <div v-if="val.type == 'date'">
               <el-date-picker
                 v-model="datelist"
@@ -108,7 +108,7 @@ export default{
         const results = restaurants;
         if(this.autocomplete.autoShowKey && !this.autocomplete.callBack){
           for(const value of restaurants){
-            value.value = value.item_name;
+            value.value = value.this.autocomplete.autoShowKey;
           }
         }
         cb(results);

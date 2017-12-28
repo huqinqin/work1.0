@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import List from '../components/list'
+import MerchantsList from '../components/merchantsList'
 import AddMerchants from '../components/addMerchants'
+import EditMerchants from '../components/editMerchants'
 
 Vue.use(Router)
 
@@ -9,7 +10,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: List
+      component: MerchantsList
     },
     {
       path: '/add',
@@ -17,7 +18,11 @@ export default new Router({
     },
     {
       path: '/list',
-      component: List
+      component: MerchantsList
+    },
+    {
+      path: '/edit',
+      component: EditMerchants
     }
   ]
 })

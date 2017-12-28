@@ -109,12 +109,13 @@
     methods:{
       getParameter(val){
         console.log(val);
-         this.form.formInline = val;
+        this.form.formInline = val;
       },
       handleMenuItemClick(command,item){
+        console.log(item)
         switch(command){
           case "link":
-            alert("设置详情"+item.id);
+            alert("设置详情" + item.id);
             break;
           case "detail":
             alert("狮子头" + item.id);

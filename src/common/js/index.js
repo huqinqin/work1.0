@@ -6,12 +6,13 @@ import Layout from 'layout'
 import 'element-ui/lib/theme-chalk/index.css'
 import Loading from '@/common/components/lts-loading'
 import Message from '@/common/components/lts-message'
-import 'element-ui/lib/theme-chalk/index.css'
+import MessageBox from '@/common/components/lts-messageBox'
 
 Vue.use(ElementUI)
 Vue.use(VueI18n)
 Vue.prototype.$ltsLoading = Loading
 Vue.prototype.$ltsMessage = Message
+Vue.prototype.$ltsMessageBox = MessageBox
 Vue.config.lang = 'en'
 Vue.config.productionTip = false
 const i18n = new VueI18n({
