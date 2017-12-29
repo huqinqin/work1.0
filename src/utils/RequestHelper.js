@@ -270,7 +270,7 @@ export default {
     parameter = parameter || {};
     parameter.method = 'wbm.' + method;
     parameter.app_key = '00000-500mi';
-    parameter.style = 'underline'
+    parameter.style = 'underline';
     parameter.format = parameter.format ? parameter.format : 'jsonOnly';
     // param是过滤处理后的parameter
     return this.mixParam(parameter, isAddRandom).then(param => {
@@ -285,6 +285,17 @@ export default {
   }
   ,
 
+  ltsApi(method, parameter) {
+    parameter.app_key=Config.appKey;
+    return this.getRequest(Config.api.api, parameter).then(this.checkResponse);
+  },
+
+  ltsService(method, parameter) {
+    parameter.app_key=Config.appKey;
+    parameter.method=method;
+    return this.getRequest(Config.api.service + method, parameter).then(this.checkResponse);
+  },
+
   wbmApi(method, parameter, isAddRandom) {
     return this.getRequest(Config.api.wbm + method, parameter);
     // return this.baseApi(Config.api.wbm, method, parameter, isAddRandom);
@@ -294,5 +305,4 @@ export default {
     method = 'tp.' + method;
     return this.postBaseApi(Config.api.tp, method, parameter, isAddRandom);
   }
-  ,
 }
