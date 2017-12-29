@@ -19,23 +19,7 @@
   export default {
     props: '',
     name: 'confirmPassword',
-    data() {
-      var checkAge = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('年龄不能为空'))
-        }
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'))
-          } else {
-            if (value < 18) {
-              callback(new Error('必须年满18岁'))
-            } else {
-              callback()
-            }
-          }
-        }, 1000);
-      };
+    data () {
       var validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'))
@@ -45,7 +29,7 @@
           }
           callback()
         }
-      };
+      }
       var validatePass2 = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请再次输入密码'))
@@ -54,29 +38,25 @@
         } else {
           callback()
         }
-      };
+      }
       return {
         ruleForm2: {
           pass: '',
-          checkPass: '',
-          age: ''
+          checkPass: ''
         },
         rules2: {
           pass: [
-            { validator: validatePass, trigger: 'blur' }
+            {validator: validatePass, trigger: 'blur'}
           ],
           checkPass: [
-            { validator: validatePass2, trigger: 'blur' }
-          ],
-          age: [
-            { validator: checkAge, trigger: 'blur' }
+            {validator: validatePass2, trigger: 'blur'}
           ]
         }
-        }
-      },
+      }
+    },
 
     methods: {
-      finish() {
+      finish () {
       }
     }
   }
@@ -86,7 +66,6 @@
     color: inherit;
     text-decoration: none;
   }
-
   .confirmPassword {
     width: 300px;
     height: 437px;

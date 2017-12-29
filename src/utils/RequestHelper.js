@@ -111,7 +111,6 @@ export default {
         errorResult.errorCode = 9005;
         errorResult.errorMessage = '请求异常';
     }
-
     return errorResult;
   }
   ,
@@ -151,15 +150,14 @@ export default {
           if (Config.isDebug && errorResult) {
             console.log(errorResult);
           }
-          if(errorResult.errorMessage == ''){
-            errorResult.errorMessage = '接口获取失败';
+          if(errorResult.errorMessage == '') {
+            errorResult.errorMessage = '接口获取失败'
           }
-          reject(errorResult);
+          reject(errorResult)
         }
-      });
+      })
     })
-  }
-  ,
+  },
 // 加了参数过滤和权限判断的get
   getJSON(url, parameter, isAddToken, isAddRandom) {
     // param是过滤处理后的parameter
@@ -167,24 +165,24 @@ export default {
       return this.getRequest(url, param);
     }).then(response => {
       return this.checkResponse(response);
-    });
-  }
-  ,
+    })
+  },
 // 纯净的post
   postRequest(url, parameter) {
     return new Promise((resolve, reject) => {
       if (Config.isDebug) {
-        let reqId = new Date().getTime();
-        console.log('reqId:' + reqId + ';url:' + url);
-        console.log('reqId:' + reqId + ';param:' + JSON.stringify(parameter));
+        let reqId = new Date().getTime()
+        console.log('reqId:' + reqId + ';url:' + url)
+        console.log('reqId:' + reqId + ';param:' + JSON.stringify(parameter))
       }
       // mock
-      if (Config.isUseMock) url = this.getMockUrl(url);
+      if (Config.isUseMock) url = this.getMockUrl(url)
       $.ajax({
         type: 'POST',
         url: url,
         data: parameter,
         timeout: 30 * 1000,
+        traditional: true,
         cache: false,
         success(data, status, xhr) {
           if (Config.isDebug) {

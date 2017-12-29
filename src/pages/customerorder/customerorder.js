@@ -1,4 +1,9 @@
-import Lib from '@/common/js'
+import Lib from '@/common/js/'
+import Vue from 'vue'
 import App from '@/pages/customerorder/customerorder.vue'
-const routerView = routerView ? routerView : '';
-Lib(App,routerView);
+import routerView from './router'
+
+Vue.config.productionTip = false
+
+const RouterView = routerView ? routerView : ''
+Lib(App, RouterView)

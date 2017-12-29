@@ -7,26 +7,26 @@
 <script>
   import ltsTable from '@/common/components/lts-table.vue'
   import ltsSearchFrom from '@/common/components/lts-search-from.vue'
-  export  default {
+  export default {
     props: '',
-    components : {
-      ltsTable,ltsSearchFrom
+    components: {
+      ltsTable, ltsSearchFrom
     },
-    mounted(){
+    mounted () {
 
     },
-    data() {
+    data () {
       return {
-        api:{
+        api: {
           api: 'wbmApi',
           method: '/mobile/consumer/item/searchItem',
-          bizparams:{
+          bizparams: {
             puser_id : 138890,
             shop_id : 21985,
             cate_id : 9494699,
           },
         },
-        form:{
+        form: {
           formFileds: [
             {
               "search": {
@@ -72,16 +72,16 @@
         table : {
           tableDataForm : 'api', // json
           tableField : {
-            "":{"value":"","type":"selection"},
-            "名字":{"value":"item_name","type":"text"},
-            "ID":{"value":"puser_id","type":"text"},
-            "类目ID":{"value":"category_id","type":"text"},
-            "价格": {"value":"price_value","type":"text"},
-            "类型": {"value":"discount_type","type":"text"},
-            "订单数量":{"value":"order_num","type":"text"},
-            "abced" : {"value":"id","type":"text"},
-            "输入数量":{"value":"","type":"inputNumber"},
-            "功能":{"value":"","type":"menu","width":"200","menulist":[
+            '':{"value":"","type":"selection"},
+            '名字':{"value":"item_name","type":"text"},
+            'ID':{"value":"puser_id","type":"text"},
+            '类目ID':{"value":"category_id","type":"text"},
+            '价格': {"value":"price_value","type":"text"},
+            '类型': {"value":"discount_type","type":"text"},
+            '订单数量':{"value":"order_num","type":"text"},
+            'abced': {"value":"id","type":"text"},
+            '输入数量':{"value":"","type":"inputNumber"},
+            '功能':{"value":"","type":"menu","width":"200","menulist":[
               {
                 value:"查看详情",
                 command: 'link',
@@ -109,12 +109,13 @@
     methods:{
       getParameter(val){
         console.log(val);
-         this.form.formInline = val;
+        this.form.formInline = val;
       },
       handleMenuItemClick(command,item){
+        console.log(item)
         switch(command){
           case "link":
-            alert("设置详情"+item.id);
+            alert("设置详情" + item.id);
             break;
           case "detail":
             alert("狮子头" + item.id);
