@@ -1,9 +1,9 @@
-import Request from './RequestHelper'
-import Store from './StoreUtils'
+import request from './RequestHelper'
+import store from './StoreUtils'
 
 
-// 工具类总入口，引用：import {Request,Store} from 'utils'
+// 工具类总入口，引用：import {request,store} from 'utils'
 export default {
-  Request,
-  Store
+  request,
+  store
 }
