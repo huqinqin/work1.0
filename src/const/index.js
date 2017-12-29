@@ -1,12 +1,12 @@
 /**
- * 常量都需要在这边注册
+ * 甯搁噺閮介渶瑕佸湪杩欒竟娉ㄥ唽
  */
 import item from './item_const'
 import shop from './shop_const'
 import user from './user_const'
 
 
-// 常量引用,Const.item...
+// 甯搁噺寮曠敤,Const.item...
 export {
   item, shop, user
 }

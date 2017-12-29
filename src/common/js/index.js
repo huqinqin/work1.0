@@ -13,15 +13,15 @@ import MessageBox from '@/common/components/lts-messageBox'
 Vue.use(ElementUI)
 Vue.use(VueI18n)
 
-Vue.prototype.$ltsLoading = Loading
-Vue.prototype.$ltsMessage = Message
+Vue.prototype.$ltsLoading    = Loading
+Vue.prototype.$ltsMessage    = Message
 Vue.prototype.$ltsMessageBox = MessageBox
 
-Vue.config.lang = 'en'
+Vue.config.lang          = 'en'
 Vue.config.productionTip = false
 
 const i18n = new VueI18n({
-  locale: Vue.config.lang,    // 语言标识
+  locale  : Vue.config.lang,    // 语言标识
   messages: {
     // 中文语言包
     cn: require('@/lang/cn').default,
@@ -32,12 +32,12 @@ const i18n = new VueI18n({
 export default function (App, router = new Router()) {
   Layout.components = {'lts-content': App}
   new Vue({
-    el: '#app',
-    i18n: i18n,
-    Loading: Loading,
-    Message: Message,
+    el        : '#app',
+    i18n      : i18n,
+    Loading   : Loading,
+    Message   : Message,
     router,
-    template: '<Layout/>',
-    components: { Layout }
+    template  : '<Layout/>',
+    components: {Layout}
   })
 }
