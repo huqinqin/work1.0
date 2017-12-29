@@ -23,8 +23,6 @@
         api: {
           method: 'wbm.tp.merchant.store.get_store_list_byCondition',
           bizparams: {
-            app_key: '00000-500mi',
-            session: 111,
             orderBy: '',
             shop:{}
           }
