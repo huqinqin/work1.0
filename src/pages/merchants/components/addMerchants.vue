@@ -91,8 +91,6 @@
 </template>
 <script>
   import Request from 'request'
-  import UserService from '@/services/UserService.js'
-  const userService = new UserService()
   export default {
     name: 'addMerchants',
     data () {

@@ -30,5 +30,6 @@ module.exports = {
     'space-before-blocks': 'off',
     'semi': 'off',
     'keyword-spacing': 'off',
+    'indent': 'off',
   }
 }

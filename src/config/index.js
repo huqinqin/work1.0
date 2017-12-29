@@ -2,6 +2,7 @@
  * 是否为开发者模式
  * @type {boolean}
  */
+
 const isDebug = false;
 const isUseMock = false;
 export default {
@@ -12,7 +13,8 @@ export default {
         api: 'http://work.lts.com:8085/gateway/api',
         service: 'http://work.lts.com:8085/gateway',
         tp: 'http://tp.api.500mi.com:8080/gateway/api',
-        wbm: 'http://work.local.lts.com:8085',
+        // wbm: 'http://work.local.lts.com:8085',
+        wbm: 'http://work.lts.com',
     },
     homePage: '/pages/index.html',
     loginPage: '/pages/login.html',

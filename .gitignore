@@ -13,4 +13,3 @@ yarn-error.log*
 *.njsproj
 *.sln
 index.js
-src/config/index.js

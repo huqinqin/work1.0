@@ -4,7 +4,6 @@
     <el-breadcrumb separator-class='el-icon-arrow-right' style='padding-bottom:12px;margin-bottom:12px;border-bottom:solid 1px #eeeeee'>
       <el-breadcrumb-item ><a href='http://www.baidu.com'>首页</a></el-breadcrumb-item>
       <el-breadcrumb-item>代客下单</el-breadcrumb-item>
-      <router-link to='/order'>忘记密码</router-link>
     </el-breadcrumb>
 
     <lts-search-from @get-from='getCustomerParameter' :form-fileds='customerform.formFileds' :form-inlines='customerform.formInline' :autocomplete='customerform.autocomplete'></lts-search-from>

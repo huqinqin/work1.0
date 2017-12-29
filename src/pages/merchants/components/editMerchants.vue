@@ -77,11 +77,11 @@
     name: "editMerchants",
     data(){
       return{
-        form:{
           uid: '30637',
+        form:{
           shopName: '',
-          lat: '120.130260',
-          lng: '30.259610',
+          lat: '31.617510',
+          lng: '121.399780',
           type: 0,
           character: ['云超市店'],
           service: ['门店管理', '采购进货', '微信店', '库存管理'],
@@ -189,14 +189,20 @@
         console.log(para)
       },
       submit(){
-        console.log('tijiao')
-        let formData = Object.assign({}, this.getAddress(), this.form)
-        let para = Object.assign({}, this.api.bizparams)
-        para.store_request = formData
+          this.$ltsLoading.show()
+        let uid = {
+            uid: this.uid
+        }
+
+        let formData = Object.assign({},this.getAddress(), this.form)
+        let para = Object.assign({}, this.api.bizparams,uid)
+        para.store_request = JSON.stringify(formData)
         console.log(para)
         let link = Request.wbmApi(this.api.method, para)
         link.then((data) => {
-          console.log(data)
+            this.$ltsLoading.close()
+
+            this.$ltsMessage.show({type: 'success', message: '编辑成功'})
         }, (msg) => {
           this.$ltsMessage.show({type: 'error', message: '编辑失败，请稍后重试'})
         })
