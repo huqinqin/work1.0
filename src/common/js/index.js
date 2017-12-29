@@ -10,11 +10,14 @@ import MessageBox from '@/common/components/lts-messageBox'
 
 Vue.use(ElementUI)
 Vue.use(VueI18n)
+
 Vue.prototype.$ltsLoading = Loading
 Vue.prototype.$ltsMessage = Message
 Vue.prototype.$ltsMessageBox = MessageBox
+
 Vue.config.lang = 'en'
 Vue.config.productionTip = false
+
 const i18n = new VueI18n({
   locale: Vue.config.lang,    // 语言标识
   messages: {
