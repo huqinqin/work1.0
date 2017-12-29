@@ -82,7 +82,7 @@ export default {
                 break;
             case 'error':
                 // BOP封装了下面3个httpStatusCode
-                if (url.indexOf('api.500mi.com') > 0 && (xhr.status == 400 || xhr.status == 406 || xhr.status == 500)) {
+                if (url.indexOf('api.lts.com') > 0 && (xhr.status == 400 || xhr.status == 406 || xhr.status == 500)) {
                     return xhr.responseText;
                 }
                 errorResult.errorCode = xhr.status;

@@ -11,9 +11,7 @@ export default {
     },
     api: {
         api: 'http://work.lts.com:8085/gateway/api',
-        service: 'http://work.lts.com:8085/gateway',
-        tp: 'http://tp.api.500mi.com:8080/gateway/api',
-        wbm: 'http://work.local.lts.com:8085',
+        service: 'http://work.lts.com:8085/gateway'
     },
     homePage: '/pages/index.html',
     loginPage: '/pages/login.html',
