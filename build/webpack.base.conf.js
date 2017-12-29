@@ -28,7 +28,8 @@ module.exports = {
       'layout' : resolve('src') + '/layout/layout.vue',
       'request': resolve('src') + '/utils/RequestHelper',
       'const'  : resolve('src') + '/const',
-      'util'   : resolve('src') + '/utils'
+      'util'   : resolve('src') + '/utils',
+      'ui'     : resolve('src') + '/common'
     }
   },
   module : {
