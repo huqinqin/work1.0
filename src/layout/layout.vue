@@ -32,9 +32,9 @@
                         <el-menu-item index="1-2">退货退款</el-menu-item>
                     </el-submenu>
                     <el-submenu index="2">
-                        <template slot="title"><i class="iconfont icon-icon--"></i>商品管理</template>
-                        <el-menu-item index="2-1">{{$t('name')}}</el-menu-item>
-                        <el-menu-item index="2-2">{{$t('menu.order')}}</el-menu-item>
+                        <template slot="title"><i class="iconfont icon-icon--"></i>市场开通</template>
+                        <el-menu-item index="2-1"><a href="/pages/segments.html">子市场</a></el-menu-item>
+                        <el-menu-item index="2-2"><a href="/">总市场</a></el-menu-item>
                     </el-submenu>
                     <el-submenu index="3">
                         <template slot="title"><i class="iconfont icon-customer"></i>工程商管理</template>

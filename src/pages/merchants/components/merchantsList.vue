@@ -4,8 +4,9 @@
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <router-link to="/edit">编辑</router-link>
     </el-breadcrumb>
+      <router-link to="/add"><el-button type="primary" style="z-index: 1000;position:absolute;top:140px;right:40px;">新增工程商</el-button></router-link>
     <lts-search-from @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-from>
-    <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination" @menuClick="handleMenuItemClick"></lts-table>
+      <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination" @menuClick="handleMenuItemClick"></lts-table>
   </div>
 </template>
 

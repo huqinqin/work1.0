@@ -264,6 +264,7 @@ export default {
 
     api(method, parameter, isAddRandom) {
         let url = config.api.service + method;
+
         if (method.startsWith('wbm.')) {
             url = config.api.api;
             parameter.method = method;

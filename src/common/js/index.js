@@ -24,7 +24,7 @@ const i18n = new VueI18n({
   }
 })
 
-export default function (App, router) {
+export default function (App, router ) {
   Layout.components = {'lts-content': App}
   new Vue({
     el: '#app',

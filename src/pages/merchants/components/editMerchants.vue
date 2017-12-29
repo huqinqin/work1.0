@@ -17,11 +17,11 @@
         <el-input v-model="moreAddress"></el-input>
         <el-button @click="getLocation" class="location form-button">定位</el-button>
       </el-form-item>
-      <el-form-item class="inline" label="经纬度" :rules="[{required: true, message: '经度', trigger: 'blur'}]" label-width="100px" prop="lat">
-        <span>经度：</span><el-input v-model="form.lat"></el-input>
+      <el-form-item class="inline" label="经纬度" :rules="[{required: true, message: '经度', trigger: 'blur'}]" label-width="100px" prop="lng">
+        <span>经度：</span><el-input v-model="form.lng"></el-input>
       </el-form-item>
-      <el-form-item class="inline" prop="lng" :rules="[{required: true, message: '纬度', trigger: 'blur'}]" >
-        <span>纬度：</span><el-input v-model="form.lng"></el-input>
+      <el-form-item class="inline" prop="lat" :rules="[{required: true, message: '纬度', trigger: 'blur'}]" >
+        <span>纬度：</span><el-input v-model="form.lat"></el-input>
       </el-form-item>
       <el-form-item label="类型" label-width="100px" prop="type">
         <el-radio-group v-model="form.type">
