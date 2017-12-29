@@ -221,6 +221,15 @@
             method: 'wbm.tp.merchant.check.add', // ??????
             session: '1111'
           }
+        },
+        locationApi:{
+          api:'',
+          method: '/gateway/api',
+          bizparams: {
+            app_key: '00000-500mi',
+            method: 'wbm.basic.spot.location.get_ode_byName', // ??????
+            session: '1111'
+          }
         }
       }
     },
@@ -255,8 +264,20 @@
           this.checkApi.message = '该账号不可用，请重新输入'
         })
       },
-      changeLocation (value) {
-        console.log(value)
+      changeLocation (value){
+        var location = {}
+        location.province = value[0]
+        location.city = value[1]
+        location.district = value[2]
+        let para = Object.assign({},this.locationApi.bizparams,location)
+        let link = Request.wbmApi(this.locationApi.method, para)
+        link.then((data) => {
+          this.lcCode = data
+          console.log(this.lcCode)
+        }, (msg) => {
+          this.$ltsMessage.show({type: 'error', message: '获取lcCode失败'})
+        })
+        console.log(para)
       },
       submit () {
         let formData = Object.assign({}, this.getAddress(), this.form)

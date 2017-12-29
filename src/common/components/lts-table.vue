@@ -99,7 +99,7 @@
     },
 
     mounted(){
-      if(this.tTable.tableDataForm && this.tTable.tableDataForm == 'json'){
+      if(this.tTable.tableDataForm && this.tTable.tableDataForm === 'json'){
         this.table.tableData = this.tTabledata;
       }else{
         this.getTableList();
@@ -125,7 +125,6 @@
         link.then((data) => {
           this.loading = false
           const resp = JSON.parse(data)
-          console.log(resp)
           this.table.tableData = resp.item_list
           if (this.table.datalist === true) {
             this.table.tableData = resp.data || resp.datalist
@@ -146,7 +145,6 @@
          * 加入公共的参数
          * @type {number|*}
          */
-
         this.tApi.bizparams.page = this.pagination.page.default
         this.tApi.bizparams.pageSize = this.pagination.pageSize.default
         /**
@@ -154,7 +152,6 @@
          * Object.assign 后一个参数会覆盖前面的
          * @type {number|*}
          */
-        console.log(this.tApi.bizparams)
         let parameter = Object.assign({},this.tApi.bizparams,this.formInline)
         return parameter
       },

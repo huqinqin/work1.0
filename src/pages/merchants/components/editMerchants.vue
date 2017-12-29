@@ -72,20 +72,22 @@
 </template>
 
 <script>
+  import Request from 'request'
   export default {
     name: "editMerchants",
     data(){
       return{
         form:{
-          uid: '2333',
+          uid: '30637',
           shopName: '',
-          lat: '123',
-          lng: '12',
+          lat: '120.130260',
+          lng: '30.259610',
           type: 0,
           character: ['云超市店'],
           service: ['门店管理', '采购进货', '微信店', '库存管理'],
           contact: '王五',
           contactPhone: '1512222190',
+          contactMobile: '1512222190',
           openCode: '331102',
           lcCode: '110101000000',
           carrierUid: '45412',
@@ -106,13 +108,14 @@
             }, {
               value: '下城区',
               label: '下城区'}
-            ]}, {
+            ]},{
             value: '温州市',
             label: '温州市',
             children: [{
               value: '乐清市',
-              label: '乐清市'}
-            ]}
+              label: '乐清市'
+            }]
+          }
           ]
         }, {
           value: '云南省',
@@ -145,10 +148,19 @@
           method: '/gateway/api',
           bizparams: {
             app_key: '00000-500mi',
-            method: 'wbm.tp.merchant.store.add', // edit
+            method: 'wbm.tp.merchant.store.update', // edit
             session: '1111'
           }
         },
+        locationApi:{
+          api:'',
+          method: '/gateway/api',
+          bizparams: {
+            app_key: '00000-500mi',
+            method: 'wbm.basic.spot.location.get_ode_byName', // ??????
+            session: '1111'
+          }
+        }
       }
     },
     methods: {
@@ -156,11 +168,38 @@
         console.log(this.location[0] + this.location[1] + this.location[2])
         alert('自动填入经纬度')
       },
-      changeLocation (value) {
-        console.log(value)
+      getAddress(){
+        return{
+          address: this.address
+        }
+      },
+      changeLocation (value){
+        var location = {}
+        location.province = value[0]
+        location.city = value[1]
+        location.district = value[2]
+        let para = Object.assign({},this.locationApi.bizparams,location)
+        let link = Request.wbmApi(this.locationApi.method, para)
+        link.then((data) => {
+          this.lcCode = data
+          console.log(this.lcCode)
+        }, (msg) => {
+          this.$ltsMessage.show({type: 'error', message: '获取lcCode失败'})
+        })
+        console.log(para)
       },
       submit(){
         console.log('tijiao')
+        let formData = Object.assign({}, this.getAddress(), this.form)
+        let para = Object.assign({}, this.api.bizparams)
+        para.store_request = formData
+        console.log(para)
+        let link = Request.wbmApi(this.api.method, para)
+        link.then((data) => {
+          console.log(data)
+        }, (msg) => {
+          this.$ltsMessage.show({type: 'error', message: '编辑失败，请稍后重试'})
+        })
       }
     }
   }

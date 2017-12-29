@@ -84,6 +84,7 @@
       handleMenuItemClick (command, item) {
         switch (command) {
           case 'detail':
+            console.log(item)
             alert('详情：' + item.shop_name)
             break
           case 'edit':
@@ -96,12 +97,11 @@
       },
       getParameter (val) {
         this.form.formInline = val
+        this.api.bizparams.shop = JSON.stringify(val)
         this.search()
       },
       search () {
-        console.log(this.api)
         let link = Request.wbmApi(this.api.method, this.api.bizparams)
-
         link.then((data) => {
           console.log('success')
         }, (msg) => {
@@ -109,8 +109,18 @@
         })
       }
     },
-    mounted(){
+    created(){
       this.api.bizparams.shop = JSON.stringify(this.form.formInline)
+    },
+    watch: {
+      form: {
+        handler: function () {
+          this.api.bizparams.shop = JSON.stringify(this.form.formInline)
+          console.log(this.api.bizparams.shop)
+          this.getTableList()
+        },
+        deep: true
+      }
     }
   }
 </script>
