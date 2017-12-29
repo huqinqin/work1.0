@@ -249,11 +249,10 @@ export default {
         })
     }
     ,
+
     /* 以下为根据api请求的方法 */
     baseApi(url, parameter, isAddRandom) {
         parameter = parameter || {};
-        parameter.app_key = config.appKey;
-        debugger;
         // parameter.style = 'underline';
         // parameter.format = parameter.format ? parameter.format : 'jsonOnly';
         // param是过滤处理后的parameter
@@ -262,17 +261,13 @@ export default {
         }).then(this.checkResponse);
     }
     ,
-    ltsApi(method, parameter, isAddRandom) {
-        return baseApi(config.api.api, parameter, isAddRandom);
-    },
 
-    ltsService(method, parameter, isAddRandom) {
-        debugger
-        parameter.method = method;
-        return baseApi(config.api.service + method, parameter, isAddRandom);
-    },
-
-    wbmApi(method, parameter, isAddRandom) {
-        return this.getRequest(config.api.wbm + method, parameter);
+    api(method, parameter, isAddRandom) {
+        let url = config.api.service + method;
+        if (method.startsWith('wbm.')) {
+            url = config.api.api;
+            parameter.method = method;
+        }
+        return this.baseApi(url, parameter, isAddRandom);
     }
 }

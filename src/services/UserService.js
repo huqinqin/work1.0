@@ -7,9 +7,9 @@ export default {
             password: md5(password),
             source : 'PC'
         };
-        return Request.ltsService('/user/login', param);
+        return Request.api('/user/login', param);
     },
     logout(){
-        return Request.ltsService('/user/logout', {});
+        return Request.api('/user/logout', {});
     }
 }

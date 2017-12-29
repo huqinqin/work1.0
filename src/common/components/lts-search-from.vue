@@ -81,20 +81,11 @@ export default{
     },
     loadAutoCompleteData (keywords) {
       return new Promise((resolve, reject) => {
-        let link = "";
-        switch (this.autoComplete.api) {
-          case 'wbmApi':
-            link = Request.wbmApi(this.autoComplete.method, this.getParameter());
-            break;
-          case 'tp':
-            link = Request.tp(this.tApi.method, this.getParameter());
-            break;
-        }
-        link.then((data) => {
-          data = JSON.parse(data);
-          this.restaurants = data.item_list;
-          let resp = this.autocomplete.callBack ? this.autocomplete.callBack(data.item_list) : data.item_list;
-          resolve(resp);
+        let link = Request.api(this.tApi.method, this.getParameter())
+        link.then((resp) => {
+          this.restaurants = resp.datalist;
+          let datalist = this.autocomplete.callBack ? this.autocomplete.callBack(resp.datalist) : resp.datalist;
+          resolve(datalist);
         }, (msg) => {
           this.$ltsMessage.show({type: 'error', message: msg.errorMessage});
         });
