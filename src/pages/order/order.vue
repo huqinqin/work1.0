@@ -68,11 +68,12 @@
                     tableField: {
                         "": {"value": "", "type": "selection"},
                         "订单号": {"value": "tid", "type": "text"},
-                        "商品名称": {"value": "iname", "type": "text"},
-                        "价格": {"value": "price", "type": "text"},
-                        "数量": {"value": "num", "type": "text"},
+                        "下单时间": {"value": "cdate", "type": "text"},
+                        "买家": {"value": "user_id", "type": "text"},
                         "应付": {"value": "pay", "type": "text"},
                         "实付": {"value": "payReal", "type": "text"},
+                        "订单状态": {"value": "status", "type": "text"},
+                        "付款状态": {"value": "payStatus", "type": "text"},
                         "操作": {
                             "value": "", "type": "menu", "width": "200", "menulist": [
                                 {
