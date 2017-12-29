@@ -1,5 +1,5 @@
 import config from '@/config/index'
-import store from '@/utils/DBHelper'
+import store from '@/utils/StoreUtils'
 export  default {
     sessionData : null,
     isLogin(){

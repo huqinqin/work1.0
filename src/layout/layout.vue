@@ -80,7 +80,7 @@
 </template>
 <script>
     import '../../static/font_516449_wdlmisobbd2njyvi.css'
-    import store from '@/utils/DBHelper'
+    import store from '@/utils/StoreUtils'
     import userService from '@/services/UserService'
     import session from '@/library/Session'
 
