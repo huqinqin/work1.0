@@ -249,7 +249,6 @@ export default {
         })
     }
     ,
-
     /* 以下为根据api请求的方法 */
     baseApi(url, parameter, isAddRandom) {
         parameter = parameter || {};
@@ -268,6 +267,7 @@ export default {
     },
 
     ltsService(method, parameter, isAddRandom) {
+        debugger
         parameter.method = method;
         return baseApi(config.api.service + method, parameter, isAddRandom);
     },
