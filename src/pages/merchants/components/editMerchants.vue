@@ -179,7 +179,7 @@
         location.city = value[1]
         location.district = value[2]
         let para = Object.assign({},this.locationApi.bizparams,location)
-        let link = Request.wbmApi(this.locationApi.method, para)
+        let link = Request.api(this.locationApi.method, para)
         link.then((data) => {
           this.lcCode = data
           console.log(this.lcCode)
@@ -198,7 +198,7 @@
         let para = Object.assign({}, this.api.bizparams,uid)
         para.store_request = JSON.stringify(formData)
         console.log(para)
-        let link = Request.wbmApi(this.api.method, para)
+        let link = Request.api(this.api.method, para)
         link.then((data) => {
             this.$ltsLoading.close()
 

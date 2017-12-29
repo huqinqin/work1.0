@@ -21,12 +21,8 @@
     data () {
       return {
         api: {
-          api: 'wbmApi',
-          method: '/gateway/api',
+          method: 'wbm.tp.merchant.store.get_store_list_byCondition',
           bizparams: {
-            app_key: '00000-500mi',
-            method: 'wbm.tp.merchant.store.get_store_list_byCondition',
-            session: 111,
             orderBy: '',
             shop:{}
           }
@@ -101,7 +97,7 @@
         this.search()
       },
       search () {
-        let link = Request.wbmApi(this.api.method, this.api.bizparams)
+        let link = Request.api(this.api.method, this.api.bizparams)
         link.then((data) => {
           console.log('success')
         }, (msg) => {

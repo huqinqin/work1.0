@@ -2,7 +2,7 @@
     <el-container>
         <el-header height="60px">
             <h1>
-                <a href="#/zh-CN" class="router-link-active">
+                <a :href="homePage" class="router-link-active">
                     <img src="../../static/icon/logo.png" alt="ltst-logo" class="nav-logo" />
                 </a>
             </h1>
@@ -37,8 +37,8 @@
                         <el-menu-item index="2-2">{{$t('menu.order')}}</el-menu-item>
                     </el-submenu>
                     <el-submenu index="3">
-                        <template slot="title"><i class="iconfont icon-customer"></i>客户管理</template>
-                        <el-menu-item index="3-1"><a href="/pages/merchants.html">新增客户</a></el-menu-item>
+                        <template slot="title"><i class="iconfont icon-customer"></i>工程商管理</template>
+                        <el-menu-item index="3-1"><a href="/pages/merchants.html#list">工程商列表</a></el-menu-item>
                         <el-menu-item index="3-2">{{$t('menu.order')}}</el-menu-item>
                     </el-submenu>
                     <el-submenu index="4">
@@ -81,6 +81,7 @@
 <script>
     import '../../static/font_516449_wdlmisobbd2njyvi.css'
     import store from '@/utils/StoreUtils'
+    import config from '@/config'
     import userService from '@/services/UserService'
     import session from '@/library/Session'
 
@@ -89,6 +90,7 @@
         props: '',
         data() {
             return {
+                homePage: config.homePage,
                 account: '',
                 test: "LTS底部标识",
                 isUniqueOpened: true,
