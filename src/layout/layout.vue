@@ -13,7 +13,7 @@
                     <template slot="title"><i class="iconfont icon-shezhi"></i>设置</template>
                     <el-menu-item index="2-1">我的账户</el-menu-item>
                     <el-menu-item index="2-2">账号安全</el-menu-item>
-                    <el-menu-item index="2-3" @click="">退出</el-menu-item>
+                    <el-menu-item index="2-3" @click="logout">退出</el-menu-item>
                 </el-submenu>
                 <el-menu-item index="4"><a href="#" target="_blank"><i class="iconfont icon-tongzhi"></i><i class="notice">{{unread}}</i></a></el-menu-item>
                 <el-submenu index="5">
@@ -80,9 +80,9 @@
 </template>
 <script>
     import '../../static/font_516449_wdlmisobbd2njyvi.css'
-    import store from '@/utils/DBHelper'
-    import config from '@/config/index'
+    import store from '@/utils/StoreUtils'
     import userService from '@/services/UserService'
+    import session from '@/library/Session'
 
     export default {
         name: 'Layout',
@@ -101,7 +101,7 @@
             },
             logout(){
                 userService.logout().then((resp)=>{
-                    location.href = config.loginPage;
+                    session.logout();
                 },(err)=>{
                     this.$ltsMessage.show({type: "error", message: err.errorMessage});
                 })
@@ -113,6 +113,7 @@
             }
         },
         mounted() {
+            session.checkLogin();
             this.account = store.getItem('account');
         }
     }

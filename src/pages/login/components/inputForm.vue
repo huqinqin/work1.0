@@ -13,13 +13,12 @@
             </el-row>
             <el-button type="primary" @click="login('form')">登录</el-button>
         </el-form>
-
     </div>
 </template>
 <script>
     import userService from '@/services/UserService'
-    import store from '@/utils/DBHelper'
-    import md5 from 'md5'
+    import store from '@/utils/StoreUtils'
+    import session from '@/library/Session'
 
     export default {
         props: '',
@@ -47,9 +46,9 @@
                 this.$refs[formName].validate((valid) => {
                     store.setItem('account', this.form.name);
                     if (valid) {
-                        userService.login(this.form.name, md5(this.form.password)).then( (resp) =>{
+                        userService.login(this.form.name, this.form.password).then( (resp) =>{
                             this.$ltsLoading.show({text: "登录成功跳转中"});
-                            location.reload('/');
+                            session.login(resp.data);
                         }, (err) => {
                             this.$ltsMessage.show({type: "error", message: err.errorMessage});
                         });

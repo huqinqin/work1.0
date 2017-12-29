@@ -20,7 +20,6 @@ export default {
     loginPage: '/pages/login.html',
     appKey: '00000-500mi',
     // 用户session在本地存储名
-    sessIdName: 'SESSION_ID',
     sessDataName: 'SESSION_DATA',
     isUseMock: isUseMock,
     isDebug: isDebug,
