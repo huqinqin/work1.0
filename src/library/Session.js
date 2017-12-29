@@ -2,7 +2,6 @@ import config from '@/config/index'
 import store from '@/utils/DBHelper'
 export  default {
     sessionData : null,
-    sessionKey: 'session_data',
     isLogin(){
         return this.getSessionData() != null;
     },
@@ -13,7 +12,7 @@ export  default {
     },
     getSessionData(){
         if (this.sessionData == null) {
-            let sessionStr = store.getItem(this.sessionKey);
+            let sessionStr = store.getItem(config.sessDataName);
             try {
                 this.sessionData = JSON.parse(sessionStr);
             } catch (err){
@@ -23,11 +22,11 @@ export  default {
         return this.sessionData;
     },
     login(sessionData){
-        store.setItem(this.sessionKey, JSON.stringify(sessionData));
+        store.setItem(config.sessDataName, JSON.stringify(sessionData));
         location.href = config.homePage;
     },
     logout(){
-        store.removeItem(this.sessionKey);
+        store.removeItem(config.sessDataName);
         location.href = config.loginPage;
     }
 }
