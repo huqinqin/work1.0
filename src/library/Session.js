@@ -1,6 +1,6 @@
 import config from '@/config/index'
 import store from '@/utils/StoreUtils'
-export  default {
+export default {
     sessionData : null,
     isLogin(){
         return this.getSessionData() != null;

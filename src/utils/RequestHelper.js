@@ -254,6 +254,7 @@ export default {
     baseApi(url, parameter, isAddRandom) {
         parameter = parameter || {};
         parameter.app_key = config.appKey;
+        debugger;
         // parameter.style = 'underline';
         // parameter.format = parameter.format ? parameter.format : 'jsonOnly';
         // param是过滤处理后的parameter

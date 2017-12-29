@@ -1,4 +1,4 @@
-import  Request from 'request'
+import Request from 'request'
 import md5 from 'md5'
 export default {
     login(account, password){

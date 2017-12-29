@@ -22,7 +22,7 @@
       return {
         api: {
           api: 'wbmApi',
-          method: '/gateway/api',
+          method: '',
           bizparams: {
             app_key: '00000-500mi',
             method: 'wbm.tp.merchant.store.get_store_list_byCondition',
@@ -101,7 +101,7 @@
         this.search()
       },
       search () {
-        let link = Request.wbmApi(this.api.method, this.api.bizparams)
+        let link = Request.ltsApi(this.api.method, this.api.bizparams)
         link.then((data) => {
           console.log('success')
         }, (msg) => {

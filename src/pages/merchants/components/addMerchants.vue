@@ -203,7 +203,7 @@
         },
         api: {
           api: '',
-          method: '/gateway/api',
+          method: '',
           bizparams: {
             app_key: '00000-500mi',
             method: 'wbm.tp.merchant.store.add',
@@ -212,7 +212,7 @@
         },
         checkApi: {
           api: '',
-          method: '/gateway/api',
+          method: '',
           message: '',
           bizparams: {
             app_key: '00000-500mi',
@@ -222,7 +222,7 @@
         },
         locationApi:{
           api:'',
-          method: '/gateway/api',
+          method: '',
           bizparams: {
             app_key: '00000-500mi',
             method: 'wbm.basic.spot.location.get_ode_byName', // ??????
@@ -253,7 +253,7 @@
       checkName () {
         var account = {acount: this.form.account.trim()}
         var param = Object.assign({}, account, this.checkApi.bizparams)
-        let link = Request.wbmApi(this.checkApi.method, param)
+        let link = Request.ltsApi(this.checkApi.method, param)
         link.then((data) => {
           console.log(data)
           this.checkApi.message = '该账号不可用，请重新输入'
@@ -268,7 +268,7 @@
         location.city = value[1]
         location.district = value[2]
         let para = Object.assign({},this.locationApi.bizparams,location)
-        let link = Request.wbmApi(this.locationApi.method, para)
+        let link = Request.ltsApi(this.locationApi.method, para)
         link.then((data) => {
           this.lcCode = data
           console.log(this.lcCode)
@@ -282,7 +282,7 @@
         formData.type = this.form.type ? '加盟' : '直营'
         let para = Object.assign({}, this.api.bizparams)
         para.store_request = JSON.stringify(formData)
-        let link = Request.wbmApi(this.api.method, para)
+        let link = Request.ltsApi(this.api.method, para)
         link.then((data) => {
           console.log(data)
         }, (msg) => {

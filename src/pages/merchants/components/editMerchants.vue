@@ -145,7 +145,7 @@
         },
         api: {
           api: '',
-          method: '/gateway/api',
+          method: '',
           bizparams: {
             app_key: '00000-500mi',
             method: 'wbm.tp.merchant.store.update', // edit
@@ -154,7 +154,7 @@
         },
         locationApi:{
           api:'',
-          method: '/gateway/api',
+          method: '',
           bizparams: {
             app_key: '00000-500mi',
             method: 'wbm.basic.spot.location.get_ode_byName', // ??????
@@ -179,7 +179,7 @@
         location.city = value[1]
         location.district = value[2]
         let para = Object.assign({},this.locationApi.bizparams,location)
-        let link = Request.wbmApi(this.locationApi.method, para)
+        let link = Request.ltsApi(this.locationApi.method, para)
         link.then((data) => {
           this.lcCode = data
           console.log(this.lcCode)
@@ -193,12 +193,11 @@
         let uid = {
             uid: this.uid
         }
-
         let formData = Object.assign({},this.getAddress(), this.form)
         let para = Object.assign({}, this.api.bizparams,uid)
         para.store_request = JSON.stringify(formData)
         console.log(para)
-        let link = Request.wbmApi(this.api.method, para)
+        let link = Request.ltsApi(this.api.method, para)
         link.then((data) => {
             this.$ltsLoading.close()
 
