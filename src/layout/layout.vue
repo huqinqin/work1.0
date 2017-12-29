@@ -81,8 +81,8 @@
 <script>
     import '../../static/font_516449_wdlmisobbd2njyvi.css'
     import store from '@/utils/DBHelper'
-    import config from '@/config/index'
     import userService from '@/services/UserService'
+    import session from '@/library/Session'
 
     export default {
         name: 'Layout',
@@ -101,7 +101,7 @@
             },
             logout(){
                 userService.logout().then((resp)=>{
-                    location.href = config.loginPage;
+                    session.logout();
                 },(err)=>{
                     this.$ltsMessage.show({type: "error", message: err.errorMessage});
                 })
@@ -113,6 +113,7 @@
             }
         },
         mounted() {
+            session.checkLogin();
             this.account = store.getItem('account');
         }
     }
