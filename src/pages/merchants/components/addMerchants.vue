@@ -5,6 +5,7 @@
       <el-breadcrumb-item >新增工程商</el-breadcrumb-item>
       <el-button @click="test">123</el-button>
     </el-breadcrumb>
+
     <el-form ref="form" :model="form" :rules="rules" label-position="left">
       <el-form-item label="登陆账号" label-width="100px" prop="account" class="form-button" position="relative">
         <el-input v-model="form.account" @input="checkName" debounce="1000"></el-input>
@@ -202,30 +203,25 @@
           ]
         },
         api: {
-          api: '',
-          method: '',
+          method: 'wbm.tp.merchant.store.add',
           bizparams: {
             app_key: '00000-500mi',
-            method: 'wbm.tp.merchant.store.add',
             session: '1111'
           }
         },
         checkApi: {
-          api: '',
           method: '',
           message: '',
           bizparams: {
             app_key: '00000-500mi',
-            method: 'wbm.tp.merchant.check.add', // ??????
+
             session: '1111'
           }
         },
         locationApi:{
-          api:'',
           method: '',
           bizparams: {
             app_key: '00000-500mi',
-            method: 'wbm.basic.spot.location.get_ode_byName', // ??????
             session: '1111'
           }
         }
@@ -253,7 +249,7 @@
       checkName () {
         var account = {acount: this.form.account.trim()}
         var param = Object.assign({}, account, this.checkApi.bizparams)
-        let link = Request.ltsApi(this.checkApi.method, param)
+        let link = Request.api(this.checkApi.method, param)
         link.then((data) => {
           console.log(data)
           this.checkApi.message = '该账号不可用，请重新输入'
@@ -268,7 +264,7 @@
         location.city = value[1]
         location.district = value[2]
         let para = Object.assign({},this.locationApi.bizparams,location)
-        let link = Request.ltsApi(this.locationApi.method, para)
+        let link = Request.api(this.locationApi.method, para)
         link.then((data) => {
           this.lcCode = data
           console.log(this.lcCode)

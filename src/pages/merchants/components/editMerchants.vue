@@ -144,11 +144,10 @@
           ]
         },
         api: {
-          api: '',
-          method: '',
-          bizparams: {
+            method: 'wbm.tp.merchant.store.update',
+            bizparams: {
             app_key: '00000-500mi',
-            method: 'wbm.tp.merchant.store.update', // edit
+             // edit
             session: '1111'
           }
         },
@@ -189,18 +188,16 @@
         console.log(para)
       },
       submit(){
-          this.$ltsLoading.show()
+
         let uid = {
             uid: this.uid
         }
         let formData = Object.assign({},this.getAddress(), this.form)
         let para = Object.assign({}, this.api.bizparams,uid)
         para.store_request = JSON.stringify(formData)
-        console.log(para)
-        let link = Request.ltsApi(this.api.method, para)
+          console.log(para)
+        let link = Request.api(this.api.method, para)
         link.then((data) => {
-            this.$ltsLoading.close()
-
             this.$ltsMessage.show({type: 'success', message: '编辑成功'})
         }, (msg) => {
           this.$ltsMessage.show({type: 'error', message: '编辑失败，请稍后重试'})

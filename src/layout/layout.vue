@@ -115,8 +115,8 @@
             }
         },
         mounted() {
-            session.checkLogin();
-            this.account = store.getItem('account');
+            // session.checkLogin();
+            // this.account = store.getItem('account');
         }
     }
 </script>

@@ -25,7 +25,9 @@
                                 </el-button>
                                 <el-dropdown-menu slot="dropdown" v-if="menu.children">
                                     <el-dropdown-item v-for="(items,index) in menu.children" :key="items.command"
-                                                      :command="items.command" :data="scope.row">{{items.value}}
+                                       :command="items.command" :data="scope.row">
+                                        <span v-if="items.value === '编辑'"><router-link to="/edit">{{items.value}}</router-link></span>
+                                        {{items.value}}
                                     </el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
