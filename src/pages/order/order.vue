@@ -1,25 +1,28 @@
 <template>
-    <lts-table></lts-table>
+    <div>
+        <router-view>
+
+        </router-view>
+    </div>
 </template>
 <script>
-  import ltsTable from '@/common/components/lts-table.vue'
-  export  default {
-    props: '',
-    components : {
-      Table
-    },
-    mounted(){
-
-    },
-    data() {
-      return {
-      }
-    },
-    methods:{
+    import list from './components/list'
+    import detail from './components/detail'
+    export default {
+        props: {},
+        name: 'order',
+        components: {list, detail},
+        data () {
+            return {
+            }
+        },
+        methods: {
+        }
 
     }
-  }
 </script>
-<style lang="less">
+
+<style scoped>
 
 </style>
+
