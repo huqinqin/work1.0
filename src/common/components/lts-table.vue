@@ -66,7 +66,7 @@
     }
 </style>
 <script>
-    import Request from 'request'
+    import {request} from 'ltsutil'
 
     export default {
         name: 'lts-table',
@@ -122,7 +122,7 @@
              */
             getTableList() {
                 this.loading = true
-                let link = Request.api(this.tApi.method, this.getParameter())
+                let link = request.api(this.tApi.method, this.getParameter())
                 link.then((resp) => {
                     this.loading = false
                     this.table.tableData = resp.data || resp.datalist

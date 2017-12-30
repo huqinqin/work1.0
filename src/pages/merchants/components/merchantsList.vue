@@ -10,7 +10,7 @@
 </template>
 
 <script>
-  import request from 'util'
+  import {request} from 'ltsutil'
   import {ltsTable,ltsSearchForm} from 'ui'
 
   export default {
