@@ -1,8 +1,11 @@
 <template>
-  <div style="position: relative;padding-bottom: 60px">
+  <div style="position: relative;padding-bottom: 60px" id="lts-table">
     <el-table
       :data="table.tableData"
       v-loading="loading"
+      :highlight-current-row="tTable.isHighlightCurrentRow"
+      ref="ltsTable"
+      @current-change="currentRowHandleCurrentChange"
       style="width: 100%">
       <el-table-column  v-for="(val, index) in table.tableField" v-if="val.type === 'text' || val.type === 'selection'"
         :key="val.value"
@@ -98,6 +101,7 @@
     },
 
     mounted(){
+      console.log(this.tTable.isHighlightCurrentRow);
       if(this.tTable.tableDataForm && this.tTable.tableDataForm == 'json'){
         this.table.tableData = this.tTabledata;
       }else{
@@ -180,6 +184,14 @@
        */
       handleSelectionChange(val){
           console.log(val);
+      },
+      /**
+       * table 支持单行选择
+       * table单行改变时会触发
+       * http://element.eleme.io/#/zh-CN/component/table
+       */
+      currentRowHandleCurrentChange(val) {
+        this.$emit("currentRowHandleCurrentChange",val);
       },
       /**
        * inpueNumber

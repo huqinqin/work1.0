@@ -30,6 +30,16 @@
                 @select="handleSelect"
               ></el-autocomplete>
             </div>
+            <div v-else-if="val.type == 'cascader'">
+              <el-cascader
+                :options="cascAder.options"
+                v-model="cascAder.selectOpotion"
+                @change="cascAderHandleChange"
+                style="width:300px"
+                placeholder="请选择类目"
+                :style="{width:val.width}"
+              ></el-cascader>
+            </div>
             <div v-else-if="val.type == 'select'">
               <el-select v-model="formInline[val.bindValue]" :placeholder="val.bindPlaceholder">
                 <el-option v-for="(opt,index) in val.children" :label="opt.label" :key="opt.bindValue" :value="opt.bindValue"></el-option>
@@ -51,17 +61,14 @@
 import Request from 'request'
 export default{
   name:'lts-form',
-  props: ['formInlines','formFileds','autocomplete'],
+  props: ['formInlines','formFileds','autocomplete','cascader'],
   data() {
     return {
       datelist : '',
       formInline: this.formInlines,
       formFiled : this.formFileds,
       autoComplete : this.autocomplete,
-
-      restaurants: [],
-      state1: '',
-      state2: ''
+      cascAder : this.cascader,
     }
   },
   mounted(){
@@ -116,6 +123,9 @@ export default{
     },
     handleSelect(item) {
       this.formInline.callbackParameter = item;
+    },
+    cascAderHandleChange(val){
+      this.$emit("cascAderHandleChange",val);
     },
   }
 }

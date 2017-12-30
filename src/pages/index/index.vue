@@ -71,6 +71,7 @@
         },
         table : {
           tableDataForm : 'api', // json
+          isHighlightCurrentRow : false, // 是否启用选择单行
           tableField : {
             "":{"value":"","type":"selection"},
             "名字":{"value":"item_name","type":"text"},

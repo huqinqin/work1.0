@@ -21,13 +21,12 @@ const i18n = new VueI18n({
     en: require('@/lang/en').default
   }
 })
-export default function(App,routerView){
+export default function(App,router){
   Layout.components = {'lts-content':App};
   new Vue({
     el: '#app',
     i18n:i18n,
-    Loading : Loading,
-    Message : Message,
+    router,
     template: '<Layout/>',
     components: { Layout }
   })
