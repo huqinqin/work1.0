@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import ElementUI from 'element-ui'
-import Router from 'vue-router'
 import VueI18n from 'vue-i18n'
 import VueResource from 'vue-resource'
 import Router from 'vue-router'

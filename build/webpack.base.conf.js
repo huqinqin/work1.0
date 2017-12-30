@@ -26,7 +26,7 @@ module.exports = {
       '@'      : resolve('src'),
       'config' : resolve('src') + '/config',
       'layout' : resolve('src') + '/layout/layout.vue',
-      'request': resolve('src') + '/utils/RequestHelper',
+      'request': resolve('src') + '/utils/RequestUtils',
       'const'  : resolve('src') + '/const',
       'util'   : resolve('src') + '/utils',
       'ui'     : resolve('src') + '/common'

@@ -1,4 +1,4 @@
-import request from './RequestHelper'
+import request from './RequestUtils'
 import store from './StoreUtils'
 
 
