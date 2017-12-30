@@ -4,19 +4,19 @@
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <router-link to="/edit">编辑</router-link>
     </el-breadcrumb>
-    <lts-search-from @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-from>
+    <lts-search-form @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-form>
     <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination" @menuClick="handleMenuItemClick"></lts-table>
   </div>
 </template>
 
 <script>
-  import Request from 'request'
-  import ltsTable from '@/common/components/lts-table.vue'
-  import ltsSearchFrom from '@/common/components/lts-search-from.vue'
+  import request from 'util'
+  import {ltsTable,ltsSearchForm} from 'ui'
+
   export default {
     name: 'list',
     components: {
-      ltsTable, ltsSearchFrom
+      ltsTable, ltsSearchForm
     },
     data () {
       return {
@@ -97,7 +97,7 @@
         this.search()
       },
       search () {
-        let link = Request.api(this.api.method, this.api.bizparams)
+        let link = request.api(this.api.method, this.api.bizparams)
         link.then((data) => {
           console.log('success')
         }, (msg) => {

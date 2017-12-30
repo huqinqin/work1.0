@@ -6,7 +6,7 @@
       <el-breadcrumb-item>代客下单</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <lts-search-from @get-from='getCustomerParameter' :form-fileds='customerform.formFileds' :form-inlines='customerform.formInline' :autocomplete='customerform.autocomplete'></lts-search-from>
+    <lts-search-form @get-from='getCustomerParameter' :form-fileds='customerform.formFileds' :form-inlines='customerform.formInline' :autocomplete='customerform.autocomplete'></lts-search-form>
     <!--customerlist show 抄单模块-->
     <div v-if='customerList.length > 0'>
 
@@ -76,14 +76,13 @@
   }
 </style>
 <script>
-  import ltsTable from '@/common/components/lts-table.vue'
-  import ltsSearchFrom from '@/common/components/lts-search-from.vue'
+  import {ltsTable,ltsSearchForm} from 'ui'
   import order from './components/order.vue'
   export default {
     props: {},
     name: 'merchants',
     components: {
-      ltsTable, ltsSearchFrom, order
+      ltsTable, ltsSearchForm, order
     },
     mounted () {
       console.log(this.cartItemTable.api)

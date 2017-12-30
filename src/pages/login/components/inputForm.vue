@@ -17,7 +17,7 @@
 </template>
 <script>
     import userService from '@/services/UserService'
-    import store from '@/utils/StoreUtils'
+    import store from 'util'
     import session from '@/library/Session'
 
     export default {

@@ -72,7 +72,7 @@
 </template>
 
 <script>
-  import Request from 'request'
+  import request from 'util'
   export default {
     name: "editMerchants",
     data(){
@@ -178,7 +178,7 @@
         location.city = value[1]
         location.district = value[2]
         let para = Object.assign({},this.locationApi.bizparams,location)
-        let link = Request.ltsApi(this.locationApi.method, para)
+        let link = request.api(this.locationApi.method, para)
         link.then((data) => {
           this.lcCode = data
           console.log(this.lcCode)
@@ -196,7 +196,7 @@
         let para = Object.assign({}, this.api.bizparams,uid)
         para.store_request = JSON.stringify(formData)
           console.log(para)
-        let link = Request.api(this.api.method, para)
+        let link = request.api(this.api.method, para)
         link.then((data) => {
             this.$ltsMessage.show({type: 'success', message: '编辑成功'})
         }, (msg) => {

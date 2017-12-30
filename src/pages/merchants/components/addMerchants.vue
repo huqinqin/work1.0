@@ -91,7 +91,7 @@
   </div>
 </template>
 <script>
-  import Request from 'request'
+  import request from 'util'
   export default {
     name: 'addMerchants',
     data () {
@@ -249,7 +249,7 @@
       checkName () {
         var account = {acount: this.form.account.trim()}
         var param = Object.assign({}, account, this.checkApi.bizparams)
-        let link = Request.api(this.checkApi.method, param)
+        let link = request.api(this.checkApi.method, param)
         link.then((data) => {
           console.log(data)
           this.checkApi.message = '该账号不可用，请重新输入'
@@ -264,7 +264,7 @@
         location.city = value[1]
         location.district = value[2]
         let para = Object.assign({},this.locationApi.bizparams,location)
-        let link = Request.api(this.locationApi.method, para)
+        let link = request.api(this.locationApi.method, para)
         link.then((data) => {
           this.lcCode = data
           console.log(this.lcCode)
@@ -278,7 +278,7 @@
         formData.type = this.form.type ? '加盟' : '直营'
         let para = Object.assign({}, this.api.bizparams)
         para.store_request = JSON.stringify(formData)
-        let link = Request.ltsApi(this.api.method, para)
+        let link = request.ltsApi(this.api.method, para)
         link.then((data) => {
           console.log(data)
         }, (msg) => {

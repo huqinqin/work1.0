@@ -1,20 +1,18 @@
 <template>
     <div>
-        <lts-search-from @get-from="getParameter" :form-fileds="form.formFileds"
-                         :form-inlines="form.formInline"></lts-search-from>
+        <lts-search-form @get-from="getParameter" :form-fileds="form.formFileds"
+                         :form-inlines="form.formInline"></lts-search-form>
         <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination"
                    @menuClick="handleMenuItemClick"></lts-table>
     </div>
 </template>
 <script>
-    import ltsTable from '@/common/components/lts-table.vue'
-    import ltsSearchFrom from '@/common/components/lts-search-from.vue'
-
+    import {ltsTable,ltsSearchForm} from 'ui'
     export default {
         props: {},
         components: {
             ltsTable,
-            ltsSearchFrom
+            ltsSearchForm
         },
         data() {
             return {
