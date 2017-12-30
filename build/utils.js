@@ -103,7 +103,6 @@ exports.createNotifierCallback = () => {
 
 //获取多级的入口文件
 exports.getMultiEntry = function (globPath) {
-  console.log(JSON.stringify(globPath));
   var entries = {},
     basename, tmp, pathname;
 

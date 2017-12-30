@@ -9,15 +9,16 @@ import 'element-ui/lib/theme-chalk/index.css'
 import Loading from '@/common/components/lts-loading'
 import Message from '@/common/components/lts-message'
 import MessageBox from '@/common/components/lts-messageBox'
+import leftMenu from '@/layout/LTS_Layout_1.0.0/leftMenu.vue'
 
 Vue.use(ElementUI)
 Vue.use(VueI18n)
 
-Vue.prototype.$ltsLoading    = Loading
-Vue.prototype.$ltsMessage    = Message
+Vue.prototype.$ltsLoading = Loading
+Vue.prototype.$ltsMessage = Message
 Vue.prototype.$ltsMessageBox = MessageBox
 
-Vue.config.lang          = 'en'
+Vue.config.lang = 'en'
 Vue.config.productionTip = false
 
 const i18n = new VueI18n({
@@ -30,7 +31,7 @@ const i18n = new VueI18n({
 })
 
 export default function (App, router = new Router()) {
-  Layout.components = {'lts-content': App}
+  Layout.components = {'lts-content': App,'left-menu': leftMenu}
   new Vue({
     el        : '#app',
     i18n      : i18n,
