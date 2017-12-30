@@ -256,11 +256,9 @@
         this.inputValue = '';
       },
 
-
-
       filterNode(value, data){
         if (!value) return true;
-        return data.label.indexOf(value) !== -1;
+        return data.name.indexOf(value) !== -1;
       },
       append(data) {
         console.log(data);
@@ -306,6 +304,9 @@
   };
 </script>
 <style lang="less">
+  .el-tree{
+      margin-top: 20px;
+  }
   .specbox .el-tag{
     margin-top: 4px;
   }

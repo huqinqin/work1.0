@@ -3,7 +3,7 @@
         <el-header height="60px">
             <h1>
                 <a :href="homePage" class="router-link-active">
-                    <img src="../../static/icon/logo.png" alt="ltst-logo" class="nav-logo" />
+                    <img src="../../../static/icon/logo.png" alt="ltst-logo" class="nav-logo" />
                 </a>
             </h1>
             <el-menu class="nav" mode="horizontal" @select="handleSelect">
@@ -30,48 +30,50 @@
         </el-header>
         <el-container class="lts-main">
             <el-aside width="180px">
-                <el-menu class="el-menu-vertical" :default-openeds="['1']" :unique-opened="isUniqueOpened"
-                         active-text-color="#ce2127">
-                    <el-submenu index="1">
-                        <template slot="title"><i class="iconfont icon-dingdan"></i>订单管理</template>
-                        <el-menu-item index="1-1"><a href="/pages/order.html">订单列表</a></el-menu-item>
-                        <el-menu-item index="1-2">退货退款</el-menu-item>
-                    </el-submenu>
-                    <el-submenu index="2">
-                        <template slot="title"><i class="iconfont icon-icon--"></i>商品管理</template>
-                        <el-menu-item index="2-1">{{$t('name')}}</el-menu-item>
-                        <el-menu-item index="2-2">{{$t('menu.order')}}</el-menu-item>
-                    </el-submenu>
-                    <el-submenu index="3">
-                        <template slot="title"><i class="iconfont icon-customer"></i>工程商管理</template>
-                        <el-menu-item index="3-1"><a href="/pages/merchants.html#list">工程商列表</a></el-menu-item>
-                        <el-menu-item index="3-2">{{$t('menu.order')}}</el-menu-item>
-                    </el-submenu>
-                    <el-submenu index="4">
-                        <template slot="title"><i class="iconfont icon-caigou"></i>采购管理</template>
-                        <el-menu-item index="4-1"><a href="/pages/customerorder.html">代客下单</a></el-menu-item>
-                    </el-submenu>
-                    <el-submenu index="5">
-                        <template slot="title"><i class="iconfont icon-cangku1"></i>仓库管理</template>
-                        <el-menu-item index="5-1">{{$t('name')}}</el-menu-item>
-                        <el-menu-item index="5-2">{{$t('menu.order')}}</el-menu-item>
-                    </el-submenu>
-                    <el-submenu index="6">
-                        <template slot="title"><i class="iconfont icon-cangku1"></i>配送管理</template>
-                        <el-menu-item index="5-1">{{$t('name')}}</el-menu-item>
-                        <el-menu-item index="5-2">{{$t('menu.order')}}</el-menu-item>
-                    </el-submenu>
-                    <el-submenu index="7">
-                        <template slot="title"><i class="iconfont icon-caiwu"></i>财务管理</template>
-                        <el-menu-item index="6-1">{{$t('name')}}</el-menu-item>
-                        <el-menu-item index="6-2">{{$t('menu.order')}}</el-menu-item>
-                    </el-submenu>
-                    <el-submenu index="8">
-                        <template slot="title"><i class="iconfont icon-yingxiao"></i>营销管理</template>
-                        <el-menu-item index="7-1">{{$t('name')}}</el-menu-item>
-                        <el-menu-item index="7-2">{{$t('menu.order')}}</el-menu-item>
-                    </el-submenu>
-                </el-menu>
+                <left-menu></left-menu>
+                <!--<el-menu class="el-menu-vertical" :unique-opened="isUniqueOpened"-->
+                         <!--active-text-color="#ce2127">-->
+                    <!--<el-submenu index="1">-->
+                        <!--<template slot="title"><i class="iconfont icon-dingdan"></i>订单管理</template>-->
+                        <!--<el-menu-item index="1-1"><a href="/pages/order.html">订单列表</a></el-menu-item>-->
+                        <!--<el-menu-item index="1-2">退货退款</el-menu-item>-->
+                    <!--</el-submenu>-->
+                    <!--<el-submenu index="2">-->
+                        <!--<template slot="title"><i class="iconfont icon-icon&#45;&#45;"></i>商品管理</template>-->
+                        <!--<el-menu-item index="2-1">{{$t('name')}}</el-menu-item>-->
+                        <!--<el-menu-item index="2-2">{{$t('menu.order')}}</el-menu-item>-->
+                    <!--</el-submenu>-->
+                    <!--<el-submenu index="3">-->
+                        <!--<template slot="title"><i class="iconfont icon-customer"></i>工程商管理</template>-->
+                        <!--<el-menu-item index="3-1"><a href="/pages/merchants.html#list">工程商列表</a></el-menu-item>-->
+                        <!--<el-menu-item index="3-2">{{$t('menu.order')}}</el-menu-item>-->
+                    <!--</el-submenu>-->
+                    <!--<el-submenu index="4">-->
+                        <!--<template slot="title"><i class="iconfont icon-caigou"></i>采购管理</template>-->
+                        <!--<el-menu-item index="4-1"><a href="/pages/customerorder.html">代客下单</a></el-menu-item>-->
+                    <!--</el-submenu>-->
+                    <!--<el-submenu index="5">-->
+                        <!--<template slot="title"><i class="iconfont icon-cangku1"></i>仓库管理</template>-->
+                        <!--<el-menu-item index="5-1">{{$t('name')}}</el-menu-item>-->
+                        <!--<el-menu-item index="5-2">{{$t('menu.order')}}</el-menu-item>-->
+                    <!--</el-submenu>-->
+                    <!--<el-submenu index="6">-->
+                        <!--<template slot="title"><i class="iconfont icon-cangku1"></i>配送管理</template>-->
+                        <!--<el-menu-item index="5-1">{{$t('name')}}</el-menu-item>-->
+                        <!--<el-menu-item index="5-2">{{$t('menu.order')}}</el-menu-item>-->
+                    <!--</el-submenu>-->
+                    <!--<el-submenu index="7">-->
+                        <!--<template slot="title"><i class="iconfont icon-caiwu"></i>财务管理</template>-->
+                        <!--<el-menu-item index="6-1">{{$t('name')}}</el-menu-item>-->
+                        <!--<el-menu-item index="6-2">{{$t('menu.order')}}</el-menu-item>-->
+                    <!--</el-submenu>-->
+                    <!--<el-menu-item index="8">-->
+                        <!--<a href="/pages/category.html">-->
+                            <!--<i class="el-icon-setting"></i>-->
+                            <!--<span slot="title">类目管理</span>-->
+                        <!--</a>-->
+                    <!--</el-menu-item>-->
+                <!--</el-menu>-->
             </el-aside>
             <el-container class="content-container">
                 <el-main>
@@ -85,12 +87,12 @@
     </el-container>
 </template>
 <script>
-    import '../../static/font_516449_wdlmisobbd2njyvi.css'
+    import '../../../static/font_516449_wdlmisobbd2njyvi.css'
     import store from '@/utils/StoreUtils'
     import config from '@/config'
     import userService from '@/services/UserService'
     import session from '@/library/Session'
-
+    import {ltsTable,ltsSearchForm} from 'ui'
     export default {
         name: 'Layout',
         props: {},
@@ -130,6 +132,7 @@
     html, body {
         margin: 0;
         padding: 0;
+        height:100%;
     }
 
     a {
@@ -173,7 +176,9 @@
             }
         }
     }
-
+    .is-vertical{
+        height:100%;
+    }
     .lts-main {
         .el-aside {
             color: #666;

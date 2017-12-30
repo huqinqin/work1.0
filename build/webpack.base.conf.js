@@ -25,7 +25,7 @@ module.exports = {
       'vue$'   : 'vue/dist/vue.esm.js',
       '@'      : resolve('src'),
       'config' : resolve('src') + '/config',
-      'layout' : resolve('src') + '/layout/layout.vue',
+      'layout' : resolve('src') + '/layout/LTS_Layout_1.0.0/layout.vue',
       'const'  : resolve('src') + '/const',
       'ltsutil': resolve('src') + '/utils',
       'ui'     : resolve('src') + '/common'
