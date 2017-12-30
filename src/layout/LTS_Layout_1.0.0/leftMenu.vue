@@ -5,7 +5,7 @@
             <div v-for="(value,index) in menuList" :key="value.id">
                 <el-submenu  :index="value.name" v-if="value.resourcesList.length > 0" >
                     <template slot="title"><i class="iconfont icon-dingdan"></i>{{value.name}}</template>
-                    <el-menu-item  v-for="resource in value.resourcesList" :index="resource.name"><a :href="resource.url">{{resource.name}}</a></el-menu-item>
+                    <el-menu-item  v-for="resource in value.resourcesList" :index="resource.name" :key="resource.id"><a :href="resource.url">{{resource.name}}</a></el-menu-item>
                 </el-submenu>
                 <el-menu-item v-else :index="value.name">
                     <a :href="value.url"><i class="el-icon-setting"></i><span slot="title">{{value.name}}</span></a>
@@ -37,7 +37,7 @@
                     "display":4,
                     "domain":"http://work.500mi.com",
                     "edate":1493375344000,
-                    "id":87,
+                    "id":86,
                     "name":"订单列表",
                     "resourcesList":[
 
@@ -78,7 +78,7 @@
             "display":5,
             "domain":"http://work.500mi.com",
             "edate":1493375344000,
-            "id":224,
+            "id":225,
             "name":"商品管理",
             "pic":"order",
             "resourcesList":[],
@@ -95,7 +95,7 @@
             "display":5,
             "domain":"http://work.500mi.com",
             "edate":1493375344000,
-            "id":224,
+            "id":226,
             "name":"工程商管理",
             "pic":"order",
             "resourcesList":[],
@@ -112,7 +112,7 @@
             "display":5,
             "domain":"http://work.500mi.com",
             "edate":1493375344000,
-            "id":224,
+            "id":227,
             "name":"代客下单",
             "pic":"order",
             "resourcesList":[],
@@ -129,7 +129,7 @@
             "display":5,
             "domain":"http://work.500mi.com",
             "edate":1493375344000,
-            "id":224,
+            "id":228,
             "name":"类目管理",
             "pic":"order",
             "resourcesList":[],
@@ -146,7 +146,7 @@
             "display":5,
             "domain":"http://work.500mi.com",
             "edate":1493375344000,
-            "id":224,
+            "id":229,
             "name":"子市场管理",
             "pic":"order",
             "resourcesList":[],
