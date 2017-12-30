@@ -1,8 +1,6 @@
 /**
  * Created by Administrator on 2017/7/12.
  */
-import Config from 'config'
-
 export default {
     _getItem(k) {
         let jsonStr = window.localStorage.getItem(k.toString());

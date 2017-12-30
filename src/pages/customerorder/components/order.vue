@@ -10,15 +10,14 @@
       </div>
     </div>
     <div>
-      <lts-search-from @get-from="getItemParameter" :form-fileds="itemform1.formFileds" :form-inlines="itemform1.formInline"></lts-search-from>
+      <lts-search-form @get-from="getItemParameter" :form-fileds="itemform1.formFileds" :form-inlines="itemform1.formInline"></lts-search-form>
       <lts-table :t-api="itemTable1.api" :t-form="itemform1.formInline" :t-table="itemTable1" :t-pagination="itemTable1.pagination" @inputNumberChang="inputNumberChang"></lts-table>
     </div>
   </div>
 </template>
 
 <script>
-  import ltsTable from '@/common/components/lts-table.vue'
-  import ltsSearchFrom from '@/common/components/lts-search-from.vue'
+  import {ltsTable,ltsSearchForm} from 'ui'
   export default {
     name: 'order',
     props: [
@@ -26,7 +25,7 @@
       'itemform', 'itemTable',
       'customerForm'
     ],
-    components: {ltsTable, ltsSearchFrom},
+    components: {ltsTable, ltsSearchForm},
     data () {
       return {
         customerList1: this.customerList,

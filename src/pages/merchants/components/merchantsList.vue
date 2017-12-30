@@ -1,47 +1,45 @@
 <template>
   <div>
-        <el-breadcrumb separator="/" style="margin-bottom:20px;">
-          <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        </el-breadcrumb>
-        <lts-search-from @get-from="getParameter" @skip-to="toAdd" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-from>
-        <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination" @menuClick="handleMenuItemClick"></lts-table>
+    <el-breadcrumb separator="/" style="margin-bottom:20px;">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <router-link to="/edit">编辑</router-link>
+    </el-breadcrumb>
+    <lts-search-form @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-form>
+    <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination" @menuClick="handleMenuItemClick"></lts-table>
   </div>
 </template>
 
 <script>
-  import Request from 'request'
-  import ltsTable from '@/common/components/lts-table.vue'
-  import ltsSearchFrom from '@/common/components/lts-search-from.vue'
+  import {request} from 'ltsutil'
+  import {ltsTable,ltsSearchForm} from 'ui'
+
   export default {
     name: 'list',
     components: {
-      ltsTable, ltsSearchFrom
+      ltsTable, ltsSearchForm
     },
     data () {
       return {
         api: {
           method: 'wbm.tp.merchant.store.get_store_list_byCondition',
           bizparams: {
-              orderBy: '',
-              shop:{},
-              lcCode: '330103',
-              openCode: '331088'
+            orderBy: '',
+            shop:{}
           }
         },
         form: {
           formFileds: [
-              {
-                  'search': {
-                      shopNmae: {'label': '', 'type': 'input', 'bindValue': 'shopName', 'bindPlaceholder': '搜索店铺名称'},
-                      contact: {'label': '', 'type': 'input', 'bindValue': 'contact', 'bindPlaceholder': '搜索联系人'},
-                      search: {'bindValue': '确定', 'type': 'searchbutton'},
-                      skip: {'bindValue': '新增', 'type': 'submitbutton'}
-                  }
+            {
+              'search': {
+                shopNmae: {'label': '', 'type': 'input', 'bindValue': 'shopName', 'bindPlaceholder': '搜索店铺名称'},
+                submit: {'bindValue': '确定', 'type': 'submitbutton'}
               }
+            }
           ],
           formInline: {
-              shopName: '',
-              contact: '',
+            shopName: '',
+            lcCode: '330103',
+            openCode: '331088'
           }
         },
         pagination: {
@@ -68,7 +66,7 @@
                 { value: '菜单',
                   command: 'default',
                   children: [
-                    {value: '编辑', command: 'edit'},
+                    {value: '编辑', command: 'link', link: '/edit'},
                     {value: '删除', command: 'delete'}
                   ]
                 }
@@ -86,16 +84,12 @@
             alert('详情：' + item.shop_name)
             break
           case 'edit':
-              const uid = item.uid
-              this.$router.push({path: `/edit/${uid}`})
-              break
+            alert('编辑：' + item.uid)
+            break
           case 'delete':
             alert('删除：' + item.shop_name)
             break
         }
-      },
-      toAdd(){
-        this.$router.push('/add')
       },
       getParameter (val) {
         this.form.formInline = val
@@ -103,7 +97,7 @@
         this.search()
       },
       search () {
-        let link = Request.api(this.api.method, this.api.bizparams)
+        let link = request.api(this.api.method, this.api.bizparams)
         link.then((data) => {
           console.log('success')
         }, (msg) => {

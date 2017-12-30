@@ -82,7 +82,7 @@ export default {
                 break;
             case 'error':
                 // BOP封装了下面3个httpStatusCode
-                if (url.indexOf('api.500mi.com') > 0 && (xhr.status == 400 || xhr.status == 406 || xhr.status == 500)) {
+                if (url.indexOf('api.lts.com') > 0 && (xhr.status == 400 || xhr.status == 406 || xhr.status == 500)) {
                     return xhr.responseText;
                 }
                 errorResult.errorCode = xhr.status;
@@ -253,7 +253,7 @@ export default {
     /* 以下为根据api请求的方法 */
     baseApi(url, parameter, isAddRandom) {
         parameter = parameter || {};
-        // parameter.style = 'underline';
+        parameter.style = 'underline_dateformat';
         // parameter.format = parameter.format ? parameter.format : 'jsonOnly';
         // param是过滤处理后的parameter
         return this.mixParam(parameter, isAddRandom).then(param => {

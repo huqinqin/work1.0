@@ -1,4 +1,4 @@
-import Request from 'request'
+import {request} from 'ltsutil'
 import md5 from 'md5'
 export default {
     login(account, password){
@@ -7,9 +7,9 @@ export default {
             password: md5(password),
             source : 'PC'
         };
-        return Request.api('/user/login', param);
+        return request.api('/user/login', param);
     },
     logout(){
-        return Request.api('/user/logout', {});
+        return request.api('/user/logout', {});
     }
 }

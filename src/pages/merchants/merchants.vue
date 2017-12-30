@@ -10,7 +10,7 @@
   import addMerchants from './components/addMerchants'
   import editMerchants from './components/editMerchants'
   export default {
-    props: '',
+    props: {},
     name: 'merchants',
     components: {merchantsList, addMerchants, editMerchants},
     data () {

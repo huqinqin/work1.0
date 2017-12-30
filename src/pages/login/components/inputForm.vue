@@ -17,11 +17,11 @@
 </template>
 <script>
     import userService from '@/services/UserService'
-    import store from '@/utils/StoreUtils'
+    import {store} from 'ltsutil'
     import session from '@/library/Session'
 
     export default {
-        props: '',
+        props: {},
         name: 'inputForm',
         data() {
             return {

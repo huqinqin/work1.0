@@ -4,29 +4,30 @@
             :data="table.tableData"
             v-loading="loading"
             style="width: 100%">
-            <el-table-column v-for="(val, index) in table.tableField"
-                             v-if="val.type === 'text' || val.type === 'selection'"
-                             :key="val.value"
-                             :type="val.type"
-                             :prop="val.value"
+            <el-table-column v-for="(field, index) in table.tableField"
+                             v-if="field.type === 'text' || field.type === 'selection'"
+                             :key="field.value"
+                             :type="field.type"
+                             :prop="field.value"
                              :label="index">
             </el-table-column>
-            <el-table-column v-for="(val, index) in table.tableField"
-                             v-if="val.type == 'menu' || val.type == 'inputNumber'"
-                             :key="val.value"
+            <el-table-column v-for="(field, index) in table.tableField"
+                             v-if="field.type === 'menu' || field.type === 'inputNumber'"
+                             :key="field.value"
                              :label="index"
-                             :width="val.width">
+                             :width="field.width">
                 <template slot-scope="scope">
-                    <div v-if="val.type == 'menu'">
-                        <div v-for="(menu,key) in val.menulist" style="display: inline-block;margin-right: 10px">
-                            <el-dropdown @command="handleCommand"  :key="menu.value" v-if="menu.children">
-                                <el-button type="primary" size="medium">
+                    <div v-if="field.type === 'menu'">
+                        <div v-for="(menu,key) in field.menulist" style="display: inline-block;margin-right: 10px">
+                            <el-dropdown @command="handleCommand" :key="menu.value" v-if="menu.children">
+                                <el-button :type="menu.type" size="medium">
                                     {{menu.value}}<i class="el-icon-arrow-down el-icon--right"></i>
                                 </el-button>
                                 <el-dropdown-menu slot="dropdown" v-if="menu.children">
-                                    <el-dropdown-item v-for="(items,index) in menu.children" :key="items.command"
-                                       :command="items.command" :data="scope.row">
-                                        <span>{{items.value}}</span>
+                                    <el-dropdown-item v-for="(submenu,index) in menu.children" :key="submenu.command"
+                                       :command="submenu.command" :data="scope.row">
+                                        <router-link v-if="submenu.command === 'link'" :to="submenu.link">{{submenu.value}}</router-link>
+                                        <span v-else>{{submenu.value}}</span>
                                     </el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
@@ -36,8 +37,8 @@
                             </el-button>
                         </div>
                     </div>
-                    <div v-else-if="val.type == 'inputNumber'">
-                        <el-input-number v-model="scope.row[val.value]" size="small"
+                    <div v-else-if="field.type === 'inputNumber'">
+                        <el-input-number v-model="scope.row[field.value]" size="small"
                                          @change="inputNumberhandleChange(scope.row)" :min="0"></el-input-number>
                     </div>
                 </template>
@@ -65,7 +66,7 @@
     }
 </style>
 <script>
-    import Request from 'request'
+    import {request} from 'ltsutil'
 
     export default {
         name: 'lts-table',
@@ -120,9 +121,8 @@
              * 直接渲染列表
              */
             getTableList() {
-                let link = ''
                 this.loading = true
-                link = Request.api(this.tApi.method, this.getParameter())
+                let link = request.api(this.tApi.method, this.getParameter())
                 link.then((resp) => {
                     this.loading = false
                     this.table.tableData = resp.data || resp.datalist
@@ -149,8 +149,13 @@
                  * Object.assign 后一个参数会覆盖前面的
                  * @type {number|*}
                  */
-
                 let parameter = Object.assign({}, this.tApi.bizparams, this.formInline)
+                for (let i in parameter) {
+                    let param = parameter[i];
+                    if (typeof param === "object") {
+                        parameter[i] = JSON.stringify(param);
+                    }
+                }
                 return parameter
             },
 

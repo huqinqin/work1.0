@@ -3,6 +3,7 @@
     <el-breadcrumb separator="/" style="margin-bottom:20px;">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item >新增工程商</el-breadcrumb-item>
+      <el-button @click="test">123</el-button>
     </el-breadcrumb>
 
     <el-form ref="form" :model="form" :rules="rules" label-position="left">
@@ -35,11 +36,11 @@
         <el-input v-model="moreAddress"></el-input>
         <el-button @click="getLocation" class="location form-button">定位</el-button>
       </el-form-item>
-      <el-form-item class="inline" label="经纬度" :rules="[{required: true, message: '经度', trigger: 'blur'}]" label-width="100px" prop="lng">
-        <span>经度：</span><el-input v-model="form.lng"></el-input>
+      <el-form-item class="inline" label="经纬度" :rules="[{required: true, message: '经度', trigger: 'blur'}]" label-width="100px" prop="lat">
+        <span>经度：</span><el-input v-model="form.lat"></el-input>
       </el-form-item>
-      <el-form-item class="inline" prop="lat" :rules="[{required: true, message: '纬度', trigger: 'blur'}]" >
-        <span>纬度：</span><el-input v-model="form.lat"></el-input>
+      <el-form-item class="inline" prop="lng" :rules="[{required: true, message: '纬度', trigger: 'blur'}]" >
+        <span>纬度：</span><el-input v-model="form.lng"></el-input>
       </el-form-item>
       <el-form-item label="类型" label-width="100px" prop="type">
         <el-radio-group v-model="form.type">
@@ -90,7 +91,7 @@
   </div>
 </template>
 <script>
-  import Request from 'request'
+  import {request} from 'ltsutil'
   export default {
     name: 'addMerchants',
     data () {
@@ -204,6 +205,7 @@
         api: {
           method: 'wbm.tp.merchant.store.add',
           bizparams: {
+            app_key: '00000-500mi',
             session: '1111'
           }
         },
@@ -211,12 +213,15 @@
           method: '',
           message: '',
           bizparams: {
+            app_key: '00000-500mi',
+
             session: '1111'
           }
         },
         locationApi:{
           method: '',
           bizparams: {
+            app_key: '00000-500mi',
             session: '1111'
           }
         }
@@ -244,7 +249,7 @@
       checkName () {
         var account = {acount: this.form.account.trim()}
         var param = Object.assign({}, account, this.checkApi.bizparams)
-        let link = Request.api(this.checkApi.method, param)
+        let link = request.api(this.checkApi.method, param)
         link.then((data) => {
           console.log(data)
           this.checkApi.message = '该账号不可用，请重新输入'
@@ -254,12 +259,12 @@
         })
       },
       changeLocation (value){
-        let location = {}
+        var location = {}
         location.province = value[0]
         location.city = value[1]
         location.district = value[2]
         let para = Object.assign({},this.locationApi.bizparams,location)
-        let link = Request.api(this.locationApi.method, para)
+        let link = request.api(this.locationApi.method, para)
         link.then((data) => {
           this.lcCode = data
           console.log(this.lcCode)
@@ -273,8 +278,7 @@
         formData.type = this.form.type ? '加盟' : '直营'
         let para = Object.assign({}, this.api.bizparams)
         para.store_request = JSON.stringify(formData)
-          console.log(para)
-        let link = Request.api(this.api.method, para)
+        let link = request.api(this.api.method, para)
         link.then((data) => {
           console.log(data)
         }, (msg) => {
@@ -289,7 +293,7 @@
     },
   }
 </script>
-<style lang="less" scopedscoped>
+<style lang="less">
   .el-form-item{
     margin-bottom: 10px;
     label{

@@ -5,7 +5,7 @@
       <el-breadcrumb-item >编辑工程商</el-breadcrumb-item>
     </el-breadcrumb>
     <el-form ref="form" :model="form" :rules="rules" label-position="left">
-      <el-form-item label="uid">{{uid}}</el-form-item>
+      <el-form-item label="uid">{{form.uid}}</el-form-item>
       <el-form-item label="店铺名称" label-width="100px" prop="shopName">
         <el-input v-model="form.shopName"></el-input>
       </el-form-item>
@@ -17,11 +17,11 @@
         <el-input v-model="moreAddress"></el-input>
         <el-button @click="getLocation" class="location form-button">定位</el-button>
       </el-form-item>
-      <el-form-item class="inline" label="经纬度" :rules="[{required: true, message: '经度', trigger: 'blur'}]" label-width="100px" prop="lng">
-        <span>经度：</span><el-input v-model="form.lng"></el-input>
+      <el-form-item class="inline" label="经纬度" :rules="[{required: true, message: '经度', trigger: 'blur'}]" label-width="100px" prop="lat">
+        <span>经度：</span><el-input v-model="form.lat"></el-input>
       </el-form-item>
-      <el-form-item class="inline" prop="lat" :rules="[{required: true, message: '纬度', trigger: 'blur'}]" >
-        <span>纬度：</span><el-input v-model="form.lat"></el-input>
+      <el-form-item class="inline" prop="lng" :rules="[{required: true, message: '纬度', trigger: 'blur'}]" >
+        <span>纬度：</span><el-input v-model="form.lng"></el-input>
       </el-form-item>
       <el-form-item label="类型" label-width="100px" prop="type">
         <el-radio-group v-model="form.type">
@@ -72,12 +72,12 @@
 </template>
 
 <script>
-  import Request from 'request'
+  import {request} from 'ltsutil'
   export default {
     name: "editMerchants",
     data(){
       return{
-        uid: '',         // '30637',
+          uid: '30637',
         form:{
           shopName: '',
           lat: '31.617510',
@@ -178,7 +178,7 @@
         location.city = value[1]
         location.district = value[2]
         let para = Object.assign({},this.locationApi.bizparams,location)
-        let link = Request.api(this.locationApi.method, para)
+        let link = request.api(this.locationApi.method, para)
         link.then((data) => {
           this.lcCode = data
           console.log(this.lcCode)
@@ -188,6 +188,7 @@
         console.log(para)
       },
       submit(){
+
         let uid = {
             uid: this.uid
         }
@@ -195,22 +196,18 @@
         let para = Object.assign({}, this.api.bizparams,uid)
         para.store_request = JSON.stringify(formData)
           console.log(para)
-        let link = Request.api(this.api.method, para)
+        let link = request.api(this.api.method, para)
         link.then((data) => {
             this.$ltsMessage.show({type: 'success', message: '编辑成功'})
         }, (msg) => {
           this.$ltsMessage.show({type: 'error', message: '编辑失败，请稍后重试'})
         })
       }
-    },
-        created(){
-            this.uid = this.$route.params.uid
-            console.log(this.uid)
-      }
+    }
   }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   .el-form-item{
     margin-bottom: 10px;
     label{

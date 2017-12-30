@@ -103,7 +103,7 @@
 <script>
     import Request from 'request'
     export default {
-        props: '',
+        props: {},
         name: 'addSegments',
         data() {
             var validatePass = (rule, value, callback) => {
