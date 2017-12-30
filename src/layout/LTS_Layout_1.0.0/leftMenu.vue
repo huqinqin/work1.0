@@ -1,14 +1,22 @@
 <template>
     <div>
         <el-menu class="el-menu-vertical" :unique-opened="isUniqueOpened"
+                 @open="handleOpen"
+                 @close="handleClose"
+                 :collapse="isCollapse"
                  active-text-color="#ce2127">
             <div v-for="(value,index) in menuList" :key="value.id">
                 <el-submenu  :index="value.name" v-if="value.resourcesList.length > 0" >
-                    <template slot="title"><i class="iconfont icon-dingdan"></i>{{value.name}}</template>
-                    <el-menu-item  v-for="resource in value.resourcesList" :index="resource.name"><a :href="resource.url">{{resource.name}}</a></el-menu-item>
+                    <template slot="title">
+                        <i class="iconfont icon-dingdan"></i>
+                        <span slot="title">{{value.name}}</span>
+                    </template>
+                    <el-menu-item-group>
+                        <el-menu-item  v-for="resource in value.resourcesList" :index="resource.name" :key="resource.id"><a :href="resource.url">{{resource.name}}</a></el-menu-item>
+                    </el-menu-item-group>
                 </el-submenu>
                 <el-menu-item v-else :index="value.name">
-                    <a :href="value.url"><i class="el-icon-setting"></i><span slot="title">{{value.name}}</span></a>
+                   <i class="el-icon-setting"></i><a :href="value.url" slot="title">{{value.name}}</a>
                 </el-menu-item>
             </div>
 
@@ -37,7 +45,7 @@
                     "display":4,
                     "domain":"http://work.500mi.com",
                     "edate":1493375344000,
-                    "id":87,
+                    "id":86,
                     "name":"订单列表",
                     "resourcesList":[
 
@@ -78,7 +86,7 @@
             "display":5,
             "domain":"http://work.500mi.com",
             "edate":1493375344000,
-            "id":224,
+            "id":225,
             "name":"商品管理",
             "pic":"order",
             "resourcesList":[],
@@ -95,7 +103,7 @@
             "display":5,
             "domain":"http://work.500mi.com",
             "edate":1493375344000,
-            "id":224,
+            "id":226,
             "name":"工程商管理",
             "pic":"order",
             "resourcesList":[],
@@ -112,7 +120,7 @@
             "display":5,
             "domain":"http://work.500mi.com",
             "edate":1493375344000,
-            "id":224,
+            "id":227,
             "name":"代客下单",
             "pic":"order",
             "resourcesList":[],
@@ -129,7 +137,7 @@
             "display":5,
             "domain":"http://work.500mi.com",
             "edate":1493375344000,
-            "id":224,
+            "id":228,
             "name":"类目管理",
             "pic":"order",
             "resourcesList":[],
@@ -146,7 +154,7 @@
             "display":5,
             "domain":"http://work.500mi.com",
             "edate":1493375344000,
-            "id":224,
+            "id":229,
             "name":"子市场管理",
             "pic":"order",
             "resourcesList":[],
@@ -162,12 +170,20 @@
           return{
               menuList : menuItemList,
               isUniqueOpened: true,
+              isCollapse: true
           }
         },
         methods:{
             getLeftMenuList(){
               // TOOD 获取左侧菜单 LIST
             },
+
+            handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose(key, keyPath) {
+                console.log(key, keyPath);
+            }
         },
         mounted(){
             this.getLeftMenuList();
@@ -175,5 +191,10 @@
     }
 </script>
 <style>
-
+    .el-menu-vertical:not(.el-menu--collapse) {
+        width: 179px;
+    }
+    .el-menu--collapse{
+        width: 64px;
+    }
 </style>
