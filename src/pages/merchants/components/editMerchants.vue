@@ -72,7 +72,7 @@
 </template>
 
 <script>
-  import request from 'util'
+  import {request} from 'ltsutil'
   export default {
     name: "editMerchants",
     data(){

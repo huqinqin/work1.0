@@ -91,7 +91,7 @@
   </div>
 </template>
 <script>
-  import request from 'util'
+  import {request} from 'ltsutil'
   export default {
     name: 'addMerchants',
     data () {
@@ -278,7 +278,7 @@
         formData.type = this.form.type ? '加盟' : '直营'
         let para = Object.assign({}, this.api.bizparams)
         para.store_request = JSON.stringify(formData)
-        let link = request.ltsApi(this.api.method, para)
+        let link = request.api(this.api.method, para)
         link.then((data) => {
           console.log(data)
         }, (msg) => {

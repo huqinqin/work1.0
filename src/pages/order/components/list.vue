@@ -7,6 +7,7 @@
     </div>
 </template>
 <script>
+    import {request} from 'ltsutil'
     import {ltsTable,ltsSearchForm} from 'ui'
     export default {
         props: {},
@@ -122,7 +123,7 @@
                 this.search()
             },
             search () {
-                let link = Request.api(this.api.method, this.api.bizparams)
+                let link = request.api(this.api.method, this.api.bizparams)
                 link.then((data) => {
                     console.log('success')
                 }, (msg) => {
