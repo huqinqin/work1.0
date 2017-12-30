@@ -15,7 +15,13 @@
                     <el-menu-item index="2-2">账号安全</el-menu-item>
                     <el-menu-item index="2-3" @click="logout">退出</el-menu-item>
                 </el-submenu>
-                <el-menu-item index="4"><a href="#" target="_blank"><i class="iconfont icon-tongzhi"></i><i class="notice">{{unread}}</i></a></el-menu-item>
+                <el-menu-item index="4" class="notice">
+                    <a href="#">
+                        <el-badge :value="unread" :max="99" class="item">
+                            <i class="iconfont icon-tongzhi"></i>
+                        </el-badge>
+                    </a>
+                </el-menu-item>
                 <el-submenu index="5">
                     <template slot="title">简体中文</template>
                     <el-menu-item index="2-1"><a href="#/en">English</a></el-menu-item>
@@ -96,7 +102,7 @@
                 account: '',
                 test: "LTS底部标识",
                 isUniqueOpened: true,
-                unread: '99+'
+                unread: 100
             }
         },
         methods: {
@@ -166,19 +172,7 @@
             float: right;
             height: 100%;
             .notice {
-                background: red;
-                color: #fff;
-                border-radius: 50%;
-                font-size: 10px;
-                line-height: 16px;
-                height: 16px;
-                min-width: 16px;
-                padding: 0 2px;
-                text-align: center;
-                position: absolute;
-                top: 16px;
-                left: 26px;
-                display: block;
+
             }
         }
     }

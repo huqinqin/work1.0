@@ -66,7 +66,7 @@
                 { value: '菜单',
                   command: 'default',
                   children: [
-                    {value: '编辑', command: 'link', link: '/edit'},
+                    {value: '编辑', command: 'link', link: '/edit/', linkDataKey: 'id'},
                     {value: '删除', command: 'delete'}
                   ]
                 }

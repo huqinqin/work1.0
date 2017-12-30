@@ -16,7 +16,7 @@ export default new Router({
             component: list
         },
         {
-            path: '/detail',
+            path: '/detail/:tid',
             component: detail
         }
     ]

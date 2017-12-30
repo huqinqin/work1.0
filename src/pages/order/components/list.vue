@@ -85,7 +85,7 @@
                                     value: "操作",
                                     command: 'default',
                                     children: [
-                                        {value: "详情", command: "link"},
+                                        {value: "详情", command: "link", link: '/detail/', linkDataKey: 'tid'},
                                         {value: "通过", command: "accept"},
                                         {value: "拒绝", command: "reject"},
                                     ]
@@ -106,9 +106,6 @@
         methods: {
             handleMenuItemClick(command, item) {
                 switch (command) {
-                    case "link":
-                        location.href = '/pages/order.html#/!detail/' + item.tid;
-                        break;
                     case "accept":
                         this.$ltsMessage.show({type: 'success', message: "通过" + item.tid})
                         break;
