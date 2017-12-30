@@ -118,7 +118,7 @@
         },
         mounted() {
             // session.checkLogin();
-            // this.account = store.getItem('account');
+            this.account = store.getItem('account');
         }
     }
 </script>
