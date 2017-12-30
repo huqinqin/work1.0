@@ -22,7 +22,7 @@
                 创建时间: {{order.cdate}}
             </div>
             <div class="text item">
-                订单状态: {{order.status}}
+                订单状态: {{order.status_title}}
             </div>
         </el-card>
 
@@ -49,16 +49,19 @@
                 <span>支付信息</span>
             </div>
             <div class="text item">
-                支付类型: {{order.pay_type}}
+                支付类型: {{order.pay_info.pay_type_title}}
             </div>
             <div class="text item">
-                应付: {{order.pay_real}}
+                应付: {{order.pay_value}}
             </div>
             <div class="text item">
-                实付: {{order.fee_total}}
+                运费: {{order.fee_hd_all}}
             </div>
             <div class="text item">
-                支付状态: {{order.pay_status}}
+                实付: {{order.fee_total_value}}
+            </div>
+            <div class="text item">
+                支付状态: {{order.pay_info.pay_status_title}}
             </div>
             <div class="text item" v-if="order.pay_time">
                 支付时间: {{order.pay_time}}
@@ -96,12 +99,12 @@
                     width="80">
                 </el-table-column>
                 <el-table-column
-                    prop="hd_status"
+                    prop="hd_status_title"
                     label="物流状态"
-                    width="80">
+                    width="100">
                 </el-table-column>
                 <el-table-column
-                    prop="status"
+                    prop="status_title"
                     label="订单状态"
                     width="80">
                 </el-table-column>
