@@ -19,15 +19,14 @@
                 <template slot-scope="scope">
                     <div v-if="val.type == 'menu'">
                         <div v-for="(menu,key) in val.menulist" style="display: inline-block;margin-right: 10px">
-                            <el-dropdown @command="handleCommand" :key="menu.value" v-if="menu.children">
+                            <el-dropdown @command="handleCommand"  :key="menu.value" v-if="menu.children">
                                 <el-button type="primary" size="medium">
                                     {{menu.value}}<i class="el-icon-arrow-down el-icon--right"></i>
                                 </el-button>
                                 <el-dropdown-menu slot="dropdown" v-if="menu.children">
                                     <el-dropdown-item v-for="(items,index) in menu.children" :key="items.command"
                                        :command="items.command" :data="scope.row">
-                                        <span v-if="items.value === '编辑'"><router-link to="/edit">{{items.value}}</router-link></span>
-                                        {{items.value}}
+                                        <span>{{items.value}}</span>
                                     </el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
@@ -150,6 +149,7 @@
                  * Object.assign 后一个参数会覆盖前面的
                  * @type {number|*}
                  */
+
                 let parameter = Object.assign({}, this.tApi.bizparams, this.formInline)
                 return parameter
             },

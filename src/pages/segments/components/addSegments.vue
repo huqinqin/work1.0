@@ -1,6 +1,6 @@
 <template>
     <div class="segments">
-        <el-form ref="form" :model="form" label-position="left">
+        <el-form ref="form" :model="form" :rules="rules" label-position="left">
             <h3>市场信息</h3>
             <el-form-item label="市场名称" label-width="110px" prop="bizName">
                 <el-input v-model="form.bizName" ></el-input>
@@ -44,8 +44,8 @@
                 <el-input v-model="form.account"></el-input>
                 <span>注：登陆账号不可填手机号码，如需手机登陆，后续可以自主绑定手机登陆</span>
             </el-form-item>
-            <el-form-item label="密码" label-width="110px" prop="pass">
-                <el-input v-model="form.pass" type="password"></el-input>
+            <el-form-item label="密码" label-width="110px" prop="password">
+                <el-input v-model="form.password" type="password"></el-input>
             </el-form-item>
             <el-form-item label="密码确认" label-width="110px" prop="checkPass">
                 <el-input v-model="form.checkPass" type="password"></el-input>
@@ -79,8 +79,8 @@
                 <el-input v-model="form.contactPhone"></el-input>
                 <span>注：可为小店座机号码</span>
             </el-form-item>
-            <el-form-item label="法人" label-width="110px" prop="owner">
-                <el-input v-model="form.owner"></el-input>
+            <el-form-item label="法人" label-width="110px" prop="partnerName">
+                <el-input v-model="form.partnerName"></el-input>
             </el-form-item>
             <el-form-item label="营业执照" label-width="110px" prop="license">
                 <el-input v-model="form.license"></el-input>
@@ -106,32 +106,50 @@
         props: '',
         name: 'addSegments',
         data() {
+            var validatePass = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'))
+                } else if (value !== this.form.password) {
+                    console.log(value)
+                    callback(new Error('两次输入密码不一致!'))
+                } else {
+                    callback()
+                }
+            }
             return {
-                location: [],
+                parentBizId: '123',
+                location: ['北京市', '辖区', '东城区'],
                 moreAddress: '',
                 form:{
-                    bizName: '',    // 中文名
-                    bizEname: '',   // 英文名
-                    aaattribute: [],  // 市场特性
-                    attribute: '',
+                    bizName: '',
+                    bizEname: '',
+                    aaattribute: [],
+                    attribute: '',// 市场特性
                     limit: true,
                     select:'',
-                    erea: '',       // 限制区域
-                    state: '',      // 市场状态
-                    account: '',    // 登陆账号
-                    pass: '',       // 密码
-                    address: '',    // 地址
+                    erea: '',
+                    status: '',
+                    account: 'qwe',
+                    password: 'qwertyuiop',
+                    checkPass: 'qwertyuiop',
+                    address: '北京市辖区东城区',
                     lat: '',        // 纬度
                     lng:'',         // 经度
-                    checkPass: '',
                     companyName: '',// 公司名称
-                    contact:'',     // 联系人
-                    contactMobile: '',  // 手机
-                    contactPhone: '',   // 座机
-                    owner: '',          // 法人
+                    contact:'qwe',
+                    contactMobile: '13534567890',
+                    contactPhone: '13534567890',
+                    partnerName: 'qw',          // 法人
                     license: '',        // 营业执照
                     number: '',         // 税号
-                    remark: ''          // 备注
+                    remark: '',
+
+                    lcCode: '110101000000',
+                },
+                rules:{
+                    checkPass: [
+                        {validator: validatePass, trigger: 'blur'}
+                    ],
                 },
                 locationOptions: [{
                     value: '浙江省',
@@ -171,7 +189,6 @@
                 api: {
                     method: 'wbm.tp.merchant.market.addChildMarket',
                     bizparams: {
-
                     }
                 },
                 checkbox:[
@@ -186,25 +203,25 @@
             selectHandle(value){
                 switch (value) {
                     case '内测':
-                        this.form.state = 0
+                        this.form.status = 0
                         break
                     case '已上线':
-                        this.form.state = 1
+                        this.form.status = 1
                         break
                     case '冻结':
-                        this.form.state = 2
+                        this.form.status = 2
                         break
                     case '初始化':
-                        this.form.state = 3
+                        this.form.status = 3
                         break
                     case '待审核':
-                        this.form.state = 9
+                        this.form.status = 9
                         break
                     case '已删除':
-                        this.form.state = -1
+                        this.form.status = -1
                         break
                 }
-                console.log(this.form.state)
+                console.log(this.form.status)
             },
             // 属性数组转为二进制
             checkHandle(value){
@@ -221,8 +238,8 @@
                         count += obj[value[j]]
                     }
                 }
-                this.attribute = count
-                console.log(this.attribute)
+                this.form.attribute = count
+                console.log(this.form.attribute)
             },
             checkName(){
                 console.log('checkName')
@@ -232,21 +249,29 @@
                 this.location = []
                 this.moreAddress = ''
             },
-            changeLocation(){
-                console.log('changeLocation')
+            changeLocation(value){
+                this.form.address = this.location[0] + this.location[1] + this.location[2]
+
+                console.log(this.form.address)
             },
-            getLocation(){
-                console.log('getLocation')
+            getLocation(value){
+                console.log('自动填入经纬度')
             },
             submit(){
+                let formData = Object.assign({},this.form,{parentBizId:this.parentBizId})
+                delete formData.aaattribute
+                delete formData.select
+
                 let para = Object.assign({},this.api.bizparams)
-                para.addChildMarketRequest = JSON.stringify(this.form)
+                para.addChildMarketRequest = JSON.stringify(formData)
                 console.log(para)
                 let link = Request.api(this.api.method, para)
                 link.then((data) => {
                     console.log('success')
                 }, (msg) => {
-                    this.$ltsMessage.show({type: 'error', message: '新增子市场失败'})
+                    console.log(msg)
+
+                    this.$ltsMessage.show({type: 'error', message: msg.errorMessage})
                 })
             }
         },

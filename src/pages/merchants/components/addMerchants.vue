@@ -3,7 +3,6 @@
     <el-breadcrumb separator="/" style="margin-bottom:20px;">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item >新增工程商</el-breadcrumb-item>
-      <el-button @click="test">123</el-button>
     </el-breadcrumb>
 
     <el-form ref="form" :model="form" :rules="rules" label-position="left">
@@ -205,7 +204,6 @@
         api: {
           method: 'wbm.tp.merchant.store.add',
           bizparams: {
-            app_key: '00000-500mi',
             session: '1111'
           }
         },
@@ -213,14 +211,12 @@
           method: '',
           message: '',
           bizparams: {
-            app_key: '00000-500mi',
             session: '1111'
           }
         },
         locationApi:{
           method: '',
           bizparams: {
-            app_key: '00000-500mi',
             session: '1111'
           }
         }
@@ -258,7 +254,7 @@
         })
       },
       changeLocation (value){
-        var location = {}
+        let location = {}
         location.province = value[0]
         location.city = value[1]
         location.district = value[2]
@@ -277,7 +273,8 @@
         formData.type = this.form.type ? '加盟' : '直营'
         let para = Object.assign({}, this.api.bizparams)
         para.store_request = JSON.stringify(formData)
-        let link = Request.ltsApi(this.api.method, para)
+          console.log(para)
+        let link = Request.api(this.api.method, para)
         link.then((data) => {
           console.log(data)
         }, (msg) => {
@@ -292,7 +289,7 @@
     },
   }
 </script>
-<style lang="less">
+<style lang="less" scopedscoped>
   .el-form-item{
     margin-bottom: 10px;
     label{

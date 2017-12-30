@@ -5,7 +5,7 @@
       <el-breadcrumb-item >编辑工程商</el-breadcrumb-item>
     </el-breadcrumb>
     <el-form ref="form" :model="form" :rules="rules" label-position="left">
-      <el-form-item label="uid">{{form.uid}}</el-form-item>
+      <el-form-item label="uid">{{uid}}</el-form-item>
       <el-form-item label="店铺名称" label-width="100px" prop="shopName">
         <el-input v-model="form.shopName"></el-input>
       </el-form-item>
@@ -77,7 +77,7 @@
     name: "editMerchants",
     data(){
       return{
-          uid: '30637',
+        uid: '',         // '30637',
         form:{
           shopName: '',
           lat: '31.617510',
@@ -178,7 +178,7 @@
         location.city = value[1]
         location.district = value[2]
         let para = Object.assign({},this.locationApi.bizparams,location)
-        let link = Request.ltsApi(this.locationApi.method, para)
+        let link = Request.api(this.locationApi.method, para)
         link.then((data) => {
           this.lcCode = data
           console.log(this.lcCode)
@@ -188,7 +188,6 @@
         console.log(para)
       },
       submit(){
-
         let uid = {
             uid: this.uid
         }
@@ -203,11 +202,15 @@
           this.$ltsMessage.show({type: 'error', message: '编辑失败，请稍后重试'})
         })
       }
-    }
+    },
+        created(){
+            this.uid = this.$route.params.uid
+            console.log(this.uid)
+      }
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .el-form-item{
     margin-bottom: 10px;
     label{

@@ -1,12 +1,10 @@
 <template>
   <div>
-    <el-breadcrumb separator="/" style="margin-bottom:20px;">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <router-link to="/edit">编辑</router-link>
-    </el-breadcrumb>
-      <router-link to="/add"><el-button type="primary" style="z-index: 1000;position:absolute;top:140px;right:40px;">新增工程商</el-button></router-link>
-    <lts-search-from @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-from>
-      <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination" @menuClick="handleMenuItemClick"></lts-table>
+        <el-breadcrumb separator="/" style="margin-bottom:20px;">
+          <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+        </el-breadcrumb>
+        <lts-search-from @get-from="getParameter" @skip-to="toAdd" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-from>
+        <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination" @menuClick="handleMenuItemClick"></lts-table>
   </div>
 </template>
 
@@ -24,23 +22,26 @@
         api: {
           method: 'wbm.tp.merchant.store.get_store_list_byCondition',
           bizparams: {
-            orderBy: '',
-            shop:{}
+              orderBy: '',
+              shop:{},
+              lcCode: '330103',
+              openCode: '331088'
           }
         },
         form: {
           formFileds: [
-            {
-              'search': {
-                shopNmae: {'label': '', 'type': 'input', 'bindValue': 'shopName', 'bindPlaceholder': '搜索店铺名称'},
-                submit: {'bindValue': '确定', 'type': 'submitbutton'}
+              {
+                  'search': {
+                      shopNmae: {'label': '', 'type': 'input', 'bindValue': 'shopName', 'bindPlaceholder': '搜索店铺名称'},
+                      contact: {'label': '', 'type': 'input', 'bindValue': 'contact', 'bindPlaceholder': '搜索联系人'},
+                      search: {'bindValue': '确定', 'type': 'searchbutton'},
+                      skip: {'bindValue': '新增', 'type': 'submitbutton'}
+                  }
               }
-            }
           ],
           formInline: {
-            shopName: '',
-            lcCode: '330103',
-            openCode: '331088'
+              shopName: '',
+              contact: '',
           }
         },
         pagination: {
@@ -85,12 +86,16 @@
             alert('详情：' + item.shop_name)
             break
           case 'edit':
-            alert('编辑：' + item.uid)
-            break
+              const uid = item.uid
+              this.$router.push({path: `/edit/${uid}`})
+              break
           case 'delete':
             alert('删除：' + item.shop_name)
             break
         }
+      },
+      toAdd(){
+        this.$router.push('/add')
       },
       getParameter (val) {
         this.form.formInline = val

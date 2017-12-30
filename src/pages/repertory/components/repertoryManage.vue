@@ -10,47 +10,23 @@
     import ltsTable from '@/common/components/lts-table.vue'
     import ltsSearchFrom from '@/common/components/lts-search-from.vue'
     export default {
-        name: "segmentsList",
-        components: {
-            ltsTable, ltsSearchFrom
-        },
-        data () {
-            return {
-                api: {
-                    method: 'wbm.tp.merchant.store', // 查询api
-                    bizparams: {
-                    }
-                },
+        name: "repertoryManage",
+        components: {ltsTable, ltsSearchFrom},
+        data(){
+            return{
                 form: {
                     formFileds: [
                         {
                             'search': {
-                                bizName: {'label': '', 'type': 'input', 'bindValue': 'bizName', 'bindPlaceholder': '搜索市场名称'},
-                                status: {
-                                    'label': '',
-                                    'type': 'select',
-                                    'bindValue': 'status',
-                                    'bindPlaceholder': '选择市场状态',
-                                    'children': [
-                                        {"label": "内测", "bindValue": "0"},
-                                        {"label": "已上线", "bindValue": "1"},
-                                        {"label": "冻结", "bindValue": "2"},
-                                        {"label": "初始化", "bindValue": "3"},
-                                        {"label": "待审核", "bindValue": "9"},
-                                        {"label": "已删除", "bindValue": "-1"},
-                                    ]
-                                },
-
-                                submit: {'bindValue': '确定', 'type': 'submitbutton'}
+                                shopNmae: {'label': '', 'type': 'input', 'bindValue': 'shopName', 'bindPlaceholder': '搜索产品名称'},
+                                contact: {'label': '', 'type': 'input', 'bindValue': 'contact', 'bindPlaceholder': '搜索条码'},
+                                search: {'bindValue': '确定', 'type': 'searchbutton'}
                             }
                         }
                     ],
                     formInline: {
-                        bizName: '',
-                        status: '',
-                        orderBy: 'uid',
-                        lcCode: '330103',
-                        openCode: '331088'
+                        shopName: '',
+                        contact: '',
                     }
                 },
                 pagination: {
@@ -84,13 +60,22 @@
                             ]
                         }
                     }
-                }
+                },
+                api: {
+                    method: 'wbm.tp.merchant.store.get_store_list_byCondition',
+                    bizparams: {
+                        orderBy: '',
+                        shop:{},
+                        lcCode: '330103',
+                        openCode: '331088'
+                    }
+                },
             }
         },
         methods: {
             getParameter (val) {
                 this.form.formInline = val
-                this.api.bizparams.XXXXX = JSON.stringify(val) // 把参数放到XXXXX里面
+                this.api.bizparams.shop = JSON.stringify(val)
                 this.search()
             },
             search () {
@@ -100,32 +85,9 @@
                 }, (msg) => {
                     this.$ltsMessage.show({type: 'error', message: '查询失败，请稍后重试'})
                 })
-            },
-            handleMenuItemClick (command, item) {
-                switch (command) {
-                    case 'detail':
-                        console.log(item)
-                        alert('详情：' + item.shop_name)
-                        break
-                    case 'edit':
-                        alert('编辑：' + item.uid)
-                        break
-                    case 'delete':
-                        alert('删除：' + item.shop_name)
-                        break
-                }
-            },
-        },
-        watch: {
-            form: {
-                handler: function () {
-                    this.api.bizparams.XXXXX = JSON.stringify(this.form.formInline)
-                    console.log(this.api.bizparams.shop)
-                },
-                deep: true
             }
         }
-    }
+  }
 </script>
 
 <style scoped>

@@ -39,7 +39,7 @@
               <el-button type="primary" @click="onSubmit" icon="el-icon-search">{{val.bindValue}}</el-button>
             </div>
             <div v-else-if="val.type == 'submitbutton'">
-              <el-button type="primary" @click="onSubmit">{{val.bindValue}}</el-button>
+              <el-button type="primary" @click="onSkip">{{val.bindValue}}</el-button>
             </div>
           </el-form-item>
         </el-form>
@@ -68,6 +68,7 @@ export default{
 
   },
   methods: {
+      // 提交search-form
     onSubmit () {
       if (this.datelist) {
         this.formInline.start_date = Date.parse(this.datelist[0]);
@@ -79,6 +80,10 @@ export default{
         console.log(this.$refs.ltsFormAutocomplete);
       }
     },
+      // 跳转页面
+      onSkip(){
+        this.$emit('skip-to')
+      },
     loadAutoCompleteData (keywords) {
       return new Promise((resolve, reject) => {
         let link = Request.api(this.tApi.method, this.getParameter())

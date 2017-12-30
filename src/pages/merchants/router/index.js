@@ -7,22 +7,23 @@ import EditMerchants from '../components/editMerchants'
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
-      path: '/',
-      component: MerchantsList
-    },
-    {
-      path: '/add',
-      component: AddMerchants
-    },
-    {
-      path: '/list',
-      component: MerchantsList
-    },
-    {
-      path: '/edit',
-      component: EditMerchants
-    }
-  ]
+    routes: [
+        {
+            path: '/',
+            component: MerchantsList
+        },
+        {
+            path: '/add',
+            component: AddMerchants
+        },
+        {
+            path: '/list',
+            component: MerchantsList
+        },
+        {
+            name: 'edit',
+            path: '/edit/:uid',
+            component: EditMerchants
+        }
+    ]
 })
