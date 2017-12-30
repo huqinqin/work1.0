@@ -27,7 +27,7 @@ module.exports = {
       'config' : resolve('src') + '/config',
       'layout' : resolve('src') + '/layout/layout.vue',
       'const'  : resolve('src') + '/const',
-      'ltsutil'   : resolve('src') + '/utils',
+      'ltsutil': resolve('src') + '/utils',
       'ui'     : resolve('src') + '/common'
     }
   },

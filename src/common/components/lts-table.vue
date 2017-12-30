@@ -26,13 +26,13 @@
                                 <el-dropdown-menu slot="dropdown" v-if="menu.children">
                                     <el-dropdown-item v-for="(submenu,index) in menu.children" :key="submenu.command"
                                        :command="submenu.command" :data="scope.row">
-                                        <router-link v-if="submenu.command === 'link'" :to="submenu.link">{{submenu.value}}</router-link>
+                                        <router-link v-if="submenu.command === 'link'" :to="submenu.link + scope.row[submenu.linkDataKey]">{{submenu.value}}</router-link>
                                         <span v-else>{{submenu.value}}</span>
                                     </el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
                             <el-button v-else type="primary" size="medium" :background-color="menu.backgroundColor"
-                                       @click="menuClick(menu.command,scope.row)">
+                                       @click="menuClick(menu.command, scope.row)">
                                 {{menu.value}}
                             </el-button>
                         </div>
