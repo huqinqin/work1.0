@@ -29,7 +29,7 @@
             </el-menu>
         </el-header>
         <el-container class="lts-main">
-            <el-aside width="180px">
+            <el-aside width="inherit">
                 <left-menu></left-menu>
                 <!--<el-menu class="el-menu-vertical" :unique-opened="isUniqueOpened"-->
                          <!--active-text-color="#ce2127">-->
@@ -140,9 +140,7 @@
         color: inherit;
     }
 
-    .el-menu-vertical:not(.el-menu--collapse) {
-        width: 179px;
-    }
+
 
     .content-container {
         background-color: #eeeeee;
