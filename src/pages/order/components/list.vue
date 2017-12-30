@@ -14,7 +14,7 @@
         props: {},
         components: {
             ltsTable,
-             ltsSearchFrom
+            ltsSearchFrom
         },
         data() {
             return {
@@ -22,7 +22,7 @@
                     method: 'wbm.tp.wholesale.order.list',
                     bizparams: {
                         wholesale_trade_query : {
-                            openCode: '331088'
+                            open_code: '331088'
                         },
                     },
                 },
@@ -41,18 +41,18 @@
                                     type: 'date',
                                 },
                                 status: {
-                                    "label": "状态",
-                                    "type": "select",
-                                    "bindValue": "status",
-                                    "bindPlaceholder": "所有状态",
-                                    "children": [
-                                        {"label": "等待付款", "bindValue": "0"},
-                                        {"label": "已付款", "bindValue": "1"},
-                                        {"label": "已完成", "bindValue": "7"},
-                                        {"label": "已关闭", "bindValue": "9"}
+                                    label: "状态",
+                                    type: "select",
+                                    bindValue: "status",
+                                    bindPlaceholder: "所有状态",
+                                    children: [
+                                        {label: "等待付款", bindValue: "0"},
+                                        {label: "已付款", bindValue: "1"},
+                                        {label: "已完成", bindValue: "7"},
+                                        {label: "已关闭", bindValue: "9"}
                                     ]
                                 },
-                                search: {"bindValue": "确定", "type": "submitbutton"}
+                                search: {bindValue: "确定", type: "submitbutton"}
                             }
                         }
                     ],
@@ -65,20 +65,23 @@
                     },
                 },
                 table: {
-                    tableDataForm: 'api', // json
+                    tableDataForm: 'api',
                     tableField: {
-                        "": {"value": "", "type": "selection"},
-                        "订单号": {"value": "tid", "type": "text"},
-                        "下单时间": {"value": "cdate", "type": "text"},
-                        "买家": {"value": "user_name", "type": "text"},
-                        "手机": {"value": "receiver_mobile", "type": "text"},
-                        "地址": {"value": "user_addr", "type": "text"},
-                        "应付": {"value": "pay", "type": "text"},
-                        "实付": {"value": "fee_total", "type": "text"},
-                        "订单状态": {"value": "status", "type": "text"},
-                        "付款状态": {"value": "pay_info.pay_status", "type": "text"},
+                        "": {value: "xx", type: "selection"},
+                        "订单号": {value: "tid", type: "text"},
+                        "下单时间": {value: "cdate", type: "text"},
+                        "买家": {value: "user_name", type: "text"},
+                        "手机": {value: "receiver_mobile", type: "text"},
+                        "地址": {value: "user_addr", type: "text"},
+                        "应付": {value: "pay", type: "text"},
+                        "实付": {value: "fee_total", type: "text"},
+                        "订单状态": {value: "status", type: "text"},
+                        "付款状态": {value: "pay_info.pay_status", type: "text"},
                         "操作": {
-                            "value": "", "type": "menu", "width": "200", "menulist": [
+                            value: "x",
+                            type: "menu",
+                            width: "200",
+                            menulist: [
                                 {
                                     value: "操作",
                                     command: 'default',
@@ -105,13 +108,13 @@
             handleMenuItemClick(command, item) {
                 switch (command) {
                     case "link":
-                        location.href = '/pages/order.html#!detail:tid=' + item.tid;
+                        location.href = '/pages/order.html#/!detail/' + item.tid;
                         break;
                     case "accept":
-                        this.$ltsMessage.show({type: 'success', message: "通过" + item.id})
+                        this.$ltsMessage.show({type: 'success', message: "通过" + item.tid})
                         break;
                     case "reject":
-                        this.$ltsMessage.show({type: 'success', message: "删除" + item.id})
+                        this.$ltsMessage.show({type: 'success', message: "拒绝" + item.tid})
                         break;
                 }
             },
