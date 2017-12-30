@@ -37,6 +37,15 @@
                                            :value="opt.bindValue"></el-option>
                             </el-select>
                         </div>
+                        <div v-else-if="val.type === 'cascader'">
+                            <el-cascader
+                                v-model="formInline[val.bindValue]"
+                                :placeholder="val.bindPlaceholder"
+                                expand-trigger="hover"
+                                :options="val.options"
+                                @change="handleChange">
+                            </el-cascader>
+                        </div>
                         <div v-else-if="val.type == 'searchbutton'">
                             <el-button type="primary" @click="onSubmit" icon="el-icon-search">{{val.bindValue}}
                             </el-button>
