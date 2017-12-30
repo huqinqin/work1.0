@@ -6,7 +6,7 @@
 </template>
 
 <script>
-    import Request from 'request'
+    import {request} from 'ltsutil'
     import ltsTable from '@/common/components/lts-table.vue'
     import ltsSearchFrom from '@/common/components/lts-search-from.vue'
     export default {
@@ -94,7 +94,7 @@
                 this.search()
             },
             search () {
-                let link = Request.api(this.api.method, this.api.bizparams)
+                let link = request.api(this.api.method, this.api.bizparams)
                 link.then((data) => {
                     console.log('success')
                 }, (msg) => {

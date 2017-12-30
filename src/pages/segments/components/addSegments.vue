@@ -101,7 +101,7 @@
 
 </template>
 <script>
-    import Request from 'request'
+    import {request} from 'ltsutil'
     export default {
         props: {},
         name: 'addSegments',
@@ -265,7 +265,7 @@
                 let para = Object.assign({},this.api.bizparams)
                 para.addChildMarketRequest = JSON.stringify(formData)
                 console.log(para)
-                let link = Request.api(this.api.method, para)
+                let link = request.api(this.api.method, para)
                 link.then((data) => {
                     console.log('success')
                 }, (msg) => {
