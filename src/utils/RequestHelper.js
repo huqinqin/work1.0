@@ -253,7 +253,7 @@ export default {
     /* 以下为根据api请求的方法 */
     baseApi(url, parameter, isAddRandom) {
         parameter = parameter || {};
-        // parameter.style = 'underline';
+        parameter.style = 'underline_dateformat';
         // parameter.format = parameter.format ? parameter.format : 'jsonOnly';
         // param是过滤处理后的parameter
         return this.mixParam(parameter, isAddRandom).then(param => {

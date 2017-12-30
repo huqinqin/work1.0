@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import ElementUI from 'element-ui'
+import Router from 'vue-router'
 import VueI18n from 'vue-i18n'
 import VueResource from 'vue-resource'
 import Layout from 'layout'
@@ -24,7 +25,7 @@ const i18n = new VueI18n({
   }
 })
 
-export default function (App, router) {
+export default function (App, router = new Router()) {
   Layout.components = {'lts-content': App}
   new Vue({
     el: '#app',

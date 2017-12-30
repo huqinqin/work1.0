@@ -20,7 +20,7 @@
                     <div v-if="val.type == 'menu'">
                         <div v-for="(menu,key) in val.menulist" style="display: inline-block;margin-right: 10px">
                             <el-dropdown @command="handleCommand" :key="menu.value" v-if="menu.children">
-                                <el-button type="primary" size="medium">
+                                <el-button :type="menu.type" size="medium">
                                     {{menu.value}}<i class="el-icon-arrow-down el-icon--right"></i>
                                 </el-button>
                                 <el-dropdown-menu slot="dropdown" v-if="menu.children">
@@ -121,9 +121,8 @@
              * 直接渲染列表
              */
             getTableList() {
-                let link = ''
                 this.loading = true
-                link = Request.api(this.tApi.method, this.getParameter())
+                let link = Request.api(this.tApi.method, this.getParameter())
                 link.then((resp) => {
                     this.loading = false
                     this.table.tableData = resp.data || resp.datalist
@@ -151,6 +150,12 @@
                  * @type {number|*}
                  */
                 let parameter = Object.assign({}, this.tApi.bizparams, this.formInline)
+                for (let i in parameter) {
+                    let param = parameter[i];
+                    if (typeof param === "object") {
+                        parameter[i] = JSON.stringify(param);
+                    }
+                }
                 return parameter
             },
 

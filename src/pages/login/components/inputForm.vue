@@ -21,7 +21,7 @@
     import session from '@/library/Session'
 
     export default {
-        props: '',
+        props: {},
         name: 'inputForm',
         data() {
             return {

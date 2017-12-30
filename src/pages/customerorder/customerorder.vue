@@ -80,7 +80,7 @@
   import ltsSearchFrom from '@/common/components/lts-search-from.vue'
   import order from './components/order.vue'
   export default {
-    props: '',
+    props: {},
     name: 'merchants',
     components: {
       ltsTable, ltsSearchFrom, order

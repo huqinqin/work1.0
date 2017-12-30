@@ -87,7 +87,7 @@
 
     export default {
         name: 'Layout',
-        props: '',
+        props: {},
         data() {
             return {
                 homePage: config.homePage,

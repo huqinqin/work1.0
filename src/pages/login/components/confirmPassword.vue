@@ -17,7 +17,7 @@
 </template>
 <script>
   export default {
-    props: '',
+    props: {},
     name: 'confirmPassword',
     data () {
       var validatePass = (rule, value, callback) => {

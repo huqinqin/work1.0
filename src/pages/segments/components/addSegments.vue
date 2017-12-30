@@ -36,7 +36,7 @@
 <script>
 
     export default {
-        props: '',
+        props: {},
         name: 'addSegments',
         data() {
             return {
