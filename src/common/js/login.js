@@ -2,11 +2,10 @@ import Vue from 'vue'
 import ElementUI from 'element-ui'
 import VueI18n from 'vue-i18n'
 import VueResource from 'vue-resource'
-import layoutLogin from '@/layout/layoutLogin.vue'
 import 'element-ui/lib/theme-chalk/index.css'
+import layoutLogin from '@/layout/layoutLogin.vue'
 import Loading from '@/common/components/lts-loading'
 import Message from '@/common/components/lts-message'
-import  'element-ui/lib/theme-chalk/index.css'
 import MessageBox from '@/common/components/lts-messageBox'
 
 Vue.prototype.$ltsMessageBox = MessageBox
@@ -14,6 +13,7 @@ Vue.use(ElementUI)
 Vue.use(VueI18n)
 Vue.prototype.$ltsLoading = Loading
 Vue.prototype.$ltsMessage = Message
+Vue.prototype.$ltsMessageBox = MessageBox
 Vue.config.lang = 'en'
 Vue.config.productionTip = false
 const i18n = new VueI18n({
