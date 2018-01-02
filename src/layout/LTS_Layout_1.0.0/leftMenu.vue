@@ -1,13 +1,14 @@
 <template>
     <div>
-        <div class="iconfont switch-collapse" v-bind:class="[isCollapse ? 'icon-shouqi':'icon-zhankai']" index="switch" @click="switchCollapse">
+        <div class="iconfont switch-collapse" :class="[isCollapse ? 'icon-shouqi':'icon-zhankai']" index="switch" @click="switchCollapse">
         </div>
-        <el-menu class="el-menu-vertical" :unique-opened="isUniqueOpened"
-                 @open="handleOpen"
-                 @close="handleClose"
+        <el-menu class="el-menu-vertical"
+                 :unique-opened="isUniqueOpened"
+                 :default-active="activeMenu"
+                 @select="handleSelect"
                  :collapse="isCollapse"
                  active-text-color="#ce2127">
-                <el-submenu v-for="(value,index) in menuList" :key="value.id"   :index="value.name" v-if="value.resourcesList.length > 0" >
+                <el-submenu v-for="(value,index) in menuList" :key="value.id" :index="value.name" v-if="value.resourcesList.length > 0" >
                     <template slot="title">
                         <i class="iconfont icon-dingdan"></i>
                         <span slot="title">{{value.name}}</span>
@@ -23,6 +24,7 @@
     </div>
 </template>
 <script>
+    import {store} from 'ltsutil'
     const menuItemList =[
         {
             "apptype":1,
@@ -169,7 +171,8 @@
           return{
               menuList : menuItemList,
               isUniqueOpened: true,
-              isCollapse: true
+              isCollapse: false,
+              activeMenu: "订单管理",
           }
         },
         methods:{
@@ -177,27 +180,24 @@
               // TOOD 获取左侧菜单 LIST
             },
 
-            handleOpen(key, keyPath) {
-                console.log(key, keyPath);
-            },
-            handleClose(key, keyPath) {
-                console.log(key, keyPath);
+            handleSelect(activeMenu){
+                store.setItem("activeMenu",activeMenu);
             },
             switchCollapse(){
               this.isCollapse = !this.isCollapse;
+              store.setItem("isCollapse",this.isCollapse);
             },
         },
-        mounted(){
+        created(){
             this.getLeftMenuList();
+            this.isCollapse = store.getItem("isCollapse");
+            this.activeMenu = store.getItem("activeMenu");
         },
     }
 </script>
 <style scoped>
     .el-menu-vertical:not(.el-menu--collapse) {
         width: 179px;
-    }
-    .el-aside{
-        overflow: inherit;
     }
     .switch-collapse{
         text-align: center;
@@ -214,5 +214,6 @@
         -webkit-box-sizing: border-box;
         cursor: pointer;
         white-space: nowrap;
+        background-color: #ecf5ff;
     }
 </style>
