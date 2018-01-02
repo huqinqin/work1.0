@@ -15,13 +15,7 @@
                     <el-menu-item index="2-2">账号安全</el-menu-item>
                     <el-menu-item index="2-3" @click="logout">退出</el-menu-item>
                 </el-submenu>
-                <el-menu-item index="4" class="notice">
-                    <a href="#">
-                        <el-badge :value="unread" :max="99" class="item">
-                            <i class="iconfont icon-tongzhi"></i>
-                        </el-badge>
-                    </a>
-                </el-menu-item>
+                <el-menu-item index="4"><a href="#" target="_blank"><i class="iconfont icon-tongzhi"></i><i class="notice">{{unread}}</i></a></el-menu-item>
                 <el-submenu index="5">
                     <template slot="title">简体中文</template>
                     <el-menu-item index="2-1"><a href="#/en">English</a></el-menu-item>
@@ -31,49 +25,6 @@
         <el-container class="lts-main">
             <el-aside width="inherit">
                 <left-menu></left-menu>
-                <!--<el-menu class="el-menu-vertical" :unique-opened="isUniqueOpened"-->
-                         <!--active-text-color="#ce2127">-->
-                    <!--<el-submenu index="1">-->
-                        <!--<template slot="title"><i class="iconfont icon-dingdan"></i>订单管理</template>-->
-                        <!--<el-menu-item index="1-1"><a href="/pages/order.html">订单列表</a></el-menu-item>-->
-                        <!--<el-menu-item index="1-2">退货退款</el-menu-item>-->
-                    <!--</el-submenu>-->
-                    <!--<el-submenu index="2">-->
-                        <!--<template slot="title"><i class="iconfont icon-icon&#45;&#45;"></i>商品管理</template>-->
-                        <!--<el-menu-item index="2-1">{{$t('name')}}</el-menu-item>-->
-                        <!--<el-menu-item index="2-2">{{$t('menu.order')}}</el-menu-item>-->
-                    <!--</el-submenu>-->
-                    <!--<el-submenu index="3">-->
-                        <!--<template slot="title"><i class="iconfont icon-customer"></i>工程商管理</template>-->
-                        <!--<el-menu-item index="3-1"><a href="/pages/merchants.html#list">工程商列表</a></el-menu-item>-->
-                        <!--<el-menu-item index="3-2">{{$t('menu.order')}}</el-menu-item>-->
-                    <!--</el-submenu>-->
-                    <!--<el-submenu index="4">-->
-                        <!--<template slot="title"><i class="iconfont icon-caigou"></i>采购管理</template>-->
-                        <!--<el-menu-item index="4-1"><a href="/pages/customerorder.html">代客下单</a></el-menu-item>-->
-                    <!--</el-submenu>-->
-                    <!--<el-submenu index="5">-->
-                        <!--<template slot="title"><i class="iconfont icon-cangku1"></i>仓库管理</template>-->
-                        <!--<el-menu-item index="5-1">{{$t('name')}}</el-menu-item>-->
-                        <!--<el-menu-item index="5-2">{{$t('menu.order')}}</el-menu-item>-->
-                    <!--</el-submenu>-->
-                    <!--<el-submenu index="6">-->
-                        <!--<template slot="title"><i class="iconfont icon-cangku1"></i>配送管理</template>-->
-                        <!--<el-menu-item index="5-1">{{$t('name')}}</el-menu-item>-->
-                        <!--<el-menu-item index="5-2">{{$t('menu.order')}}</el-menu-item>-->
-                    <!--</el-submenu>-->
-                    <!--<el-submenu index="7">-->
-                        <!--<template slot="title"><i class="iconfont icon-caiwu"></i>财务管理</template>-->
-                        <!--<el-menu-item index="6-1">{{$t('name')}}</el-menu-item>-->
-                        <!--<el-menu-item index="6-2">{{$t('menu.order')}}</el-menu-item>-->
-                    <!--</el-submenu>-->
-                    <!--<el-menu-item index="8">-->
-                        <!--<a href="/pages/category.html">-->
-                            <!--<i class="el-icon-setting"></i>-->
-                            <!--<span slot="title">类目管理</span>-->
-                        <!--</a>-->
-                    <!--</el-menu-item>-->
-                <!--</el-menu>-->
             </el-aside>
             <el-container class="content-container">
                 <el-main>
@@ -102,7 +53,7 @@
                 account: '',
                 test: "LTS底部标识",
                 isUniqueOpened: true,
-                unread: 100
+                unread: '99+'
             }
         },
         methods: {
@@ -170,7 +121,19 @@
             float: right;
             height: 100%;
             .notice {
-
+                background: red;
+                color: #fff;
+                border-radius: 50%;
+                font-size: 10px;
+                line-height: 16px;
+                height: 16px;
+                min-width: 16px;
+                padding: 0 2px;
+                text-align: center;
+                position: absolute;
+                top: 16px;
+                left: 26px;
+                display: block;
             }
         }
     }
@@ -181,6 +144,7 @@
         .el-aside {
             color: #666;
             background-color: white;
+            overflow: inherit;
             .el-submenu {
                 .el-submenu_title {
                     line-height: 70px;
@@ -192,7 +156,6 @@
             }
             .iconfont {
                 font-size: 18px;
-                margin-right: 10px;
             }
             .el-icon-arrow-down {
                 font-size: 16px;
