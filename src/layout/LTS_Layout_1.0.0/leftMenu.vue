@@ -196,6 +196,9 @@
     .el-menu-vertical:not(.el-menu--collapse) {
         width: 179px;
     }
+    .el-aside{
+        overflow: inherit;
+    }
     .switch-collapse{
         text-align: center;
         font-size: 14px;
