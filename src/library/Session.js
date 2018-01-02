@@ -1,5 +1,5 @@
-import config from '@/config/index'
-import store from '@/utils/StoreUtils'
+import config from 'config'
+import {store} from 'ltsutil'
 export default {
     sessionData : null,
     isLogin(){

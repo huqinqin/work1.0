@@ -6,9 +6,9 @@ import Router from 'vue-router'
 
 import Layout from 'layout'
 import 'element-ui/lib/theme-chalk/index.css'
-import Loading from '@/common/components/lts-loading'
-import Message from '@/common/components/lts-message'
-import MessageBox from '@/common/components/lts-messageBox'
+import Loading from '../components/lts-loading'
+import Message from '../components/lts-message'
+import MessageBox from '../components/lts-messageBox'
 import leftMenu from '@/layout/LTS_Layout_1.0.0/leftMenu.vue'
 
 Vue.use(ElementUI)
