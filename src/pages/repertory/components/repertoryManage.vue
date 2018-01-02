@@ -110,14 +110,7 @@
                             'type': 'menu',
                             'width': '200',
                             'menulist': [
-                                { value: '详情', command: 'detail' },
-                                { value: '菜单',
-                                    command: 'default',
-                                    children: [
-                                        {value: '编辑', command: 'edit'},
-                                        {value: '删除', command: 'delete'}
-                                    ]
-                                }
+                                { value: '库存设置', command: 'setting' }
                             ]
                         }
                     }
@@ -198,6 +191,7 @@
             getParameter (val) {
                 this.form.formInline = val
                 this.api.bizparams.shop = JSON.stringify(val)
+                console.log(this.api)
                 this.search()
             },
             search () {
@@ -210,15 +204,9 @@
             },
             handleMenuItemClick (command, item) {
                 switch (command) {
-                    case 'detail':
+                    case 'setting':
                         console.log(item)
-                        alert('详情：' + item.shop_name)
-                        break
-                    case 'edit':
-                        alert('编辑：' + item.uid)
-                        break
-                    case 'delete':
-                        alert('删除：' + item.shop_name)
+                        alert('设置：' + item.toString())
                         break
                 }
             },

@@ -42,8 +42,7 @@
                                 v-model="formInline[val.bindValue]"
                                 :placeholder="val.bindPlaceholder"
                                 expand-trigger="hover"
-                                :options="val.options"
-                                @change="handleChange">
+                                :options="val.options">
                             </el-cascader>
                         </div>
                         <div v-else-if="val.type == 'searchbutton'">

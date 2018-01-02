@@ -29,7 +29,7 @@
                 <el-input v-model="form.erea"></el-input>
             </el-form-item>
             <el-form-item props="select" label="市场状态">
-                <el-select v-model="form.select" placeholder="请选择" @change="selectHandle">
+                <el-select v-model="form.select" placeholder="必选" @change="selectHandle">
                     <el-option label="内测" value="内测"></el-option>
                     <el-option label="已上线" value="已上线"></el-option>
                     <el-option label="冻结" value="冻结"></el-option>
@@ -121,15 +121,15 @@
                 location: ['北京市', '辖区', '东城区'],
                 moreAddress: '',
                 form:{
-                    bizName: '',
-                    bizEname: '',
+                    bizName: 'qw21e1',
+                    bizEname: 'qw12e1',
                     aaattribute: [],
                     attribute: '',// 市场特性
                     limit: true,
-                    select:'',
+                    select:'内测',
                     erea: '',
-                    status: '',
-                    account: 'qwe',
+                    bizStatus: '0',
+                    account: 'qw453e1',
                     password: 'qwertyuiop',
                     checkPass: 'qwertyuiop',
                     address: '北京市辖区东城区',
@@ -137,14 +137,15 @@
                     lng:'',         // 经度
                     companyName: '',// 公司名称
                     contact:'qwe',
-                    contactMobile: '13534567890',
-                    contactPhone: '13534567890',
+                    contactMobile: '13534267890',
+                    contactPhone: '13533567890',
                     partnerName: 'qw',          // 法人
                     license: '',        // 营业执照
                     number: '',         // 税号
                     remark: '',
-
+                    parentBizId:'P215IX',
                     lcCode: '110101000000',
+                    openCode: 'OI82RTU8'
                 },
                 rules:{
                     checkPass: [
@@ -203,25 +204,25 @@
             selectHandle(value){
                 switch (value) {
                     case '内测':
-                        this.form.status = 0
+                        this.form.bizStatus = 0
                         break
                     case '已上线':
-                        this.form.status = 1
+                        this.form.bizStatus = 1
                         break
                     case '冻结':
-                        this.form.status = 2
+                        this.form.bizStatus = 2
                         break
                     case '初始化':
-                        this.form.status = 3
+                        this.form.bizStatus = 3
                         break
                     case '待审核':
-                        this.form.status = 9
+                        this.form.bizStatus = 9
                         break
                     case '已删除':
-                        this.form.status = -1
+                        this.form.bizStatus = -1
                         break
                 }
-                console.log(this.form.status)
+                console.log(this.form.bizStatus)
             },
             // 属性数组转为二进制
             checkHandle(value){
