@@ -164,6 +164,23 @@
             "type":1,
             "url": '/pages/segments.html'
         },
+        {
+            "apptype":1,
+            "cdate":1447217704000,
+            "code":"10167",
+            "description":"运营商批发交易管理",
+            "display":5,
+            "domain":"http://work.500mi.com",
+            "edate":1493375344000,
+            "id":230,
+            "name":"库存管理",
+            "pic":"order",
+            "resourcesList":[],
+            "sort":1010,
+            "status":1,
+            "type":1,
+            "url": '/pages/repertory.html'
+        },
     ];
     export default {
         name : "left-menu",

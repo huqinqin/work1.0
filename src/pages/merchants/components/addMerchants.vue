@@ -28,7 +28,11 @@
       </el-form-item>
 
       <el-form-item label="所在地区" :rules="[{required: true}]" label-width="100px" props="location">
-        <el-cascader :options="locationOptions" v-model="location" @change="changeLocation"></el-cascader>
+        <el-cascader
+            :options="locationOptions"
+            v-model="location"
+            @change="changeLocation"
+            @active-item-change="province"></el-cascader>
       </el-form-item>
 
       <el-form-item label="详细地址" label-width="100px" class="address"
@@ -157,7 +161,7 @@
             ]}
           ]
         }],
-        location: ['北京市', '辖区', '东城区'],
+        location: ['','',''],
         moreAddress: '',
         address: '北京市辖区东城区',
         form: {
@@ -205,7 +209,6 @@
         api: {
           method: 'wbm.tp.merchant.store.add',
           bizparams: {
-            app_key: '00000-500mi',
             session: '1111'
           }
         },
@@ -213,17 +216,20 @@
           method: '',
           message: '',
           bizparams: {
-            app_key: '00000-500mi',
-
             session: '1111'
           }
         },
         locationApi:{
-          method: '',
+          method: 'wbm.basic.spot.location.get_ode_byName',
           bizparams: {
-            app_key: '00000-500mi',
             session: '1111'
           }
+        },
+        lApi:{
+            method:'wbm.basic.spot.location.get_province_city_district',
+            bizparams:{
+                session:'1111'
+            }
         }
       }
     },
@@ -284,13 +290,52 @@
         }, (msg) => {
           this.$ltsMessage.show({type: 'error', message: '新建工程商出错，请稍后重试'})
         })
-      }
+      },
+        province(value){
+            console.log(this.location)
+            let location = {}
+            location.province = value[0]
+            location.city = value[1]
+            location.district = value[2]
+            console.log(location)
+
+            let para = Object.assign({},this.lApi.bizparams,location)
+            let link = request.api(this.lApi.method, para)
+
+            link.then((data) => {
+                console.log(data.datalist)
+            }, (msg) => {
+                this.$ltsMessage.show({type: 'error', message: '获取省市区失败'})
+            })
+        }
     },
     mounted(){
-      this.$on('confirm',function(msg){
-        alert(msg)
-      })
-    },
+       this.$on('confirm',function(msg){
+           alert(msg)
+       })
+        let location = {
+            province : '',
+            city : '',
+            district : ''
+        }
+        let para = Object.assign({},this.lApi.bizparams,location)
+        let link = request.api(this.lApi.method, para)
+
+        link.then((data) => {
+            console.log(data.datalist)
+            let province = []
+            for (let i = 1; i < data.datalist.length; i++){
+
+                if (province.indexOf(data.datalist[i].province) === -1){
+                    province.push(data.datalist[i].province)
+                }else{
+                }
+            }
+            console.log(province)
+        }, (msg) => {
+            this.$ltsMessage.show({type: 'error', message: '获取省市区失败'})
+        })
+    }
   }
 </script>
 <style lang="less">
