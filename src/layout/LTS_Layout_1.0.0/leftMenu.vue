@@ -1,25 +1,24 @@
 <template>
     <div>
+        <div class="iconfont switch-collapse" v-bind:class="[isCollapse ? 'icon-shouqi':'icon-zhankai']" index="switch" @click="switchCollapse">
+        </div>
         <el-menu class="el-menu-vertical" :unique-opened="isUniqueOpened"
                  @open="handleOpen"
                  @close="handleClose"
                  :collapse="isCollapse"
                  active-text-color="#ce2127">
-            <div v-for="(value,index) in menuList" :key="value.id">
-                <el-submenu  :index="value.name" v-if="value.resourcesList.length > 0" >
+                <el-submenu v-for="(value,index) in menuList" :key="value.id"   :index="value.name" v-if="value.resourcesList.length > 0" >
                     <template slot="title">
                         <i class="iconfont icon-dingdan"></i>
                         <span slot="title">{{value.name}}</span>
                     </template>
-                    <el-menu-item-group>
-                        <el-menu-item  v-for="resource in value.resourcesList" :index="resource.name" :key="resource.id"><a :href="resource.url">{{resource.name}}</a></el-menu-item>
-                    </el-menu-item-group>
+                    <el-menu-item  v-for="resource in value.resourcesList" :index="resource.name" :key="resource.id">
+                        <a :href="resource.url">{{resource.name}}</a>
+                    </el-menu-item>
                 </el-submenu>
-                <el-menu-item v-else :index="value.name">
+                <el-menu-item v-for="(value,index) in menuList" :key="value.id" v-if="value.resourcesList.length == 0" :index="value.name">
                    <i class="el-icon-setting"></i><a :href="value.url" slot="title">{{value.name}}</a>
                 </el-menu-item>
-            </div>
-
         </el-menu>
     </div>
 </template>
@@ -200,18 +199,34 @@
             },
             handleClose(key, keyPath) {
                 console.log(key, keyPath);
-            }
+            },
+            switchCollapse(){
+              this.isCollapse = !this.isCollapse;
+            },
         },
         mounted(){
             this.getLeftMenuList();
         },
     }
 </script>
-<style>
+<style scoped>
     .el-menu-vertical:not(.el-menu--collapse) {
         width: 179px;
     }
-    .el-menu--collapse{
-        width: 64px;
+    .switch-collapse{
+        text-align: center;
+        font-size: 14px;
+        color: #2d2f33;
+        -webkit-transition: border-color .3s,background-color .3s,color .3s;
+        transition: border-color .3s,background-color .3s,color .3s;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        height: 56px;
+        line-height: 56px;
+        padding: 0 20px;
+        position: relative;
+        -webkit-box-sizing: border-box;
+        cursor: pointer;
+        white-space: nowrap;
     }
 </style>
