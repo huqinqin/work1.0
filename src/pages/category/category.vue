@@ -1,21 +1,44 @@
 <template>
   <div>
-    <el-input
-      placeholder="输入关键字进行过滤"
-      v-model="filterText">
-    </el-input>
-    <el-tree
-      :data="category"
-      :props="defaultProps"
-      accordion
-      node-key="id"
-      default-expand-all
-      :render-content="renderContent"
-      :filter-node-method="filterNode"
-      ref="categroyTree"
-      >
-    </el-tree>
-    <el-dialog
+      <el-row>
+          <el-col :span="20">
+              <el-input
+              placeholder="输入关键字进行过滤"
+              v-model="filterText">
+            </el-input>
+          </el-col>
+          <el-col :span="4">
+            <el-popover
+              ref="popover2"
+              placement="right"
+              width="300"
+              trigger="click"
+              v-model="showCategoryPopver"
+            >
+            <el-form :inline="true" class="demo-form-inline">
+              <el-form-item label="">
+                  <el-input v-model="categoryName" placeholder="类目名称"></el-input>
+              </el-form-item>
+              <el-form-item>
+                  <el-button type="primary" @click="addCategory">确定</el-button>
+              </el-form-item>
+            </el-form>
+        </el-popover>
+            <el-button type="primary" class="addSpec" v-popover:popover2>添加一级类目</el-button>
+          </el-col>
+      </el-row>
+      <el-tree
+          :data="category"
+          :props="defaultProps"
+          accordion
+          node-key="id"
+          default-expand-all
+          :render-content="renderContent"
+          :filter-node-method="filterNode"
+          ref="categroyTree"
+          >
+      </el-tree>
+      <el-dialog
       :visible.sync="centerDialogVisible"
       :fullscreen="dialogFullScreen"
       width="100%"
@@ -75,12 +98,15 @@
       </span>
     </el-dialog>
 
-  </div>
+    </div>
 </template>
 <script type="text/jsx">
+  import ElColorAlphaSlider from "element-ui/packages/color-picker/src/components/alpha-slider";
+
   let id = 1000;
   export default {
-    data() {
+      components: {ElColorAlphaSlider},
+      data() {
       return {
         filterText : "",
         category: [{
@@ -196,8 +222,9 @@
         editSpec : {},
         centerDialogVisible : false,
         dialogFullScreen : true,
-
-
+        //类目
+        showCategoryPopver : false,
+        categoryName:"",
         // 属性
         spuAttrList : [],
         showPreview : true,
@@ -225,6 +252,14 @@
         this.specName = "";
         this.showPopver = false;
       },
+      addCategory(){
+          if(!this.categoryName){
+              this.$ltsMessage.show({type:"error",message: "类目名称为空"});
+              return false;
+          }
+
+      },
+
       deleteTag(proplist,key){
         proplist.splice(key,1);
       },
