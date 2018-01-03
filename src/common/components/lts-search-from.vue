@@ -38,12 +38,13 @@
                             </el-select>
                         </div>
                         <div v-else-if="val.type === 'cascader'">
-                            <el-cascader
-                                v-model="formInline[val.bindValue]"
-                                :placeholder="val.bindPlaceholder"
-                                expand-trigger="hover"
-                                :options="val.options">
-                            </el-cascader>
+                            <!--<el-cascader-->
+                                <!--v-model="formInline[val.bindValue]"-->
+                                <!--:placeholder="val.bindPlaceholder"-->
+                                <!--expand-trigger="hover"-->
+                                <!--@change="cascAderHandleChange"-->
+                                <!--:options="cascader.options">-->
+                            <!--</el-cascader>-->
                         </div>
                         <div v-else-if="val.type == 'searchbutton'">
                             <el-button type="primary" @click="onSubmit" icon="el-icon-search">{{val.bindValue}}
@@ -63,7 +64,7 @@
 
     export default {
         name: 'lts-form',
-        props: ['formInlines', 'formFileds', 'autocomplete'],
+        props: ['formInlines', 'formFileds', 'autocomplete','cascader'],
         data() {
             return {
                 datelist: '',
@@ -119,6 +120,9 @@
             },
             handleSelect(item) {
                 this.formInline.callbackParameter = item;
+            },
+            cascAderHandleChange(val){
+                this.$emit("cascAderHandleChange",val);
             },
         }
     }
