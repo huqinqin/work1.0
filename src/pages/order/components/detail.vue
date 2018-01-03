@@ -2,7 +2,7 @@
     <div>
         <el-row type="flex" justify="center">
             <el-col :span="12">
-                <el-steps :space="200" :active="order.status" align-center>
+                <el-steps :space="400" :active="order.status" align-center>
                     <el-step title="创建"></el-step>
                     <el-step title="付款"></el-step>
                     <el-step title="发货"></el-step>
@@ -122,6 +122,9 @@
             return {
                 order: {
                     tid: '',
+                    pay_info: {
+                        pay_type_title: ''
+                    },
                     status: 0
                 },
                 stepActive : 0

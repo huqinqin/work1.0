@@ -138,6 +138,7 @@
         .el-aside {
             color: #666;
             background-color: white;
+            overflow: inherit;
             .el-submenu {
                 .el-submenu_title {
                     line-height: 70px;
