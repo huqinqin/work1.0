@@ -17,8 +17,9 @@
         data () {
             return {
                 api: {
-                    method: 'wbm.tp.merchant.store', // 查询api
+                    method: 'wbm.basic.biz.getChildrenByOpenCode', // 查询api
                     bizparams: {
+                        openCode: '331088'
                     }
                 },
                 form: {
@@ -46,11 +47,6 @@
                         }
                     ],
                     formInline: {
-                        bizName: '',
-                        status: '',
-                        orderBy: 'uid',
-                        lcCode: '330103',
-                        openCode: '331088'
                     }
                 },
                 pagination: {
@@ -90,7 +86,6 @@
         methods: {
             getParameter (val) {
                 this.form.formInline = val
-                this.api.bizparams.XXXXX = JSON.stringify(val) // 把参数放到XXXXX里面
                 this.search()
             },
             search () {
@@ -119,7 +114,6 @@
         watch: {
             form: {
                 handler: function () {
-                    this.api.bizparams.XXXXX = JSON.stringify(this.form.formInline)
                     console.log(this.api.bizparams.shop)
                 },
                 deep: true

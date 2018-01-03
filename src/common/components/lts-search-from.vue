@@ -94,7 +94,7 @@
             },
             loadAutoCompleteData(keywords) {
                 return new Promise((resolve, reject) => {
-                    let link = request.api(this.tApi.method, this.getParameter())
+                    let link = request.api(this.autocomplete.method, this.getParameter())
                     link.then((resp) => {
                         this.restaurants = resp.datalist;
                         let datalist = this.autocomplete.callBack ? this.autocomplete.callBack(resp.datalist) : resp.datalist;
