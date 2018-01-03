@@ -12,6 +12,7 @@
 <script>
   import {request} from 'ltsutil'
   import {ltsTable,ltsSearchForm} from 'ui'
+  import merchantsService from '@/services/MerchantsService.js'
 
   export default {
     name: 'list',
@@ -84,7 +85,8 @@
             alert('详情：' + item.shop_name)
             break
           case 'edit':
-            alert('编辑：' + item.uid)
+            const uid = item.uid
+            this.$router.push({path: `/edit/${uid}`})
             break
           case 'delete':
             alert('删除：' + item.shop_name)
@@ -94,10 +96,11 @@
       getParameter (val) {
         this.form.formInline = val
         this.api.bizparams.shop = JSON.stringify(val)
-        this.search()
+        this.getList()
       },
-      search () {
+      getList() {
         let link = request.api(this.api.method, this.api.bizparams)
+        console.log(this.api.bizparams)
         link.then((data) => {
           console.log('success')
         }, (msg) => {
@@ -106,7 +109,11 @@
       }
     },
     created(){
-      this.api.bizparams.shop = JSON.stringify(this.form.formInline)
+      // this.api.bizparams.shop = JSON.stringify(this.form.formInline)
+
+    },
+    mounted(){
+      // merchantsService.getMerchantsList()
     },
     watch: {
       form: {
