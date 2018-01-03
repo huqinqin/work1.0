@@ -120,7 +120,7 @@
                 });
             },
             handleSelect(item) {
-                this.formInline.callbackParameter = item;
+              this.formInline.callbackParameter = item;
             },
             cascAderHandleChange(val){
                 this.$emit("cascAderHandleChange",val);

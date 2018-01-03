@@ -9,7 +9,7 @@ export default new Router({
     routes: [
         {
             path: '/',
-            component: RepertoryList
+            component: RepertoryManage
         },
         {
             path: '/manage',

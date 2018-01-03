@@ -157,7 +157,9 @@
           // 若需要使用搜索插件 autocomplete  需要定义好接口来获取后端数据
           autocomplete: {
             api: '',
-            method: '/installer/getStoreListByCondition',
+            method: '/installer/getStoreList',
+            // method: '/installer/getStoreListByCondition',
+
             //定义一个转换的key autocomplete插件需要把显示的字段的key定义成value
             autoShowKey: 'item_name',
             //参数回调函数 目前的用法是来处理返回结果
@@ -220,7 +222,7 @@
           api: {
             method: '/wholesale/item/getList',
             bizparams: {
-              p_user_id: 99239,
+              p_user_id: 158635,
               page: 1,
               page_size: 20,
               user_id: 138890,
@@ -235,7 +237,7 @@
             "名字": {"value": "item_name", "type": "text"},
             "ID": {"value": "puser_id", "type": "text"},
             "类目ID": {"value": "category_id", "type": "text"},
-            "价格": {"value": "price_value", "type": "text"},
+            "价格": {"value": "price", "type": "text"},
             "类型": {"value": "discount_type", "type": "text"},
             "订单数量": {"value": "order_num", "type": "text"},
             "abced": {"value": "id", "type": "text"},
@@ -270,7 +272,7 @@
           },
         },
         // 抄单客户
-        customerList: [{'value': 'test'}],
+        customerList: [],
         // 购物车商品
         cartItemList: [],
         cart: {
@@ -294,6 +296,7 @@
       getItemParameter(val) {
         this.itemform.formInline = val;
       },
+      // 添加购物车
       getCartItem(item) {
         if (this.cartItemList.length === 0) {
           this.cartItemList.push(item);
@@ -310,6 +313,7 @@
             this.cartItemList.push(item);
           }
         }
+        console.log(this.cartItemList)
       },
       handleClose(index) {
         this.customerList.splice(index, 1);
@@ -327,11 +331,12 @@
       getJsonData: function (json) {
         if (json) {
           for (const value of json) {
-            value.value = value.item_name;
+            value.value = value.shop_name;
           }
           return json;
         }
       },
+      // 购物车结算
       submit() {
         let params = {
           customerList: this.customerList,

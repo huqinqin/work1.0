@@ -5,25 +5,32 @@
     <lts-search-from @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-from>
     <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination" @menuClick="handleMenuItemClick"></lts-table>
     <el-dialog title="库存设置" :visible.sync="dialogFormVisible">
-      <el-form :model="handle">
+      <el-form :model="handle" label-width="80px">
         <el-form-item label="操作类型" prop="radio">
-          <el-radio-group v-model="handle.radio">
-            <el-radio :label="0">采购入库</el-radio>
-            <el-radio :label="1">调拨入库</el-radio>
-            <el-radio :label="2">调拨出库</el-radio>
-            <el-radio :label="3">盘点库存</el-radio>
+          <el-radio-group v-model="handle.radio" @change="radio">
+            <el-radio :label=0>采购入库</el-radio>
+            <el-radio :label=1>调拨入库</el-radio>
+            <el-radio :label=2>调拨出库</el-radio>
+            <el-radio :label=3>盘点库存</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="规格"> </el-form-item>
-        <el-form-item label="现在库存"></el-form-item>
-        <el-form-item label="活动名称" :label-width="formLabelWidth">
-          <el-input v-model="form.name" auto-complete="off"></el-input>
+        <el-form-item label="规格">{{handle.g}}</el-form-item>
+        <el-form-item label="现在库存">{{handle.k}}</el-form-item>
+        <el-form-item :label=handle.type class="type">
+          <el-input ></el-input><sapn>箱</sapn>
+          <el-input ></el-input><span>罐</span>
         </el-form-item>
-        <el-form-item label="活动区域" :label-width="formLabelWidth">
-          <el-select v-model="form.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
+        <el-form-item v-if="handle.radio !== 3" :label=handle.type>
+          12345
+        </el-form-item>
+        <el-form-item v-if="handle.radio === 3" label="盈？亏">
+          54321
+        </el-form-item>
+        <el-form-item label="变更说明" prop="remark">
+          <el-input type="textarea"  v-model="handle.remark" placeholder="库存变更说明"></el-input>
+        </el-form-item>
+        <el-form-item label="经办人" prop="operator">
+          <el-input v-model="handle.operator"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -47,6 +54,11 @@
         dialogFormVisible: false,
         handle:{
           radio:0,
+          type:'采购入库',
+          g:'310ml*24罐*1箱',
+          k:'10箱0罐',
+          remark:'',
+          operator: ''
         },
         form: {
           formFileds: [
@@ -222,32 +234,61 @@
       }
     },
     methods: {
-        getParameter (val) {
-            this.form.formInline = val
-            this.api.bizparams.shop = JSON.stringify(val)
-            console.log(this.api)
-            this.search()
-        },
-        search () {
-            let link = request.api(this.api.method, this.api.bizparams)
-            link.then((data) => {
-                console.log('success')
-            }, (msg) => {
-                this.$ltsMessage.show({type: 'error', message: '查询失败，请稍后重试'})
-            })
-        },
-        handleMenuItemClick (command, item) {
-            switch (command) {
-                case 'setting':
-                    console.log(item)
-                    alert('设置：' + item.toString())
-                    break
-            }
-        },
+      getParameter (val) {
+        this.form.formInline = val
+        this.api.bizparams.shop = JSON.stringify(val)
+        console.log(this.api)
+        this.search()
+      },
+      search () {
+        let link = request.api(this.api.method, this.api.bizparams)
+        link.then((data) => {
+          console.log('success')
+        }, (msg) => {
+          this.$ltsMessage.show({type: 'error', message: '查询失败，请稍后重试'})
+        })
+      },
+      handleMenuItemClick (command, item) {
+        // 库存设置
+        console.log(item)
+      },
+      radio(value){
+        switch (value){
+          case 0:
+            this.handle.type = '采购入库'
+            break
+          case 1:
+            this.handle.type = '调拨入库'
+            break
+          case 2:
+            this.handle.type = '调拨出库'
+            break
+          case 3:
+            this.handle.type = '盘点库存'
+        }
+        console.log(this.handle)
+      }
     }
-}
+  }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+  .el-form-item{
+    margin-bottom: 10px;
+    line-height: 20px;
+    .el-input{
+      max-width:60%;
+      width:120px;
+    }
+    .el-input+.el-input{
+      margin-left: 20px;
+    }
+    .el-radio+.el-radio {
+      margin-left: 20px;
+      .el-radio__label {
+        padding-left: 2px;
 
+      }
+    }
+  }
 </style>
