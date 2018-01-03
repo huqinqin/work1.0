@@ -8,12 +8,14 @@ export default {
      * @auth taohua
      * @remark 搜索客户
      */
-    searchCustomer(customerForm){
-        let params = {
-            keyword:customerForm.keyword,
-
-        }
-        return request.api('',params)
+    searchCustomer(customerForm){ //customerform.formInline
+      let params = {
+        page:1,
+        page_size:1000,
+        order_by:'id',
+        customerForm:customerForm
+      }
+      return request.api('/store',params)
     },
 
     /**
@@ -24,7 +26,7 @@ export default {
      * @auth taohua
      * @remark 搜索商品
      */
-    searchItem(itemform){
+    searchItem(itemForm){
         let params = {
 
         }
