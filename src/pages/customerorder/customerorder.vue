@@ -98,6 +98,7 @@
 <script>
   import ltsTable from '@/common/components/lts-table.vue'
   import ltsSearchFrom from '@/common/components/lts-search-from.vue'
+  import customerOrderService from '@/service/customerOrderService.js'
   export default {
     props: '',
     components : {
