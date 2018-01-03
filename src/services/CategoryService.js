@@ -16,15 +16,11 @@ export default{
     },
     /**
      * return datalist 类目列表
-     * params //TOOD 未知
      * @auth taohua
      * @remarkl 获取所有的类目列表
      */
     getAllCategoryList(){
-        let params = {
-            categoryDO : {},
-        };
-        return request.api('/category/getCarrierCategoryList',params);
+        return request.api('/category/getCarrierCategoryList');
     },
     /**
      * return LONG 类目id
@@ -93,5 +89,18 @@ export default{
         };
         return request.api('/category/propsSetting',params)
     },
-
+    /**
+     * return datalist
+     * params {id : LONG}
+     * @auth taohua
+     * @remark 添加类目属性
+     */
+    getCateProps(id){
+        let params = {
+            category_id : id,
+            sku : true,
+            order_by : "id",
+        };
+        return request.api('/category/getCateProps',params)
+    },
 }

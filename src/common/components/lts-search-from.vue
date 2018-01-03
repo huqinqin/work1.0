@@ -38,13 +38,13 @@
                             </el-select>
                         </div>
                         <div v-else-if="val.type === 'cascader'">
-                            <!--<el-cascader-->
-                                <!--v-model="formInline[val.bindValue]"-->
-                                <!--:placeholder="val.bindPlaceholder"-->
-                                <!--expand-trigger="hover"-->
-                                <!--@change="cascAderHandleChange"-->
-                                <!--:options="cascader.options">-->
-                            <!--</el-cascader>-->
+                            <el-cascader
+                                v-model="formInline[val.bindValue]"
+                                :placeholder="val.bindPlaceholder"
+                                expand-trigger="hover"
+                                @change="cascAderHandleChange"
+                                :options="cascader.options">
+                            </el-cascader>
                         </div>
                         <div v-else-if="val.type == 'searchbutton'">
                             <el-button type="primary" @click="onSubmit" icon="el-icon-search">{{val.bindValue}}
