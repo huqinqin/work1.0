@@ -94,9 +94,9 @@
       getParameter (val) {
         this.form.formInline = val
         this.api.bizparams.shop = JSON.stringify(val)
-        this.search()
+        this.getList()
       },
-      search () {
+      getList() {
         let link = request.api(this.api.method, this.api.bizparams)
         link.then((data) => {
           console.log('success')
