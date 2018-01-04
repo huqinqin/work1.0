@@ -80,7 +80,7 @@
             }
         },
         mounted() {
-            // session.checkLogin();
+            session.checkLogin();
             this.account = store.getItem('account');
         }
     }

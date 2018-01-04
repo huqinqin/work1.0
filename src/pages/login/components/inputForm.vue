@@ -48,7 +48,7 @@
                     if (valid) {
                         userService.login(this.form.name, this.form.password).then( (resp) =>{
                             this.$ltsLoading.show({text: "登录成功跳转中"});
-                            session.login(resp.data);
+                            session.login({account: this.form.name});
                         }, (err) => {
                             this.$ltsMessage.show({type: "error", message: err.errorMessage});
                         });

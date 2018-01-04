@@ -4,6 +4,12 @@ export default {
         let param = {
             tid : tid,
         };
-        return request.api('wbm.tp.wholesale.order.get_by_tid', param);
+        return request.api('/store/order/detail', param);
+    },
+    accept(tid){
+        let param = {
+            tid : tid,
+        };
+        return request.api('/store/order/accept', param);
     }
 }
