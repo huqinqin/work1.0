@@ -33,8 +33,8 @@
 <script>
   import {ltsTable,ltsSearchForm} from 'ui'
   import categoryService from '@/services/CategoryService'
-  import spuService from '@/services/spuService'
-  export  default {
+  import spuService from '@/services/SpuService'
+  export default {
     name : 'selectCategory',
     components : {
       ltsTable,ltsSearchForm

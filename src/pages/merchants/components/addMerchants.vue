@@ -13,8 +13,9 @@
         class="form-button"
         position="relative">
         <el-input
-          v-model="form.account"
-          @input="checkName"></el-input>
+          v-model="form.account"></el-input>
+        <!--@input="checkName"-->
+
         <div class="message">{{checkApi.message}}</div>
         <span>注：登陆账号不可填手机号码，如需手机登陆，后续可以自主绑定手机登陆</span>
         <span class="checkResult">{{this.checkResult}}</span>
@@ -113,6 +114,7 @@
 </template>
 <script>
   import {request} from 'ltsutil'
+  import merchantsService from '@/services/MerchantsService.js'
   export default {
     name: 'addMerchants',
     data () {
@@ -198,10 +200,8 @@
           owner: '',
           inin: false,
           partnerName: '测试用户',
-          openCode: '331102',
           lcCode: '110101000000',
-          carrierUid: '45412',
-          ip: '58.83.225.0'
+          carrier_uid: 45412
         },
         rules: {
           account: [
@@ -224,7 +224,7 @@
           ]
         },
         api: {
-          method: 'wbm.tp.merchant.store.add',
+          method: '/installer/add',
           bizparams: {
             session: '1111'
           }
@@ -269,23 +269,25 @@
         console.log(this.location[0] + this.location[1] + this.location[2])
         alert('自动填入经纬度')
       },
-      checkName () {
-        var account = {acount: this.form.account.trim()}
-        var param = Object.assign({}, account, this.checkApi.bizparams)
-        let link = request.api(this.checkApi.method, param)
-        link.then((data) => {
-          console.log(data)
-          this.checkApi.message = '该账号不可用，请重新输入'
-        }, (msg) => {
-          console.log(msg)
-          this.checkApi.message = '该账号不可用，请重新输入'
-        })
-      },
+      // 检测账号是否可用
+      // checkName () {
+      //   var account = {acount: this.form.account.trim()}
+      //   var param = Object.assign({}, account, this.checkApi.bizparams)
+      //   let link = request.api(this.checkApi.method, param)
+      //   link.then((data) => {
+      //     console.log(data)
+      //     this.checkApi.message = '该账号可用'
+      //   }, (msg) => {
+      //     console.log(msg)
+      //     this.checkApi.message = '该账号不可用，请重新输入'
+      //   })
+      // },
       changeLocation (value){
         var location = {}
         location.province = value[0]
         location.city = value[1]
         location.district = value[2]
+        this.address = value[0] + value[1] + value[2]
         let para = Object.assign({},this.locationApi.bizparams,location)
         let link = request.api(this.locationApi.method, para)
         link.then((data) => {
@@ -296,35 +298,35 @@
         })
         console.log(para)
       },
+
+      // 新增工程商提交
       submit () {
         let formData = Object.assign({}, this.getAddress(), this.form)
         formData.type = this.form.type ? '加盟' : '直营'
-        let para = Object.assign({}, this.api.bizparams)
-        para.store_request = JSON.stringify(formData)
-        let link = request.api(this.api.method, para)
-        link.then((data) => {
+        let addItem = merchantsService.addMerchantsItem(formData)
+        addItem.then((data) => {
           console.log(data)
         }, (msg) => {
-          this.$ltsMessage.show({type: 'error', message: '新建工程商出错，请稍后重试'})
+          this.$ltsMessage.show({type: 'error', message: msg.error_message})
         })
       },
-        province(value){
-          console.log(this.location)
-          let location = {}
-          location.province = value[0]
-          location.city = value[1]
-          location.district = value[2]
-          console.log(location)
+      province(value){
+        console.log(this.location)
+        let location = {}
+        location.province = value[0]
+        location.city = value[1]
+        location.district = value[2]
+        console.log(location)
 
-          let para = Object.assign({},this.lApi.bizparams,location)
-          let link = request.api(this.lApi.method, para)
+        let para = Object.assign({},this.lApi.bizparams,location)
+        let link = request.api(this.lApi.method, para)
 
-          link.then((data) => {
-            console.log(data.datalist)
-          }, (msg) => {
-            this.$ltsMessage.show({type: 'error', message: '获取省市区失败'})
-          })
-        }
+        link.then((data) => {
+          console.log(data.datalist)
+        }, (msg) => {
+          this.$ltsMessage.show({type: 'error', message: '获取省市区失败'})
+        })
+      }
     },
     mounted(){
       this.$on('confirm',function(msg){

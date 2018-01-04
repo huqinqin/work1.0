@@ -49,6 +49,7 @@
 
 <script>
     import {request} from 'ltsutil'
+    import segmentsService from '@/services/SegmentsService.js'
   export default {
     name: "editSegments",
       data(){
@@ -63,7 +64,7 @@
                 limit: true,
                 state: '内测',
                 bizStatus: '0',
-                id:'11'
+                id:3076
             },
             checkbox:[
                 "批发","零售","派收","第三方市场","允许建子市场","不限制地理区域",
@@ -71,7 +72,7 @@
                 "使用父市场批发类目","共享父市场零售","共享父市场批发商品"
             ],
             api: {
-                method: 'wbm.tp.merchant.market.updateMarket',
+                method: '/market/update',
                 bizparams: {
                 }
             },
@@ -88,12 +89,10 @@
               delete formData.aaattribute
               delete formData.state
               delete formData.limit
+            console.log(formData)
+            let editSegmentsItem = segmentsService.editSegmentsItem(formData)
 
-              let para = Object.assign({},this.api.bizparams)
-              para.bizDO = JSON.stringify(formData)
-              console.log(para)
-              let link = request.api(this.api.method, para)
-              link.then((data) => {
+            editSegmentsItem.then((data) => {
                   console.log('success')
               }, (msg) => {
                   this.$ltsMessage.show({type: 'error', message: msg.errorMessage})
@@ -140,7 +139,11 @@
               }
               console.log(this.form.bizStatus)
           }
-      }
+      },
+    created(){
+      this.form.id = this.$route.params.id
+      console.log(this.form.id)
+    }
   }
 </script>
 

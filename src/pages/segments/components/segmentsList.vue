@@ -9,6 +9,7 @@
     import {request} from 'ltsutil'
     import ltsTable from '@/common/components/lts-table.vue'
     import ltsSearchFrom from '@/common/components/lts-search-from.vue'
+    import segmentsService from '@/services/SegmentsService.js'
     export default {
         name: "segmentsList",
         components: {
@@ -17,9 +18,11 @@
         data () {
             return {
                 api: {
-                    method: 'wbm.basic.biz.getChildrenByOpenCode', // 查询api
+                    method: '/market/get_children_by_openCode', // 查询api
                     bizparams: {
-                        openCode: '331088'
+                      order_by:'id',
+                      open_code:'666666'
+
                     }
                 },
                 form: {
@@ -60,10 +63,10 @@
                     datalist: true,
                     tableDataForm: 'api', // json
                     tableField: {
-                        '名字': {'value': 'shop_name', 'type': 'text'},
-                        '地址': {'value': 'address', 'type': 'text'},
+                        '英文名': {'value': 'biz_ename', 'type': 'text'},
+                        '中文名': {'value': 'biz_name', 'type': 'text'},
                         '联系人': {'value': 'contact', 'type': 'text'},
-                        '联系电话': {'value': 'contact_phone', 'type': 'text'},
+                        '状态': {'value': 'status_cname', 'type': 'text'},
                         '功能': {
                             'value': '',
                             'type': 'menu',
@@ -89,11 +92,11 @@
                 this.search()
             },
             search () {
-                let link = request.api(this.api.method, this.api.bizparams)
-                link.then((data) => {
+              let getSegmentsList = segmentsService.getSegmentsList(this.pagination,this.api.bizparams)
+              getSegmentsList.then((data) => {
                     console.log('success')
                 }, (msg) => {
-                    this.$ltsMessage.show({type: 'error', message: '查询失败，请稍后重试'})
+                    this.$ltsMessage.show({type: 'error', message: errorMessage})
                 })
             },
             handleMenuItemClick (command, item) {
@@ -103,7 +106,8 @@
                         alert('详情：' + item.shop_name)
                         break
                     case 'edit':
-                        alert('编辑：' + item.uid)
+                      const id = item.id
+                      this.$router.push({path: `/edit/${id}`})
                         break
                     case 'delete':
                         alert('删除：' + item.shop_name)
