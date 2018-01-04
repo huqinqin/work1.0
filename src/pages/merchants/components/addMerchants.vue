@@ -5,10 +5,16 @@
       <el-breadcrumb-item >新增工程商</el-breadcrumb-item>
       <el-button @click="test">123</el-button>
     </el-breadcrumb>
-
     <el-form ref="form" :model="form" :rules="rules" label-position="left">
-      <el-form-item label="登陆账号" label-width="100px" prop="account" class="form-button" position="relative">
-        <el-input v-model="form.account" @input="checkName" debounce="1000"></el-input>
+      <el-form-item
+        label="登陆账号"
+        label-width="100px"
+        prop="account"
+        class="form-button"
+        position="relative">
+        <el-input
+          v-model="form.account"
+          @input="checkName"></el-input>
         <div class="message">{{checkApi.message}}</div>
         <span>注：登陆账号不可填手机号码，如需手机登陆，后续可以自主绑定手机登陆</span>
         <span class="checkResult">{{this.checkResult}}</span>
@@ -27,12 +33,16 @@
         <el-input v-model="form.shopName"></el-input>
       </el-form-item>
 
-      <el-form-item label="所在地区" :rules="[{required: true}]" label-width="100px" props="location">
+      <el-form-item
+        label="所在地区"
+        :rules="[{required: true}]"
+        label-width="100px"
+        props="location">
         <el-cascader
-            :options="locationOptions"
-            v-model="location"
-            @change="changeLocation"
-            @active-item-change="province"></el-cascader>
+          :options="locationOptions"
+          v-model="location"
+          @change="changeLocation"
+          @active-item-change="province"></el-cascader>
       </el-form-item>
 
       <el-form-item label="详细地址" label-width="100px" class="address"
@@ -40,10 +50,15 @@
         <el-input v-model="moreAddress"></el-input>
         <el-button @click="getLocation" class="location form-button">定位</el-button>
       </el-form-item>
-      <el-form-item class="inline" label="经纬度" :rules="[{required: true, message: '经度', trigger: 'blur'}]" label-width="100px" prop="lat">
+      <el-form-item
+        class="inline" label="经纬度"
+        :rules="[{required: true, message: '经度', trigger: 'blur'}]"
+        label-width="100px" prop="lat">
         <span>经度：</span><el-input v-model="form.lat"></el-input>
       </el-form-item>
-      <el-form-item class="inline" prop="lng" :rules="[{required: true, message: '纬度', trigger: 'blur'}]" >
+      <el-form-item
+        class="inline" prop="lng"
+        :rules="[{required: true, message: '纬度', trigger: 'blur'}]" >
         <span>纬度：</span><el-input v-model="form.lng"></el-input>
       </el-form-item>
       <el-form-item label="类型" label-width="100px" prop="type">
@@ -78,8 +93,10 @@
         <span>注：此联系电话主要用于小店管理消费者，可为小店座机号码</span>
       </el-form-item>
       <el-form-item label="备注" label-width="100px" prop="remark" class="remark">
-        <el-input type="textarea" v-model="form.remark"
-                  :autosize="{minRows:4}"></el-input>
+        <el-input
+          type="textarea"
+          v-model="form.remark"
+          :autosize="{minRows:4}"></el-input>
       </el-form-item>
       <el-form-item label="负责人" label-width="100px" prop="owner">
         <el-select  placeholder="请选择负责人" v-model="form.owner">
@@ -226,10 +243,10 @@
           }
         },
         lApi:{
-            method:'wbm.basic.spot.location.get_province_city_district',
-            bizparams:{
-                session:'1111'
-            }
+          method:'wbm.basic.spot.location.get_province_city_district',
+          bizparams:{
+              session:'1111'
+          }
         }
       }
     },
@@ -292,49 +309,49 @@
         })
       },
         province(value){
-            console.log(this.location)
-            let location = {}
-            location.province = value[0]
-            location.city = value[1]
-            location.district = value[2]
-            console.log(location)
+          console.log(this.location)
+          let location = {}
+          location.province = value[0]
+          location.city = value[1]
+          location.district = value[2]
+          console.log(location)
 
-            let para = Object.assign({},this.lApi.bizparams,location)
-            let link = request.api(this.lApi.method, para)
+          let para = Object.assign({},this.lApi.bizparams,location)
+          let link = request.api(this.lApi.method, para)
 
-            link.then((data) => {
-                console.log(data.datalist)
-            }, (msg) => {
-                this.$ltsMessage.show({type: 'error', message: '获取省市区失败'})
-            })
+          link.then((data) => {
+            console.log(data.datalist)
+          }, (msg) => {
+            this.$ltsMessage.show({type: 'error', message: '获取省市区失败'})
+          })
         }
     },
     mounted(){
-       this.$on('confirm',function(msg){
-           alert(msg)
-       })
-        let location = {
-            province : '',
-            city : '',
-            district : ''
+      this.$on('confirm',function(msg){
+        alert(msg)
+      })
+      let location = {
+        province : '',
+        city : '',
+        district : ''
+      }
+      let para = Object.assign({},this.lApi.bizparams,location)
+      let link = request.api(this.lApi.method, para)
+
+      link.then((data) => {
+        console.log(data.datalist)
+        let province = []
+        for (let i = 1; i < data.datalist.length; i++){
+
+          if (province.indexOf(data.datalist[i].province) === -1){
+              province.push(data.datalist[i].province)
+          }else{
+          }
         }
-        let para = Object.assign({},this.lApi.bizparams,location)
-        let link = request.api(this.lApi.method, para)
-
-        link.then((data) => {
-            console.log(data.datalist)
-            let province = []
-            for (let i = 1; i < data.datalist.length; i++){
-
-                if (province.indexOf(data.datalist[i].province) === -1){
-                    province.push(data.datalist[i].province)
-                }else{
-                }
-            }
-            console.log(province)
-        }, (msg) => {
-            this.$ltsMessage.show({type: 'error', message: '获取省市区失败'})
-        })
+        console.log(province)
+      }, (msg) => {
+        this.$ltsMessage.show({type: 'error', message: '获取省市区失败'})
+      })
     }
   }
 </script>

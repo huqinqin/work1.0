@@ -144,8 +144,8 @@
           ]
         },
         api: {
-            method: 'wbm.tp.merchant.store.update',
-            bizparams: {
+          method: 'wbm.tp.merchant.store.update',
+          bizparams: {
             app_key: '00000-500mi',
              // edit
             session: '1111'
@@ -188,7 +188,6 @@
         console.log(para)
       },
       submit(){
-
         let uid = {
             uid: this.uid
         }
@@ -203,6 +202,10 @@
           this.$ltsMessage.show({type: 'error', message: '编辑失败，请稍后重试'})
         })
       }
+    },
+    created(){
+      this.uid = this.$route.params.uid
+      console.log(this.uid)
     }
   }
 </script>

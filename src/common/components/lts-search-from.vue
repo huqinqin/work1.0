@@ -44,7 +44,8 @@
                                 v-model="formInline[val.bindValue]"
                                 :placeholder="val.bindPlaceholder"
                                 expand-trigger="hover"
-                                :options="val.options">
+                                @change="cascAderHandleChange"
+                                :options="cascader.options">
                             </el-cascader>
                         </div>
                         <div v-else-if="val.type == 'searchbutton'">
@@ -65,7 +66,7 @@
 
     export default {
         name: 'lts-form',
-        props: ['formInlines', 'formFileds', 'autocomplete'],
+        props: ['formInlines', 'formFileds', 'autocomplete','cascader'],
         data() {
             return {
                 datelist: '',
@@ -98,7 +99,7 @@
             },
             loadAutoCompleteData(keywords) {
                 return new Promise((resolve, reject) => {
-                    let link = request.api(this.tApi.method, this.getParameter())
+                    let link = request.api(this.autocomplete.method, this.getParameter())
                     link.then((resp) => {
                         this.restaurants = resp.datalist;
                         let datalist = this.autocomplete.callBack ? this.autocomplete.callBack(resp.datalist) : resp.datalist;
@@ -123,7 +124,10 @@
                 });
             },
             handleSelect(item) {
-                this.formInline.callbackParameter = item;
+              this.formInline.callbackParameter = item;
+            },
+            cascAderHandleChange(val){
+                this.$emit("cascAderHandleChange",val);
             },
         }
     }

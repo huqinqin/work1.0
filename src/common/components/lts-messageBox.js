@@ -8,7 +8,7 @@ export default {
       type: option.type,
       center: option.center
     }).then(() => {
-      that.$emit('confirm','hello')
+      this.$emit('confirm')
       that.$ltsMessage.show({
         type: option.successType,
         message: option.successMessage
