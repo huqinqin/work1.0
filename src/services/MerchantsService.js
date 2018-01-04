@@ -16,21 +16,31 @@ export default {
     }
     return request.api('/',params)
   },
-
+  /**
+   * return  datalist 工程商列表
+   * params {}
+   * params {}
+   * params {}
+   * @auth taohua
+   * @remark 新增工程商
+   */
   addMerchantsItem(){
     let params = {
-      page:1,
-      page_size:10,
-      order_by: 'id'
+
     }
     return request.api('/',params)
   },
-
+  /**
+   * return  datalist 工程商列表
+   * params {}
+   * params {}
+   * params {}
+   * @auth taohua
+   * @remark 编辑工程商
+   */
   editMerchantsItem(){
     let params = {
-      page:1,
-      page_size:10,
-      order_by: 'id'
+
     }
     return request.api('/',params)
   },

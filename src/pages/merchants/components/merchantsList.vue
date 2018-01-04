@@ -2,7 +2,6 @@
   <div>
     <el-breadcrumb separator="/" style="margin-bottom:20px;">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <router-link to="/edit">编辑</router-link>
     </el-breadcrumb>
     <lts-search-form @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-form>
     <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination" @menuClick="handleMenuItemClick"></lts-table>
