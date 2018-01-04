@@ -86,7 +86,6 @@
                     this.formInline.start_date = Date.parse(this.datelist[0]);
                     this.formInline.end_date = Date.parse(this.datelist[1]);
                 }
-                console.log(this.formInline)
                 this.$emit('get-from', this.formInline);
                 if (this.formInline.callbackParameter) {
                     this.formInline.callbackParameter = {};

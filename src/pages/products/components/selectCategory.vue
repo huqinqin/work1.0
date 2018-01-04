@@ -171,7 +171,7 @@
           return false;
         }
       },
-      addSpuInfo(){debugger;
+      addSpuInfo(){
         let params = {category:this.searchform.cascader.options,selectCategory:this.selectCategory};
         this.$router.push({name: 'addSpuInfo',params : params});
       },

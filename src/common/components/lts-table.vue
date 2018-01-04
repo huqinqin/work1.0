@@ -143,7 +143,7 @@
                  * @type {number|*}
                  */
                 this.tApi.bizparams.page = this.pagination.page.default
-                this.tApi.bizparams.pageSize = this.pagination.pageSize.default
+                this.tApi.bizparams.page_size = this.pagination.pageSize.default
                 /**
                  * 加入搜索的参数
                  * Object.assign 后一个参数会覆盖前面的

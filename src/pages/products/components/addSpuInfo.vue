@@ -62,14 +62,13 @@
         stepActive : 2,
         categoryList : [],
         ruleForm:{
-          spuName : '球形',
-          spuBrand : '球形',
-          spuArea : '球形',
+          spuName : '',
+          spuBrand : '',
+          spuArea : '',
           spuCategory : [],
-          categoryId : [],
-          spuImg : '球形',
-          saleSpec : '球形',
-
+          categoryId : "",
+          spuImg : '',
+          saleSpec : '',
         },
         rules:{
           spuName: [
