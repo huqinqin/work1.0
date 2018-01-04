@@ -1,54 +1,25 @@
 import {request} from 'ltsutil'
 export default {
-    /**
-     * return  datalist 客户列表
-     * params {} 客户分组
-     * params {} 搜索类型
-     * params {} keyword
-     * @auth taohua
-     * @remark 搜索客户
-     */
-    // searchCustomer(customerForm){ //customerform.formInline
-    //   let params = {
-    //     page:1,
-    //     page_size:1000,
-    //     order_by:'id',
-    //     customerForm:customerForm
-    //   }
-    //   return request.api('/store',params)
-    // },
 
-    /**
-     * return datalist 商品列表
-     * params {} 短码
-     * params {} 长码
-     * params {} 品牌
-     * @auth taohua
-     * @remark 搜索商品
-     */
-    // searchItem(itemForm){
-    //     let params = {
-    //
-    //     }
-    //     return request.api('',params)
-    // },
 
     /**
      * return
      * params {user_id: 1} user_id
      * params {shop_id: 1} shop_id
-     * params {carrier_id: 1} carrier_id
+     * params {carrier_uid: 1} carrier_uid
      * @auth taohua
      * @remark 查询购物车
      */
-    queryCartItem(userId, shopId, carrierId){
+    queryCartList(bizparams){
       let params = {
-        user_id: userId,
-        shop_id: shopId,
-        carrier_id: carrierId
+        user_id: bizparams.user_id,
+        shop_id: bizparams.shop_id,
+        carrier_uid: bizparams.carrier_uid
       }
+      console.log(params)
       return request.api('/wholesale/cart/queryCartList',params)
     },
+
     /**
      * return
      * params {} 购物车

@@ -222,9 +222,9 @@
           api: {
             method: '/wholesale/item/getList',
             bizparams: {
-              p_user_id: 158635,
               page: 1,
               page_size: 20,
+              p_user_id: 158635,
               user_id: 138890,
               shop_id: 5956,
               sku_uid: 1,
@@ -345,6 +345,9 @@
         alert('购物车结算')
       }
     },
+    mounted(){
+      customerOrderService.queryCartList(this.itemTable.api.bizparams)
+    },
     watch: {
       cartItemList: {
         deep: true,
@@ -360,8 +363,6 @@
           })
         }
       }
-    },
-    mounted(){
     }
   }
 </script>
