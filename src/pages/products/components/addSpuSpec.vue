@@ -17,156 +17,101 @@
         <el-form-item label="选择产品规格类型" prop="name">
           <el-radio-group v-model="settingSwitch" size="small">
             <el-radio-button label="info">标准规格</el-radio-button>
-            <el-radio-button label="spec">多级规格</el-radio-button>
           </el-radio-group>
         </el-form-item>
       </el-form>
       <transition name="slide-fade" >
         <div class="spuSpecBox">
-        <el-card class="box-card" v-show="settingSwitch == 'info'">
-          <div slot="header" class="clearfix">
-            <span>产品规格设置</span>
-            <div style="float: right;padding: 0 5px;color: #409EFF;">
-              <el-popover
-                ref="popover4"
-                placement="bottom"
-                trigger="click"
-                >
-                <div class="shuffParentBox" v-if="postSelectedSpecList.length > 0" >
-                  <transition name="slide-fade">
-                    <div v-if="showPreview" class="preview">
-                      <div v-for="(item,index) in postSelectedSpecList" :key="index" class="shuffBox">
-                          <transition-group name="cell" tag="div">
-                            <div :key="index"  class="container">
-                              <div v-for="value in item.propsList" :key="item.values"  class="cell">
-                                <div class="specValue">{{ value.values }} </div>
-                              </div>
-                              <div class="specInput">
-                                <el-input
-                                  size="mini"
-                                  placeholder="请输入条码"
-                                  v-model="item.sinr">
-                                </el-input>
-                              </div>
-                            </div>
-                          </transition-group>
-                      </div>
+            <el-card class="box-card" v-show="settingSwitch == 'info'">
+              <div slot="header" class="clearfix">
+                <span>产品规格设置</span>
+                <div style="float: right;padding: 0 5px;color: #409EFF;">
+                  <el-popover
+                    ref="popover4"
+                    placement="bottom"
+                    trigger="click"
+                    >
+                    <div class="shuffParentBox" v-if="postSelectedSpecList.length > 0" >
+                      <transition name="slide-fade">
+                        <div v-if="showPreview" class="preview">
+                          <div v-for="(item,index) in postSelectedSpecList" :key="index" class="shuffBox">
+                              <transition-group name="cell" tag="div">
+                                <div :key="index"  class="container">
+                                  <div v-for="value in item.propsList" :key="item.values"  class="cell">
+                                    <div class="specValue">{{ value.values }} </div>
+                                  </div>
+                                  <div class="specInput">
+                                    <el-input
+                                      size="mini"
+                                      placeholder="请输入条码"
+                                      v-model="item.sinr">
+                                    </el-input>
+                                  </div>
+                                </div>
+                              </transition-group>
+                          </div>
+                        </div>
+                      </transition>
                     </div>
-                  </transition>
+                  </el-popover>
+                  <el-button type="text" id="popoverClick" v-popover:popover4>规格预览</el-button>
                 </div>
-              </el-popover>
-              <el-button type="text" id="popoverClick" v-popover:popover4>规格预览</el-button>
-            </div>
-          </div>
-          <div class="specbox">
-            <div class="specitem">
-              <el-form label-width="130px" v-for="(value,index) in spuSpecList" :label="value.name" :key="value.name">
-                <el-form-item :label="value.name">
-                  <el-checkbox label="可搜索" v-model="value.isSearch"></el-checkbox>
-                  <el-checkbox label="可展示" v-model="value.isShow"></el-checkbox>
-                  <el-checkbox label="SKU参考"disabled checked></el-checkbox>
-                  <label class="el-upload-list__item-status-label" v-if="value.isSelect"><i class="el-icon-upload-success el-icon-check"></i></label>
-                  <label class="el-upload-list__item-status-label removeprop" @click="removeProp(spuSpecList,index)" v-if="value.isDelete"><i class="el-icon-close"  ></i></label>
-                </el-form-item>
-                <el-form-item>
-                  <el-tag v-for="(val,key) in value.propValues" :key="val.value" :closable="val.isCanEdit"  @close="deleteTag(value.propValues,key)">
-                    <el-checkbox name="type" @change="chcekedProp(value,val)" v-model="val.isSelected">{{val.value}}</el-checkbox>
-                  </el-tag>
-                  <el-input
-                    class="input-new-tag"
-                    v-if="value.inputVisible"
-                    v-model="inputValue"
-                    size="small"
-                    @blur="handleInputConfirm(value,value.propValues,'spec')"
+              </div>
+              <div class="specbox">
+                <div class="specitem">
+                  <el-form label-width="130px" v-for="(value,index) in spuSpecList" :label="value.name" :key="value.name">
+                    <el-form-item :label="value.name">
+                      <el-checkbox label="可搜索" v-model="value.isSearch"></el-checkbox>
+                      <el-checkbox label="可展示" v-model="value.isShow"></el-checkbox>
+                      <el-checkbox label="SKU参考"disabled checked></el-checkbox>
+                      <label class="el-upload-list__item-status-label" v-if="value.isSelect"><i class="el-icon-upload-success el-icon-check"></i></label>
+                      <label class="el-upload-list__item-status-label removeprop" @click="removeProp(spuSpecList,index)" v-if="value.isDelete"><i class="el-icon-close"  ></i></label>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-tag v-for="(val,key) in value.propValues" :key="val.value" :closable="val.isCanEdit"  @close="deleteTag(value.propValues,key)">
+                        <el-checkbox name="type" @change="chcekedProp(value,val)" v-model="val.isSelected">{{val.value}}</el-checkbox>
+                      </el-tag>
+                      <el-input
+                        class="input-new-tag"
+                        v-if="value.inputVisible"
+                        v-model="inputValue"
+                        size="small"
+                        @blur="handleInputConfirm(value,value.propValues,'spec')"
+                      >
+                      </el-input>
+                      <el-button  class="button-new-tag" v-else size="small" @click="showInput(value,'spec')">+ 添加</el-button>
+                    </el-form-item>
+                  </el-form>
+                  <el-popover
+                    ref="popover1"
+                    placement="right"
+                    title="自定义规格"
+                    width="300"
+                    trigger="click"
+                    v-model="showSpecPopver"
                   >
-                  </el-input>
-                  <el-button  class="button-new-tag" v-else size="small" @click="showInput(value,'spec')">+ 添加</el-button>
-                </el-form-item>
-              </el-form>
-              <el-popover
-                ref="popover1"
-                placement="right"
-                title="自定义规格"
-                width="300"
-                trigger="click"
-                v-model="showSpecPopver"
-              >
-                <el-form :inline="true" class="demo-form-inline">
-                  <el-form-item label="">
-                    <el-input v-model="specName" placeholder="产品规格名称"></el-input>
-                  </el-form-item>
-                  <el-form-item>
-                    <el-button type="primary" @click="addSpec">确定</el-button>
-                  </el-form-item>
-                </el-form>
-              </el-popover>
-              <el-button type="primary" class="addSpec" v-popover:popover1>自定义规格</el-button>
-            </div>
-          </div>
-        </el-card>
-        <el-card class="box-card" v-show="settingSwitch == 'info'" style="margin-top:20px">
-          <div slot="header" class="clearfix">
-            <span>产品属性设置</span>
-          </div>
-          <div class="specbox">
-            <div class="specitem">
-              <el-form label-width="130px" v-for="(value,index) in spuAttrList" :label="value.name" :key="value.name">
-                <el-form-item :label="value.name">
-                  <el-checkbox label="可搜索"></el-checkbox>
-                  <el-checkbox label="可展示"></el-checkbox>
-                  <label class="el-upload-list__item-status-label" v-if="value.isSelect"><i class="el-icon-upload-success el-icon-check"></i></label>
-                  <label class="el-upload-list__item-status-label removeprop" @click="removeProp(spuAttrList,index)" v-if="value.isDelete"><i class="el-icon-close"  ></i></label>
-                </el-form-item>
-                <el-form-item>
-                  <el-tag v-for="(val,key) in value.propValues" :key="val.value" :closable="val.isCanEdit"  @close="deleteTag(value.propValues,key)">
-                    <el-checkbox name="type" @change="chcekedProp(value,val)" v-model="val.isSelected">{{val.value}}</el-checkbox>
-                  </el-tag>
-                  <el-input
-                    class="input-new-tag"
-                    v-if="value.inputVisible"
-                    v-model="inputValue"
-                    size="small"
-                    @blur="handleInputConfirm(value,value.propValues,'attr')"
-                  >
-                  </el-input>
-                  <el-button  class="button-new-tag" v-else size="small" @click="showInput(value,'attr')">+ 添加</el-button>
-                </el-form-item>
-              </el-form>
-              <el-popover
-                ref="popover2"
-                placement="right"
-                title="自定义属性"
-                width="300"
-                trigger="click"
-                v-model="showAttrPopver"
-              >
-                <el-form :inline="true" class="demo-form-inline">
-                  <el-form-item label="">
-                    <el-input v-model="specName" placeholder="产品规格名称"></el-input>
-                  </el-form-item>
-                  <el-form-item>
-                    <el-button type="primary" @click="addAttr">确定</el-button>
-                  </el-form-item>
-                </el-form>
-              </el-popover>
-              <el-button type="primary" class="addSpec" v-popover:popover2>自定义属性</el-button>
-            </div>
-          </div>
-        </el-card>
+                    <el-form :inline="true" class="demo-form-inline">
+                      <el-form-item label="">
+                        <el-input v-model="specName" placeholder="产品规格名称"></el-input>
+                      </el-form-item>
+                      <el-form-item>
+                        <el-button type="primary" @click="addSpec">确定</el-button>
+                      </el-form-item>
+                    </el-form>
+                  </el-popover>
+                  <el-button type="primary" class="addSpec" v-popover:popover1>自定义规格</el-button>
+                </div>
+              </div>
+            </el-card>
         </div>
       </transition>
-      <transition name="slide-fade" >
-      <el-card class="box-card" v-show="settingSwitch == 'spec'">
-        <div slot="header" class="clearfix">
-          <span>多级规格</span>
-        </div>
-
-      </el-card>
-      </transition>
+      <el-button type="primary" @click="addSpu()" class="addSpu">添加产品</el-button>
     </div>
   </div>
 </template>
 <script>
+  import spuService from '@/services/spuService'
+  import categoryService from '@/services/categoryService'
   export default {
     name : 'addSpuSpec',
     data(){
@@ -178,50 +123,8 @@
         showSpecPopver : false,
         showAttrPopver : false,
         spuAttrList : [],
-        spuSpecList : [
-          {
-            "inputVisible":false, // 自己加的 是否显示添加input
-            "isDelete" : false,// 自己加的 单条是否可删除
-            "isSelect" : false,// 自己加的 单条是否被选中
-            "isSearch" : false,// 自己加的 可搜索
-            "isShow" : false,// 自己加的 可展示
-            "attribute":1024,
-            "categoryId":1,
-            "cdate":1514262338000,
-            "edate":1514262241000,
-            "id":7,
-            "name":"颜色",
-            "propValue":"红,黄,蓝",
-            "propValues":[ // 自己拼的
-              {value : "红", isCanEdit : false,isSelected : false,sinr : ''},
-              {value : "黄", isCanEdit : false,isSelected : false,sinr : ''},
-              {value : "蓝", isCanEdit : false,isSelected : false,sinr : ''},
-            ],
-            "status":0,
-            "valueType":1
-          },
-          {
-            "inputVisible":false, // 自己加的
-            "isDelete" : false,// 自己加的 单条是否可删除
-            "isSelect" : false,// 自己加的 单条是否被选中
-            "isSearch" : false,// 自己加的 可搜索
-            "isShow" : false,// 自己加的 可展示
-            "attribute":1024,
-            "categoryId":1,
-            "cdate":1514339825000,
-            "edate":1514339729000,
-            "id":9,
-            "name":"内存",
-            "propValue":"64G,128G,256G",
-            "propValues":[
-              {value : "64G", isCanEdit : false,isSelected : false,sinr : ''},
-              {value : "128G", isCanEdit : false,isSelected : false,sinr : ''},
-              {value : "256G", isCanEdit : false,isSelected : false,sinr : ''},
-            ],
-            "status":0,
-            "valueType":1
-          }
-        ],
+        saleSpec : "",
+        spuSpecList : [],
         selectedSpecList: [],
         test: {},
         test2: {},
@@ -229,6 +132,26 @@
         postSelectedSpecList : [],
         showPreview : true,
       }
+    },
+    mounted(){
+        categoryService.getCateProps(this.$route.params.spuInfo.categoryId).then((data)=>{
+            data.datalist.forEach(function(value,index,array){
+                value.inputVisible = false; // 自己加的 是否显示添加input
+                value.isDelete = false; //自己加的 单条是否可删除
+                value.isSelect = false; //自己加的 单条是否被选中
+                value.isSearch = false; //自己加的 可搜索
+                value.isShow = false; //自己加的 可展示
+                value.propValues.forEach(function(prop,key,array){
+                    let Obj = {
+                        isCanEdit : false,
+                        isSelected : false,
+                        value : prop
+                    };
+                    array[key] = Obj;
+                });
+            });
+            this.spuSpecList = data.datalist
+        });
     },
     methods:{
       switchHandChange(val){
@@ -248,45 +171,8 @@
 //        });
       },
 
-      test3(parent, properties, depth){
-        if(depth >= properties.length){
-          return;
-        }
-        let self = this;
-        let childDepth = depth + 1;
-        properties[depth].propValues.forEach(function (value, index) {
-          // 设置属性
-          if(parent[value.value] == undefined){
-            parent[value.value] = {
-              isSelected : value.isSelected,
-              children : {}
-            };
-          }
-          self.test3(parent[value.value].children, properties, childDepth);
-        });
-      },
-
-      test4(parent, properties, path){
-        let self = this, subPath ='';
-        for(let key in properties) {
-          if (properties[key].isSelected) {
-            subPath = path + "-" + key;
-            parent = new Set([...parent,{
-              value : key,
-              path :  subPath
-            }]);
-          }
-          this.test4(parent, properties[key].children, subPath);
-        }
-      },
 
       chcekedProp(item,itemprop){
-  //        let self = this;
-  //        self.test2 = {};
-  //        self.test5 = [];
-  //        self.test3(self.test2, self.spuSpecList, 0);
-  //        self.test4(self.test5, self.test2, "");
-  //        console.log(this.test5);
         let count = 0; let selectProps = []; let subSelectProps = [];
         item.propValues.forEach(function(value,index){
           if(value.isSelected){
@@ -307,9 +193,9 @@
         });
         if(selectedNum > 2){
           this.$ltsMessage.show({type:"error",message:"最多只能选择2条影响SKU的属性"});
-//          itemprop.isSelected = false;
-//          item.isSelect = false;
-//          return false;
+          itemprop.isSelected = false;
+          item.isSelect = false;
+          return false;
         }
         let cloneItem = Object.assign({},item);
         cloneItem.propValues = selectProps;
@@ -339,6 +225,7 @@
         }
       },
       getSkuPropsList(){
+        this.postSelectedSpecList = [];
         let self = this;
         var discards = [];
         for(var i = 0;i<this.selectedSpecList.length;i++){
@@ -364,9 +251,9 @@
       },
       makeProp(spuSpec,prop){
         return {
-          "isShow": spuSpec.isShow,
-          "isSearch": spuSpec.isSearch,
-          "isSku": true,
+          "show": spuSpec.isShow,
+          "search": spuSpec.isSearch,
+          "sku": true,
           "name": spuSpec.name,
           "type": 0,
           "values": prop.value,
@@ -436,6 +323,16 @@
       },
       switchOperation(){
         this.showPreview = !this.showPreview;
+      },
+      addSpu(){
+          let params = {
+              spu_request : this.$route.params.spuInfo,
+              spec : this.$route.params.spuInfo.saleSpec,
+              child_spu_request_list : this.postSelectedSpecList,
+          };
+          spuService.addSpu(params).then((data)=>{
+              console.log(data);
+          });
       },
     },
   }
@@ -580,5 +477,9 @@
     .el-upload-list__item-status-label{
       display: none;
     }
+  }
+  .addSpu{
+      margin-top: 20px;
+      text-align: center;
   }
 </style>

@@ -38,13 +38,13 @@
                             </el-select>
                         </div>
                         <div v-else-if="val.type === 'cascader'">
-                            <!--<el-cascader-->
-                                <!--v-model="formInline[val.bindValue]"-->
-                                <!--:placeholder="val.bindPlaceholder"-->
-                                <!--expand-trigger="hover"-->
-                                <!--@change="cascAderHandleChange"-->
-                                <!--:options="cascader.options">-->
-                            <!--</el-cascader>-->
+                            <el-cascader
+                                v-model="formInline[val.bindValue]"
+                                :placeholder="val.bindPlaceholder"
+                                expand-trigger="hover"
+                                @change="cascAderHandleChange"
+                                :options="cascader.options">
+                            </el-cascader>
                         </div>
                         <div v-else-if="val.type == 'searchbutton'">
                             <el-button type="primary" @click="onSubmit" icon="el-icon-search">{{val.bindValue}}
@@ -86,7 +86,6 @@
                     this.formInline.start_date = Date.parse(this.datelist[0]);
                     this.formInline.end_date = Date.parse(this.datelist[1]);
                 }
-                console.log(this.formInline)
                 this.$emit('get-from', this.formInline);
                 if (this.formInline.callbackParameter) {
                     this.formInline.callbackParameter = {};
