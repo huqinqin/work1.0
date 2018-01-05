@@ -1,4 +1,4 @@
-import {request} from 'ltsutil'
+// import {request} from 'ltsutil'
 export default {
   /**
    * return  datalist 工程商列表
@@ -35,7 +35,7 @@ export default {
   },
   /**
    * return  datalist 工程商列表
-   * params {}
+   * params {store_request：} JDON串
    * params {}
    * params {}
    * @auth taohua

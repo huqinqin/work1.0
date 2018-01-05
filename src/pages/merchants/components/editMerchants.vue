@@ -1,9 +1,5 @@
 <template>
   <div>
-    <el-breadcrumb separator="/" style="margin-bottom:20px;">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item >编辑工程商</el-breadcrumb-item>
-    </el-breadcrumb>
     <el-form ref="form" :model="form" :rules="rules" label-position="left">
       <el-form-item label="uid">{{form.uid}}</el-form-item>
       <el-form-item label="店铺名称" label-width="100px" prop="shopName">
