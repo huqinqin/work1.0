@@ -9,6 +9,7 @@
                              :key="field.value"
                              :type="field.type"
                              :prop="field.value"
+                             :width="field.width"
                              :label="index">
             </el-table-column>
             <el-table-column v-for="(field, index) in table.tableField"

@@ -6,11 +6,13 @@
                     <el-form-item v-for="(val,key) in menubar" :label="val.label" :key="val.bindValue">
                         <div v-if="val.type == 'date'">
                             <el-date-picker
-                                v-model="datelist"
+                                v-model="formInline[val.bindValue]"
                                 type="datetimerange"
                                 range-separator="至"
                                 start-placeholder="开始日期"
                                 end-placeholder="结束日期"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                :picker-options="datePickerOptions"
                                 align="right">
                             </el-date-picker>
                         </div>
@@ -60,7 +62,7 @@
     </div>
 </template>
 <script>
-    import {request} from 'ltsutil'
+    import {request, dateUtils} from 'ltsutil'
 
     export default {
         name: 'lts-form',
@@ -74,7 +76,10 @@
 
                 restaurants: [],
                 state1: '',
-                state2: ''
+                state2: '',
+                datePickerOptions: {
+                    shortcuts: dateUtils.datePickerOptionsShortcuts
+                }
             }
         },
         mounted() {
