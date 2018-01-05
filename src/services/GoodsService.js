@@ -28,8 +28,7 @@ export default {
    * wholesale_item
    * item_props_list
    */
-  modifyWithProps(){
-    let params = {};
+  modifyWithProps(params){
     return request.api('/wholesale/item/modify_with_props',params)
   },
 }

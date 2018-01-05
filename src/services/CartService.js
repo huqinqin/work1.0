@@ -63,9 +63,9 @@ export default {
    * @auth taohua
    * @remark 查询购物车
    */
-  queryCartList(user_id){
+  queryCartList(bizparams){
     let params = {
-      user_id: user_id
+      user_id: bizparams.user_id
     };
     console.log(params);
     return request.api('/wholesale/cart/queryCartList',params)

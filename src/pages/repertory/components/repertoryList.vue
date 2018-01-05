@@ -1,5 +1,10 @@
 <template>
     <div>
+        <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+          <el-tab-pane label="库存管理" name="manage">
+          </el-tab-pane>
+          <el-tab-pane label="库存明细列表" name="list"></el-tab-pane>
+        </el-tabs>
         <lts-search-from @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-from>
         <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination" @menuClick="handleMenuItemClick"></lts-table>
     </div>
@@ -39,8 +44,7 @@
                         }
                     ],
                     formInline: {
-                        shopName: '',
-                        contact: '',
+                       
                     }
                 },
                 pagination: {
@@ -51,8 +55,8 @@
                     layout: 'total, sizes, prev, pager, next, jumper' // total 总条目数  prev 上一页 next 下一页 sizes 支持分组
                 },
                 table: {
-                    datalist: true,
-                    tableDataForm: 'api', // json
+                    tableData : [],
+                    tableDataForm: 'json', // json
                     tableField: {
                         '名字': {'value': 'shop_name', 'type': 'text'},
                         '地址': {'value': 'address', 'type': 'text'},
@@ -61,12 +65,9 @@
                     }
                 },
                 api: {
-                    method: 'wbm.tp.merchant.store.get_store_list_byCondition',
+                    method: '/sku/query_list',
                     bizparams: {
-                        orderBy: '',
-                        shop:{},
-                        lcCode: '330103',
-                        openCode: '331088'
+
                     }
                 },
 

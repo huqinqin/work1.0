@@ -2,19 +2,14 @@
   <div class="addGoods">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <el-form-item label="商品名称" prop="goodsName">
-        <el-input v-model="ruleForm.goodsName"></el-input>
+        <el-input v-model="this.spuDO.item_name"></el-input>
       </el-form-item>
       <el-form-item label="库存" >
         <el-table
-          :data="spuDO.childSpuDTOList"
+          :data="itemPropDTO.skuItemPropList"
           style="width: 100%">
           <el-table-column
-            prop="spuName"
-            label="名称"
-            width="180">
-          </el-table-column>
-          <el-table-column
-            prop="sinr"
+            prop="sin"
             label="条码"
             width="180">
           </el-table-column>
@@ -22,7 +17,7 @@
             label="属性"
             width="180">
             <template slot-scope="scope">
-              <span class="spec" v-for="(value,index) in scope.row.spuPropDOList" :key="value.id">{{value.propValue}}</span>
+              <span class="spec" v-for="(value,key) in scope.row.propValue" :key="value.id">{{value}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -49,10 +44,10 @@
       </el-form-item>
       <el-form-item label="属性" >
         <el-table
-          :data="spuDO.spuPropDOList"
+          :data="itemPropDTO.itemPropMapList"
           style="width: 100%">
           <el-table-column
-            prop="name"
+            prop="propName"
             label="名称"
             width="180">
           </el-table-column>
@@ -99,6 +94,7 @@
           ]
         },
         spuDO : {},
+        itemPropDTO : {},
         inputValue : "",
       }
     },
@@ -106,23 +102,29 @@
       getWithProps(){
         let itemId = this.$route.params.id;
         goodsService.getWithProps(itemId).then((data)=>{
-          data.data.spuPropDOList.forEach(function(value,index,array){
-            value.inputVisible = false; // 自己加的 是否显示添加input
-            value.propValues = value.propValue.split(",");
-            value.propValues.forEach(function(prop,key,array){
-              let Obj = {
-                isCanEdit : false,
-                isSelected : false,
-                value : prop
-              };
-              array[key] = Obj;
-            });
-          });
-          data.data.childSpuDTOList.forEach(function (value,index,array) {
-            value.storage = "";
-            value.price = "";
+          data.data.itemPropDTO.skuItemPropList.forEach(function(value,index,array){
+            value.price = value.price / 100;
+            value.propValue = JSON.parse(value.propValue);
           })
+          data.data.itemPropDTO.itemPropMapList.forEach(function(value,index,array){
+            value.propValues = [];
+            value.inputVisible = "";
+            value.propList.forEach(function(val,key,array){
+              val.propValue = JSON.parse(val.propValue);
+              for(let prop in val.propValue){
+                value.propValues.push({
+                   value : val.propValue[prop],
+                   isCanEdit : true,
+                   isSelect : true,
+                   spuId : val.spuId,
+                   id : val.id,
+                   itemId : '',
+                })
+              }
+            })
+          });
           this.spuDO = data.data;
+          this.itemPropDTO = data.data.itemPropDTO;
         },(msg)=>{
           console.log(msg);
         });
@@ -137,9 +139,13 @@
           item.propValues.push({
             value : inputValue,
             isCanEdit : true,
-            isSelected : false,
+            isSelect : true,
+            itemId : this.spuDO.id,
+            skuId : '',
+            id : '',
           });
         }
+        console.log(item);
         item.inputVisible = false;
         this.inputValue = '';
       },
@@ -148,27 +154,18 @@
       },
       submitForm(){
         let props = [];
-        this.spuDO.childSpuDTOList.forEach(function (value,index,array) {
-          value.spuPropDOList.forEach(function(val,key,array){
-            let objKey = val.name;let propValue = {};
-            propValue[objKey] = val.propValue
-            console.log(propValue);
+        this.itemPropDTO.skuItemPropList.forEach(function (value,index,array) {
             props.push(
               {
                 "price":value.price * 100,
                 "storage" : value.storage,
-                "priceAction":0,
-                "required":false,
-                "valueType":0,
-                "spuId":val.spuId,
+                "id" : value.id,
                 "sku" : true,
-                "propValue":JSON.stringify(propValue)
               }
             )
-          })
         });
-        this.spuDO.spuPropDOList.forEach(function (value,index,array) {
-          let propValue = {};let objKey = value.name,porpslist = [];
+        this.itemPropDTO.itemPropMapList.forEach(function (value,index,array) {
+          let propValue = {};let objKey = value.propName,porpslist = [];
           value.propValues.forEach(function(val,key,array){
             if(val.isSelect){
               propValue[objKey] = val.value
@@ -184,6 +181,9 @@
                   "spec":false,
                   "system":false,
                   "valueType":0,
+                  "spuId" : val.spuId,
+                  "itemId" : val.itemId,
+                  "id" : val.id,
                   "propValue":JSON.stringify(propValue)
                 }
               )
@@ -192,10 +192,10 @@
 
         });
         let wholesale_item = {
-          "itemName" : this.ruleForm.goodsName,
-          "spuId":this.spuDO.id,
+          "itemName" : this.spuDO.item_name,
+          "id": this.spuDO.id,
+          "spuId":this.spuDO.spuId,
           "sin" : this.spuDO.sin,
-          "sinr":this.spuDO.sinr,
           "price":100,
           "storage" : 0,
           "unit":this.spuDO.unit,
@@ -207,13 +207,18 @@
           item_props : JSON.stringify(props),
           wholesale_item : JSON.stringify(wholesale_item),
         };
-        goodsService.addWithProps(params).then((data)=>[
+        goodsService.modifyWithProps(params).then((data)=>[
 
         ]);
       },
     },
     mounted(){
       this.getWithProps();
+    },
+    computed: {
+      filteredPropValue(){
+        console.log(this.propValue);
+      },
     },
   }
 </script>
