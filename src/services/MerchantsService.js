@@ -1,4 +1,5 @@
-// import {request} from 'ltsutil'
+import {request} from 'ltsutil'
+
 export default {
   /**
    * return  datalist 工程商列表
