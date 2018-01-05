@@ -9,15 +9,13 @@ export default new Router({
     routes: [
         {
             path: '/',
-            component: RepertoryManage
+            name: "list",
+            component: RepertoryList
         },
         {
             path: '/manage',
+            name: 'manage',
             component: RepertoryManage
-        },
-        {
-            path: '/list',
-            component: RepertoryList
         }
     ]
 })
