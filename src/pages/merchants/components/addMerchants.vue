@@ -142,8 +142,8 @@
         isRequired: true,
         checkResult: '',
         locationOptions: [{
-          value: '浙江省',
-          label: '浙江省',
+          value: '浙江',
+          label: '浙江',
           children: [{
             value: '杭州市',
             label: '杭州市',
@@ -159,20 +159,6 @@
             children: [{
               value: '乐清市',
               label: '乐清市'}
-            ]}
-          ]
-        }, {
-          value: '云南省',
-          label: '云南省',
-          children: [{
-            value: '丽江市',
-            label: '丽江市',
-            children: [{
-              value: '古城区',
-              label: '古城区'
-            }, {
-              value: '永胜县',
-              label: '永胜县'}
             ]}
           ]
         }],
@@ -309,9 +295,9 @@
       province(value){
         console.log(this.location)
         let location = {}
-        location.province = value[0]
-        location.city = value[1]
-        location.district = value[2]
+        location.province = value[0] ? value[0] : ''
+        location.city = value[1] ? value[1] : ''
+        location.district = value[2] ? value[2] : ''
         console.log(location)
 
         let para = Object.assign({},this.lApi.bizparams,location)
@@ -319,34 +305,26 @@
 
         link.then((data) => {
           console.log(data.datalist)
+          let city = []
+          merchantsService.getPCD(city,'city',data,this.locationOptions[location.province])
         }, (msg) => {
           this.$ltsMessage.show({type: 'error', message: '获取省市区失败'})
         })
       }
     },
     mounted(){
-      this.$on('confirm',function(msg){
-        alert(msg)
-      })
-      let location = {
-        province : '',
-        city : '',
-        district : ''
-      }
-      let para = Object.assign({},this.lApi.bizparams,location)
+      // this.$on('confirm',function(msg){
+      //   alert(msg)
+      // })
+
+      // 把省市区放到级联选择器里
+      let para = Object.assign({},this.lApi.bizparams,{province:'',city:'',district:''})
       let link = request.api(this.lApi.method, para)
 
       link.then((data) => {
-        console.log(data.datalist)
         let province = []
-        for (let i = 1; i < data.datalist.length; i++){
-
-          if (province.indexOf(data.datalist[i].province) === -1){
-              province.push(data.datalist[i].province)
-          }else{
-          }
-        }
-        console.log(province)
+        this.locationOptions = merchantsService.getPCD(province,data,this.locationOptions)
+        // console.log(this.locationOptions)
       }, (msg) => {
         this.$ltsMessage.show({type: 'error', message: '获取省市区失败'})
       })

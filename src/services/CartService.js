@@ -8,6 +8,7 @@ export default {
    * param cartItemKey 商品信息
    * param itemPropDOS 商品属性信息
    * @autor 小猪
+   * remark 添加购物车
    */
   putCartPlus(uid,param){
     let params = {
@@ -69,5 +70,32 @@ export default {
     };
     console.log(params);
     return request.api('/wholesale/cart/queryCartList',params)
+  },
+
+  /**
+   * return
+   * params {wholesale_trade_request: ''} wholesale_trade_request
+   * @auth taohua
+   * @remark 订单提交
+   */
+  createTrade(form){
+    let params = {
+      wholesale_trade_request: form
+    };
+    console.log(params);
+    return request.api('/wholesale/trade',params)
+  },
+  /**
+   * return
+   * params {wholesale_trade_request: ''} wholesale_trade_request
+   * @auth taohua
+   * @remark 订单预提交
+   */
+  preCreateTrade(form){
+    let params = {
+      wholesale_trade_request: form
+    };
+    console.log(params);
+    return request.api('/wholesale/trade',params)
   },
 }

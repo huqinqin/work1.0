@@ -19,6 +19,7 @@
       return {
         api: {
           method: '/installer/getStoreList',
+          // method: '/installer/getStoreListByCondition',
           bizparams: {
             order_by: 'id',
           }
@@ -115,12 +116,12 @@
       // merchantsService.getMerchantsList()
     },
     watch: {
-      form: {
-        handler: function () {
-          this.api.bizparams.shop = JSON.stringify(this.form.formInline)
-        },
-        deep: true
-      }
+      // form: {
+      //   handler: function () {
+      //     this.api.bizparams.shop = JSON.stringify(this.form.formInline)
+      //   },
+      //   deep: true
+      // }
     }
   }
 </script>

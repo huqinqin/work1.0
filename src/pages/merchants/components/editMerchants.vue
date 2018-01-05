@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form ref="form" :model="form" :rules="rules" label-position="left">
-      <el-form-item label="uid">{{form.uid}}</el-form-item>
+      <el-form-item label="userId">{{form.uid}}</el-form-item>
       <el-form-item label="店铺名称" label-width="100px" prop="shopName">
         <el-input v-model="form.shopName"></el-input>
       </el-form-item>

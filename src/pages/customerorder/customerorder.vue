@@ -40,7 +40,7 @@
                :t-table="itemTable"
                :t-pagination="itemTable.pagination"
                ref="itemTable"
-               @inputNumberChange="getCartItem"></lts-table>
+               @inputNumberChange="addCart"></lts-table>
          </div>
         </el-card>
       </transition>
@@ -58,7 +58,7 @@
                 :t-table="cartItemTable"
                 :t-pagination="cartItemTable.pagination"
                 :t-tabledata="cartItemList"
-                @inputNumberChange="getCartItem"></lts-table>
+                @inputNumberChange="addCart"></lts-table>
             <div class="cartbottom">
               <el-tag>
                 共<span class="num">{{cart.cartTotal}}</span>
@@ -209,11 +209,8 @@
           ],
           // 若需要把form参数供其他组件使用。需要把这些参数传给使用的组件
           formInline: {
-            sort: 'id desc',
-            itemName: "111",
-
-            // short_search : '',
-            // item_name : '',
+            // sort: 'id desc',
+            // itemName: "111",
             //需要从处理结果另外带回来的参数 存这里 默认返回一条对象。若返回多个。自己
             callbackParameter: {},
           },
@@ -222,14 +219,7 @@
           api: {
             method: '/wholesale/item/getList',
             bizparams: {
-              page: 1,
-              page_size: 20,
-              p_user_id: 158635,
-              user_id: 138890,
-              shop_id: 5956,
-              sku_uid: 1,
-              carrier_uid: 1,
-              item_search: {}
+              user_id: '',
             },
           },
           tableField: {
@@ -256,9 +246,9 @@
             "名字": {"value": "item_name", "type": "text"},
             "ID": {"value": "puser_id", "type": "text"},
             "类目ID": {"value": "category_id", "type": "text"},
-            "价格": {"value": "price_value", "type": "text"},
+            "价格": {"value": "price", "type": "text"},
             "类型": {"value": "discount_type", "type": "text"},
-            "订单数量": {"value": "order_num", "type": "text"},
+            "订单数量": {"value": "num", "type": "text"},
             "abced": {"value": "id", "type": "text"},
             "输入数量": {"value": "num", "type": "inputNumber", "width": "200px"},
           },
@@ -293,23 +283,24 @@
         }
         this.customerUid = val.callbackParameter.uid;
         this.customerList.push(val.callbackParameter);
+        this.itemTable.api.bizparams.user_id = this.customerUid;
         this.queryCartList(this.customerUid);
       },
       getItemParameter(val) {
         this.itemform.formInline = val;
       },
       // 添加购物车
-      getCartItem(item) {
+      addCart(item) {
         cartService.putCartPlus(this.customerUid,item).then((data) => {
-            this.queryCartList();
+          this.queryCartList();
         },(msg) => {
            this.$ltsMessage.show({type:"error",message:msg.errorMessage})
         });
       },
       queryCartList(){
-        cartService.queryCartList(this.customerUid).then((data)=>{
+        cartService.queryCartList(this.customerUid).then((data) => {
           this.cartItemList = data.data;
-        },(msg)=>{
+        },(msg) => {
           this.$ltsMessage.show({type:"error",message:msg.errorMessage})
         })
       },
@@ -358,7 +349,7 @@
               array.splice(index, 1);
             }
             this.cart.cartTotal = parseInt(value.num) + parseInt(this.cart.cartTotal);
-            this.cart.cartPriceTotal += parseInt(value.num) * parseInt(value.price_real_value);
+            this.cart.cartPriceTotal += parseInt(value.num) * parseInt(value.price);
           })
         }
       }

@@ -49,5 +49,27 @@ export default {
     console.log(params)
     return request.api('/installer/update',params)
   },
+  // 把省市区放到级联选择器里
+  getProvince(item,data,option){
+    for (let i = 0; i < data.datalist.length; i++){
+      if (item.indexOf(data.datalist[i].province) === -1){
+        item.push(data.datalist[i].province)
+      }else{
+      }
+    }
+    for(let i = 0; i < item.length; i++){
+      let pro = {
+        value:item[i],
+        label:item[i],
+        children:[]
+      }
+      option.push(pro)
+    }
+    console.log(option)
+    return option
+  },
+  // 获取到市
+  getCity(item,data,option){
 
+  }
 }
