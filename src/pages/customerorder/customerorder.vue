@@ -39,7 +39,8 @@
                :t-form="itemform.formInline"
                :t-table="itemTable"
                :t-pagination="itemTable.pagination"
-               @inputNumberChang="getCartItem"></lts-table>
+               ref="itemTable"
+               @inputNumberChange="getCartItem"></lts-table>
          </div>
         </el-card>
       </transition>
@@ -57,7 +58,7 @@
                 :t-table="cartItemTable"
                 :t-pagination="cartItemTable.pagination"
                 :t-tabledata="cartItemList"
-                @inputNumberChang="getCartItem"></lts-table>
+                @inputNumberChange="getCartItem"></lts-table>
             <div class="cartbottom">
               <el-tag>
                 共<span class="num">{{cart.cartTotal}}</span>
@@ -104,7 +105,7 @@
   import ltsTable from '@/common/components/lts-table.vue'
   import ltsSearchFrom from '@/common/components/lts-search-from.vue'
   import customerOrderService from '@/services/CustomerOrderService.js'
-
+  import cartService from '@/services/CartService.js'
   export default {
     props: '',
     components: {
@@ -230,7 +231,6 @@
               sku_uid: 1,
               carrier_uid: 1,
               item_search: {}
-
             },
           },
           tableField: {
@@ -273,6 +273,7 @@
         },
         // 抄单客户
         customerList: [],
+        customerUid: "",
         // 购物车商品
         cartItemList: [],
         cart: {
@@ -291,29 +292,27 @@
           this.$ltsMessage.show({"type": "error", "message": "请选择客户"})
           return false;
         }
+        this.customerUid = val.callbackParameter.uid;
         this.customerList.push(val.callbackParameter);
+        this.queryCartList(this.customerUid);
       },
       getItemParameter(val) {
         this.itemform.formInline = val;
       },
       // 添加购物车
       getCartItem(item) {
-        if (this.cartItemList.length === 0) {
-          this.cartItemList.push(item);
-        } else {
-          let count = 0;
-          for (let value of this.cartItemList) {
-            if (value.id === item.id) {
-              count++;
-              value.num += item.num;
-              break;
-            }
-          }
-          if (count === 0) {
-            this.cartItemList.push(item);
-          }
-        }
-        console.log(this.cartItemList)
+        cartService.putCartPlus(this.customerUid,item).then((data)=>{
+            this.queryCartList();
+        },(msg)=>{
+           this.$ltsMessage.show({type:"error",message:msg.errorMessage})
+        });
+      },
+      queryCartList(){
+        cartService.queryCartList(this.customerUid).then((data)=>{
+          this.cartItemList = data.data;
+        },(msg)=>{
+          this.$ltsMessage.show({type:"error",message:msg.errorMessage})
+        })
       },
       handleClose(index) {
         this.customerList.splice(index, 1);
@@ -327,6 +326,7 @@
       },
       closeOrder() {
         this.isShowOrder = false;
+        this.$refs.itemTable.refresh();
       },
       getJsonData: function (json) {
         if (json) {
@@ -346,7 +346,7 @@
       }
     },
     mounted(){
-      customerOrderService.queryCartList(this.itemTable.api.bizparams)
+
     },
     watch: {
       cartItemList: {

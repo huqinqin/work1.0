@@ -38,8 +38,8 @@
                         </div>
                     </div>
                     <div v-else-if="field.type === 'inputNumber'">
-                        <el-input-number v-model="scope.row[field.value]" size="small"
-                                         @change="inputNumberhandleChange(scope.row)" :min="0"></el-input-number>
+                        <el-input-number v-model="scope.row[field.value]" :data="scope.row" size="small"
+                                         @change="inputNumberhandleChange(scope.row)"  :min="0"></el-input-number>
                     </div>
                 </template>
             </el-table-column>
@@ -193,7 +193,9 @@
              * http://element.eleme.io/#/zh-CN/component/input-number
              */
             inputNumberhandleChange(item) {
-                this.$emit('inputNumberChang', item)
+              this.$nextTick( ()=> {
+                this.$emit('inputNumberChange', item)
+              })
             },
             /**
              * 自定义封装 TABLE 下拉菜单点击传递数据给父类做处理
@@ -202,11 +204,27 @@
                 const item = data.$vnode.data.attrs.data
                 this.$emit('menuClick', command, item)
             },
+            emitInputChange(){
+              console.log(this);
+            },
+            /**
+            * 自定义封装 TABLE 下拉菜单点击传递数据给父类做处理
+            */
+            tableRowChange(command, data) {
+                const item = data.$vnode.data.attrs.data
+                this.$emit('menuClick', command, item)
+            },
             /**
              * 自定义封装 TABLE 单个菜单点击传递数据给父类做处理
              */
             menuClick(command, data) {
                 this.$emit('menuClick', command, data)
+            },
+            /**
+            * 自定义封装 TABLE refresh 父组件通过ref调用
+            */
+            refresh(command, data) {
+              this.getTableList();
             }
         },
         /**
