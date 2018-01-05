@@ -34,7 +34,7 @@
   import {ltsTable,ltsSearchForm} from 'ui'
   import categoryService from '@/services/CategoryService'
   import spuService from '@/services/SpuService'
-  export default {
+  export  default {
     name : 'selectCategory',
     components : {
       ltsTable,ltsSearchForm
