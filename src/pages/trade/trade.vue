@@ -2,9 +2,8 @@
   <div id="app">
     <el-breadcrumb separator="/" style="margin-bottom:20px;">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: '/add' }">新增子市场</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: '/edit' }">编辑子市场</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: '/list' }">子市场列表</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/add' }">退款管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/edit' }">收款管理</el-breadcrumb-item>
     </el-breadcrumb>
     <router-view />
   </div>

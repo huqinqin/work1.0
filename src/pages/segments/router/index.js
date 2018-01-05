@@ -17,7 +17,7 @@ export default new Router({
             component: AddSegments
         },
         {
-            path: '/edit',
+            path: '/edit/:id',
             component: EditSegments
         },
         {

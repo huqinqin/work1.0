@@ -45,7 +45,7 @@
                                 :placeholder="val.bindPlaceholder"
                                 expand-trigger="hover"
                                 @change="cascAderHandleChange"
-                                :options="cascader.options">
+                                :options="val.options">
                             </el-cascader>
                         </div>
                         <div v-else-if="val.type == 'searchbutton'">

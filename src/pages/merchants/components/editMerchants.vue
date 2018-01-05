@@ -1,9 +1,5 @@
 <template>
   <div>
-    <el-breadcrumb separator="/" style="margin-bottom:20px;">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item >编辑工程商</el-breadcrumb-item>
-    </el-breadcrumb>
     <el-form ref="form" :model="form" :rules="rules" label-position="left">
       <el-form-item label="uid">{{form.uid}}</el-form-item>
       <el-form-item label="店铺名称" label-width="100px" prop="shopName">
@@ -73,11 +69,11 @@
 
 <script>
   import {request} from 'ltsutil'
+  import merchantsService from '@/services/MerchantsService.js'
   export default {
     name: "editMerchants",
     data(){
       return{
-          uid: '30637',
         form:{
           shopName: '',
           lat: '31.617510',
@@ -88,10 +84,8 @@
           contact: '王五',
           contactPhone: '1512222190',
           contactMobile: '1512222190',
-          openCode: '331102',
           lcCode: '110101000000',
-          carrierUid: '45412',
-          ip: '58.83.225.0'
+          uid: '30637'
         },
         location:[],
         address:'',
@@ -144,20 +138,14 @@
           ]
         },
         api: {
-          method: 'wbm.tp.merchant.store.update',
+          method: '/installer/update',
           bizparams: {
-            app_key: '00000-500mi',
-             // edit
-            session: '1111'
           }
         },
         locationApi:{
           api:'',
           method: '',
           bizparams: {
-            app_key: '00000-500mi',
-            method: 'wbm.basic.spot.location.get_ode_byName', // ??????
-            session: '1111'
           }
         }
       }
@@ -187,25 +175,22 @@
         })
         console.log(para)
       },
+
+      // 提交更改
       submit(){
-        let uid = {
-            uid: this.uid
-        }
         let formData = Object.assign({},this.getAddress(), this.form)
-        let para = Object.assign({}, this.api.bizparams,uid)
-        para.store_request = JSON.stringify(formData)
-          console.log(para)
-        let link = request.api(this.api.method, para)
-        link.then((data) => {
+        let editItem = merchantsService.editMerchantsItem(formData)
+
+        editItem.then((data) => {
             this.$ltsMessage.show({type: 'success', message: '编辑成功'})
         }, (msg) => {
-          this.$ltsMessage.show({type: 'error', message: '编辑失败，请稍后重试'})
+          this.$ltsMessage.show({type: 'error', message: msg.errorMessage})
         })
       }
     },
     created(){
-      this.uid = this.$route.params.uid
-      console.log(this.uid)
+      this.form.uid = this.$route.params.uid
+      console.log(this.form.uid)
     }
   }
 </script>

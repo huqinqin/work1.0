@@ -134,7 +134,7 @@
                     "bindValue": "2"
                   }, {"label": "手机", "bindValue": "3"}]
                 },
-                user: {"label": "", "type": "autocomplete", "bindValue": "keywords", "bindPlaceholder": "搜索客户",},
+                user: {"label": "", "type": "autocomplete", "bindValue": 'shop.shopName', "bindPlaceholder": "搜索客户",},
                 search: {"bindValue": "确定", "type": "submitbutton"},
               }
             }
@@ -144,14 +144,13 @@
             page: 1,
             page_size: 100,
             order_by: 'id',
-            // shop:{
-            //   openCode: 123,
-            //   lcCode:123,
-            //   shopName: 'abc'
-            // },
+            shop:{
+              openCode: 123,
+              lcCode:123,
+              shopName: ''
+            },
             // custom_vip : '',
             // custom_type : '',
-            keywords: '',
             //需要从处理结果另外带回来的参数 存这里 默认返回一条对象。若返回多个。自己
             callbackParameter: {},
           },
@@ -162,7 +161,7 @@
             // method: '/installer/getStoreListByCondition',
 
             //定义一个转换的key autocomplete插件需要把显示的字段的key定义成value
-            autoShowKey: 'item_name',
+            autoShowKey: 'shop_name',
             //参数回调函数 目前的用法是来处理返回结果
             callBack: this.getJsonData,
             bizparams:{
@@ -301,9 +300,9 @@
       },
       // 添加购物车
       getCartItem(item) {
-        cartService.putCartPlus(this.customerUid,item).then((data)=>{
+        cartService.putCartPlus(this.customerUid,item).then((data) => {
             this.queryCartList();
-        },(msg)=>{
+        },(msg) => {
            this.$ltsMessage.show({type:"error",message:msg.errorMessage})
         });
       },

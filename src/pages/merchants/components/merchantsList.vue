@@ -1,9 +1,5 @@
 <template>
   <div>
-    <el-breadcrumb separator="/" style="margin-bottom:20px;">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <router-link to="/edit">编辑</router-link>
-    </el-breadcrumb>
     <lts-search-form @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-form>
     <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination" @menuClick="handleMenuItemClick"></lts-table>
   </div>
@@ -22,10 +18,9 @@
     data () {
       return {
         api: {
-          method: 'wbm.tp.merchant.store.get_store_list_byCondition',
+          method: '/installer/getStoreList',
           bizparams: {
-            orderBy: '',
-            shop:{}
+            order_by: 'id',
           }
         },
         form: {
@@ -34,13 +29,11 @@
               'search': {
                 shopNmae: {'label': '', 'type': 'input', 'bindValue': 'shopName', 'bindPlaceholder': '搜索店铺名称'},
                 submit: {'bindValue': '确定', 'type': 'submitbutton'}
-              }
+              },
             }
           ],
           formInline: {
             shopName: '',
-            lcCode: '330103',
-            openCode: '331088'
           }
         },
         pagination: {
@@ -99,13 +92,19 @@
         this.getList()
       },
       getList() {
-        let link = request.api(this.api.method, this.api.bizparams)
-        console.log(this.api.bizparams)
-        link.then((data) => {
+        let getList = merchantsService.getMerchantsList(this.api.bizparams,this.pagination)
+        getList.then((data) => {
           console.log('success')
-        }, (msg) => {
-          this.$ltsMessage.show({type: 'error', message: '查询失败，请稍后重试'})
+        },(msg) => {
+          this.$ltsMessage.show({type: 'error', message: '2333'})
         })
+        // let link = request.api(this.api.method, this.api.bizparams)
+        // console.log(this.api.bizparams)
+        // link.then((data) => {
+        //   console.log('success')
+        // }, (msg) => {
+        //   this.$ltsMessage.show({type: 'error', message: msg.errorMessage})
+        // })
       }
     },
     created(){
@@ -119,7 +118,6 @@
       form: {
         handler: function () {
           this.api.bizparams.shop = JSON.stringify(this.form.formInline)
-          console.log(this.api.bizparams.shop)
         },
         deep: true
       }
