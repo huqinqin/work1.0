@@ -20,7 +20,6 @@ export default {
           puserId : 158635,
           spuId : param.spuId,
           itemId : param.id,
-          propIds : [26,29],
         }
       ),
       item_props : JSON.stringify([
@@ -70,32 +69,5 @@ export default {
     };
     console.log(params);
     return request.api('/wholesale/cart/queryCartList',params)
-  },
-
-  /**
-   * return
-   * params {wholesale_trade_request: ''} wholesale_trade_request
-   * @auth taohua
-   * @remark 订单提交
-   */
-  createTrade(form){
-    let params = {
-      wholesale_trade_request: form
-    };
-    console.log(params);
-    return request.api('/wholesale/trade',params)
-  },
-  /**
-   * return
-   * params {wholesale_trade_request: ''} wholesale_trade_request
-   * @auth taohua
-   * @remark 订单预提交
-   */
-  preCreateTrade(form){
-    let params = {
-      wholesale_trade_request: form
-    };
-    console.log(params);
-    return request.api('/wholesale/trade',params)
-  },
+  }
 }

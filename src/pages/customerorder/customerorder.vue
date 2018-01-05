@@ -106,6 +106,7 @@
   import ltsSearchFrom from '@/common/components/lts-search-from.vue'
   import customerOrderService from '@/services/CustomerOrderService.js'
   import cartService from '@/services/CartService.js'
+  import orderService from '@/services/OrderService.js'
   export default {
     props: '',
     components: {
@@ -244,12 +245,12 @@
           tableDataForm: 'json',
           tableField: {
             "名字": {"value": "item_name", "type": "text"},
-            "ID": {"value": "puser_id", "type": "text"},
+            "puserId": {"value": "puser_id", "type": "text"},
             "类目ID": {"value": "category_id", "type": "text"},
             "价格": {"value": "price", "type": "text"},
             "类型": {"value": "discount_type", "type": "text"},
             "订单数量": {"value": "num", "type": "text"},
-            "abced": {"value": "id", "type": "text"},
+            "ID": {"value": "id", "type": "text"},
             "输入数量": {"value": "num", "type": "inputNumber", "width": "200px"},
           },
           pagination: {
@@ -328,11 +329,32 @@
       },
       // 购物车结算
       submit() {
-        let params = {
-          customerList: this.customerList,
-          cartItemList: this.cartItemList
+        let items = [];
+        this.cartItemList.forEach(function(value,index,array){
+          items.push({
+            id : value.id,
+            num : value.num,
+            puser_id : value.puser_id,
+            spu_id : 179886,
+            item_prop_ids :[
+              26,
+              27
+            ],
+          })
+        });
+        console.log(this.cartItemList);
+        let param = {
+          "userId":this.customerUid,
+          "payMethod":"online",
+          "miliPay":0,
+          "items":items,
+          "remarkList":{
+            "37701":"阿亮发货啊",
+            "42170":"雨茜发货啊"
+          },
+          "source":"work.500mi.com.shop.pifa.market"
         }
-        alert('购物车结算')
+        orderService.createTrade(param);
       }
     },
     mounted(){
