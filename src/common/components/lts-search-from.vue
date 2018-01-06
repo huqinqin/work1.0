@@ -122,7 +122,7 @@
                         let datalist = this.autocomplete.callBack ? this.autocomplete.callBack(resp.datalist) : resp.datalist;
                         resolve(datalist);
                     }, (msg) => {
-                        this.$ltsMessage.show({type: 'error', message: msg.errorMessage});
+                        this.$ltsMessage.show({type: 'error', message: msg.error_message});
                     });
                 });
             },

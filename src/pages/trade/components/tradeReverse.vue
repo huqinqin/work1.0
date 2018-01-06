@@ -83,7 +83,7 @@
           console.log('success')
         }, (msg) => {
           console.log(msg)
-          this.$ltsMessage.show({type: 'error', message: msg.errorMessage})
+          this.$ltsMessage.show({type: 'error', message: msg.error_message})
         })
       },
       oper() {

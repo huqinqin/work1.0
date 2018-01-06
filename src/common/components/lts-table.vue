@@ -130,7 +130,7 @@
                     this.pagination.total.default = resp.total
                 }, (msg) => {
                     this.loading = false
-                    this.$ltsMessage.show({type: 'error', message: msg.errorMessage})
+                    this.$ltsMessage.show({type: 'error', message: msg.error_message})
                 })
             },
 

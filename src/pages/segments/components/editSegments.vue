@@ -95,7 +95,7 @@
             editSegmentsItem.then((data) => {
                   console.log('success')
               }, (msg) => {
-                  this.$ltsMessage.show({type: 'error', message: msg.errorMessage})
+                  this.$ltsMessage.show({type: 'error', message: msg.error_message})
               })
           },
           // 属性转为二进制

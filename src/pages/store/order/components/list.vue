@@ -118,7 +118,7 @@
                             orderService.accept(order.tid).then((resp)=>{
                                 this.$ltsMessage.show({type: 'success', message: "通过成功"});
                             }, (err)=>{
-                                this.$ltsMessage.show({type: 'success', message: "通过失败：" + err.errorMessage});
+                                this.$ltsMessage.show({type: 'success', message: "通过失败：" + err.error_message});
                             });
                         }
 
@@ -146,7 +146,7 @@
                 link.then((resp) => {
                     console.log('success')
                 }, (err) => {
-                    this.$ltsMessage.show({type: 'error', message: '查询失败，请稍后重试:' + err.errorMessage})
+                    this.$ltsMessage.show({type: 'error', message: '查询失败，请稍后重试:' + err.error_message})
                 })
             },
             updateDate() {

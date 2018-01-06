@@ -71,34 +71,34 @@ export default {
         var errorResult = {
             success: false,
             data: xhr.responseText,
-            errorCode: 0,
-            errorName: type,
-            errorMessage: ''
+            error_code: 0,
+            error_name: type,
+            error_message: ''
         };
         switch (type) {
             case 'timeout':
-                errorResult.errorCode = 9001;
-                errorResult.errorMessage = '请求超时';
+                errorResult.error_code = 9001;
+                errorResult.error_message = '请求超时';
                 break;
             case 'error':
                 // BOP封装了下面3个httpStatusCode
                 if (url.indexOf('api.lts.com') > 0 && (xhr.status == 400 || xhr.status == 406 || xhr.status == 500)) {
                     return xhr.responseText;
                 }
-                errorResult.errorCode = xhr.status;
-                errorResult.errorMessage = error;
+                errorResult.error_code = xhr.status;
+                errorResult.error_message = error;
                 break;
             case 'abort':
-                errorResult.errorCode = 9003;
-                errorResult.errorMessage = '请求中断,请检查网络是否连接';
+                errorResult.error_code = 9003;
+                errorResult.error_message = '请求中断,请检查网络是否连接';
                 break;
             case 'parseerror':
-                errorResult.errorCode = 9004;
-                errorResult.errorMessage = '返回的数据解析失败';
+                errorResult.error_code = 9004;
+                errorResult.error_message = '返回的数据解析失败';
                 break;
             default:
-                errorResult.errorCode = 9005;
-                errorResult.errorMessage = '请求异常';
+                errorResult.error_code = 9005;
+                errorResult.error_message = '请求异常';
         }
         return errorResult;
     }
@@ -137,8 +137,8 @@ export default {
                     if (config.isDebug && errorResult) {
                         console.log(errorResult);
                     }
-                    if (errorResult.errorMessage == '') {
-                        errorResult.errorMessage = '接口获取失败'
+                    if (errorResult.error_message == '') {
+                        errorResult.error_message = '接口获取失败'
                     }
                     reject(errorResult)
                 }
@@ -227,9 +227,9 @@ export default {
                     var errorResult = {
                         success: false,
                         data: '',
-                        errorCode: respObj.error_response.code,
-                        errorName: '',
-                        errorMessage: respObj.error_response.msg
+                        error_code: respObj.error_response.code,
+                        error_name: '',
+                        error_message: respObj.error_response.msg
                     };
                     reject(errorResult);
                 }
@@ -241,9 +241,9 @@ export default {
                 reject({
                     success: false,
                     data: '',
-                    errorCode: 99999,
-                    errorName: '',
-                    errorMessage: '系统错误，响应的格式异常！'
+                    error_code: 99999,
+                    error_name: '',
+                    error_message: '系统错误，响应的格式异常！'
                 });
             }
         })

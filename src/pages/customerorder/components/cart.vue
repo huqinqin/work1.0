@@ -47,7 +47,7 @@
         cartService.putCartPlus(this.customerUid,item).then((data) => {
           this.queryCartList();
         },(msg) => {
-          this.$ltsMessage.show({type:"error",message:msg.errorMessage})
+          this.$ltsMessage.show({type:"error",message:msg.error_message})
         });
       },
       // 购物车结算

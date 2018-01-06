@@ -184,7 +184,7 @@
         editItem.then((data) => {
             this.$ltsMessage.show({type: 'success', message: '编辑成功'})
         }, (msg) => {
-          this.$ltsMessage.show({type: 'error', message: msg.errorMessage})
+          this.$ltsMessage.show({type: 'error', message: msg.error_message})
         })
       }
     },

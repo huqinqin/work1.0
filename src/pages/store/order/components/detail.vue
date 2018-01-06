@@ -19,7 +19,7 @@
                 订单号: {{order.tid}}
             </div>
             <div class="text item">
-                创建时间: {{order.cdate}}
+                创建时间: {{order.cdate | timestamp2str}}
             </div>
             <div class="text item">
                 订单状态: {{order.status_title}}
@@ -31,7 +31,7 @@
                 <span>收货信息</span>
             </div>
             <div class="text item">
-                预计收货时间: {{order.book_time}}
+                预计收货时间: {{order.book_time | timestamp2str}}
             </div>
             <div class="text item">
                 收货人: {{order.user_name}}
@@ -52,19 +52,19 @@
                 支付类型: {{order.pay_info.pay_type_title}}
             </div>
             <div class="text item">
-                应付: {{order.pay_value}}
+                应付: {{order.pay | money2str}}
             </div>
             <div class="text item">
-                运费: {{order.fee_hd_all}}
+                运费: {{order.fee_hd_all | money2str}}
             </div>
             <div class="text item">
-                实付: {{order.fee_total_value}}
+                实付: {{order.fee_total | money2str}}
             </div>
             <div class="text item">
                 支付状态: {{order.pay_info.pay_status_title}}
             </div>
             <div class="text item" v-if="order.pay_time">
-                支付时间: {{order.pay_time}}
+                支付时间: {{order.pay_time|timestamp2str}}
             </div>
         </el-card>
 
@@ -79,9 +79,9 @@
                     >
                 </el-table-column>
                 <el-table-column
-                    prop="wholesale_item_d_o.price_value"
                     label="单价"
                     width="80">
+                    <template slot-scope="scope">{{scope.row.wholesale_item_d_o.price | money2str}}</template>
                 </el-table-column>
                 <el-table-column
                     prop="num"
@@ -89,14 +89,14 @@
                     width="80">
                 </el-table-column>
                 <el-table-column
-                    prop="pay"
                     label="应付"
                     width="80">
+                    <template slot-scope="scope">{{scope.row.pay | money2str}}</template>
                 </el-table-column>
                 <el-table-column
-                    prop="pay_real"
                     label="实付"
                     width="80">
+                    <template slot-scope="scope">{{scope.row.pay_real | money2str}}</template>
                 </el-table-column>
                 <el-table-column
                     prop="hd_status_title"

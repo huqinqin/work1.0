@@ -70,7 +70,7 @@
                 userService.logout().then((resp)=>{
                     session.logout();
                 },(err)=>{
-                    this.$ltsMessage.show({type: "error", message: err.errorMessage});
+                    this.$ltsMessage.show({type: "error", message: err.error_message});
                 })
             }
         },

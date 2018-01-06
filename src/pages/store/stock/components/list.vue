@@ -100,7 +100,7 @@
                     }
                 }, (err) => {
                     this.loading = false;
-                    this.$ltsMessage.show({type: 'error', message: '查询失败，请稍后重试:' + err.errorMessage})
+                    this.$ltsMessage.show({type: 'error', message: '查询失败，请稍后重试:' + err.error_message})
                 })
             }
         }
