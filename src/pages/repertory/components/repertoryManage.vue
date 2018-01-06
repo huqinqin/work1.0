@@ -1,6 +1,5 @@
 <template>
   <div class="manage">
-    <el-button @click="dialogFormVisible = true">点击</el-button>
     <lts-search-from @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-from>
     <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination" @menuClick="handleMenuItemClick"></lts-table>
     <el-dialog title="库存设置" :visible.sync="dialogFormVisible">
@@ -53,24 +52,25 @@
       return{
         dialogFormVisible: false,
         handle:{
-          radio:10001,
+          radio:'',
           type:'采购入库',
           unit:'台',
           total:20,
           input:'',
           count: '',
           remark:'',
-          operator: ''
+          operator: '',
+          sku_id:''
         },
         form: {
           formFileds: [
             {
               'search': {
-                shopNmae: {'label': '', 'type': 'input', 'bindValue': 'shopName', 'bindPlaceholder': '搜索产品名称/条码'},
-                cascader: {
+                keywords: {'label': '', 'type': 'input', 'bindValue': 'keywords', 'bindPlaceholder': '搜索产品名称/条码'},
+                cids: {
                   'label':'',
                   'type': 'cascader',
-                  'bindValue': 'cascader',
+                  'bindValue': 'cids',
                   'bindPlaceholder': '选择类目',
                   'options':[{
                     value: '01',
@@ -131,8 +131,8 @@
             }
           ],
           formInline: {
-            shopName: '',
-            contact: '',
+            keywords: '',
+            cids: [],
           }
         },
         pagination: {
@@ -255,7 +255,7 @@
         this.search()
       },
       search () {
-        let getManageList = repertoryService.repertoryManage(this.form.formInline)
+        let getManageList = repertoryService.repertoryManage(this.form.formInline,this.pagination)
         getManageList.then((data) => {
           console.log('success')
         }, (msg) => {
@@ -263,11 +263,13 @@
         })
       },
       handleMenuItemClick (command, item) {
-        // 库存设置
-        this.handle.unit = item.unit
-        this.handle.total = item.total
-        this.handle.radio = command
-        console.log(item)
+          // 库存设置
+          this.dialogFormVisible = true
+          this.handle.radio = command
+          this.handle.unit = item.storage_units[0].unit
+          this.handle.total = item.storage_units[0].storage
+          this.handle.sku_id = item.id
+          console.log(item)
       },
       radio(value){
         switch (value){
@@ -300,6 +302,12 @@
       },
       submit(){
         console.log(this.handle)
+        let handle = repertoryService.repertoryHandle(this.handle)
+        handle.then(data => {
+            console.log(data)
+        },(msg) => {
+            this.$ltsMessage.show({type: 'error', message: msg.errorMessage})
+        })
         this.dialogFormVisible = false
       }
     }

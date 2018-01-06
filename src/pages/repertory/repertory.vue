@@ -14,7 +14,7 @@
         name: "repertory",
         data(){
             return{
-              activeName : 'list'
+              activeName : 'manage'
             }
         },
         methods:{

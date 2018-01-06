@@ -18,7 +18,7 @@
         data () {
             return {
                 api: {
-                    method: '/market/get_children_by_openCode', // 查询api
+                    method: '/market/getChildrenByOpenCode', // 查询api
                     bizparams: {
                       order_by:'id',
                       open_code:'666666'

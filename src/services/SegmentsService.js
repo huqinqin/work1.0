@@ -15,7 +15,7 @@ export default {
       page_size:pagination.pagesize,
       order_by: bizparams.order_by
     }
-    return request.api('/market/get_children_by_openCode',params)
+    return request.api('/market/getChildrenByOpenCode',params)
   },
   /**
    * return
@@ -25,7 +25,7 @@ export default {
    */
   addSegmentsItem(formData){
     let params = {
-      addChildMarketRequest:JSON.stringify(formData)
+      add_child_market_request:JSON.stringify(formData)
     }
     console.log(params)
     return request.api('/market/addChildMarket',params)
