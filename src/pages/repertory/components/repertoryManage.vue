@@ -1,7 +1,5 @@
 <template>
   <div class="manage">
-    <el-button type="success" style="position:fixed;top:20%;left:50%;z-index:100"
-               @click="dialogFormVisible = true">点击</el-button>
     <lts-search-from @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-from>
     <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination" @menuClick="handleMenuItemClick"></lts-table>
     <el-dialog title="库存设置" :visible.sync="dialogFormVisible">
