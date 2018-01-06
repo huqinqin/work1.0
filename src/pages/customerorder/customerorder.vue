@@ -39,7 +39,8 @@
                :t-form="itemform.formInline"
                :t-table="itemTable"
                :t-pagination="itemTable.pagination"
-               @inputNumberChang="getCartItem"></lts-table>
+               ref="itemTable"
+               @inputNumberChange="addCart"></lts-table>
          </div>
         </el-card>
       </transition>
@@ -57,7 +58,7 @@
                 :t-table="cartItemTable"
                 :t-pagination="cartItemTable.pagination"
                 :t-tabledata="cartItemList"
-                @inputNumberChang="getCartItem"></lts-table>
+                @inputNumberChange="addCart"></lts-table>
             <div class="cartbottom">
               <el-tag>
                 共<span class="num">{{cart.cartTotal}}</span>
@@ -104,7 +105,8 @@
   import ltsTable from '@/common/components/lts-table.vue'
   import ltsSearchFrom from '@/common/components/lts-search-from.vue'
   import customerOrderService from '@/services/CustomerOrderService.js'
-
+  import cartService from '@/services/CartService.js'
+  import orderService from '@/services/OrderService.js'
   export default {
     props: '',
     components: {
@@ -133,7 +135,7 @@
                     "bindValue": "2"
                   }, {"label": "手机", "bindValue": "3"}]
                 },
-                user: {"label": "", "type": "autocomplete", "bindValue": "keywords", "bindPlaceholder": "搜索客户",},
+                user: {"label": "", "type": "autocomplete", "bindValue": 'shop.shopName', "bindPlaceholder": "搜索客户",},
                 search: {"bindValue": "确定", "type": "submitbutton"},
               }
             }
@@ -143,14 +145,13 @@
             page: 1,
             page_size: 100,
             order_by: 'id',
-            // shop:{
-            //   openCode: 123,
-            //   lcCode:123,
-            //   shopName: 'abc'
-            // },
+            shop:{
+              openCode: 123,
+              lcCode:123,
+              shopName: ''
+            },
             // custom_vip : '',
             // custom_type : '',
-            keywords: '',
             //需要从处理结果另外带回来的参数 存这里 默认返回一条对象。若返回多个。自己
             callbackParameter: {},
           },
@@ -161,7 +162,7 @@
             // method: '/installer/getStoreListByCondition',
 
             //定义一个转换的key autocomplete插件需要把显示的字段的key定义成value
-            autoShowKey: 'item_name',
+            autoShowKey: 'shop_name',
             //参数回调函数 目前的用法是来处理返回结果
             callBack: this.getJsonData,
             bizparams:{
@@ -209,11 +210,8 @@
           ],
           // 若需要把form参数供其他组件使用。需要把这些参数传给使用的组件
           formInline: {
-            sort: 'id desc',
-            itemName: "111",
-
-            // short_search : '',
-            // item_name : '',
+            // sort: 'id desc',
+            // itemName: "111",
             //需要从处理结果另外带回来的参数 存这里 默认返回一条对象。若返回多个。自己
             callbackParameter: {},
           },
@@ -222,15 +220,7 @@
           api: {
             method: '/wholesale/item/getList',
             bizparams: {
-              page: 1,
-              page_size: 20,
-              p_user_id: 158635,
-              user_id: 138890,
-              shop_id: 5956,
-              sku_uid: 1,
-              carrier_uid: 1,
-              item_search: {}
-
+              user_id: '',
             },
           },
           tableField: {
@@ -255,12 +245,12 @@
           tableDataForm: 'json',
           tableField: {
             "名字": {"value": "item_name", "type": "text"},
-            "ID": {"value": "puser_id", "type": "text"},
+            "puserId": {"value": "puser_id", "type": "text"},
             "类目ID": {"value": "category_id", "type": "text"},
-            "价格": {"value": "price_value", "type": "text"},
+            "价格": {"value": "price", "type": "text"},
             "类型": {"value": "discount_type", "type": "text"},
-            "订单数量": {"value": "order_num", "type": "text"},
-            "abced": {"value": "id", "type": "text"},
+            "订单数量": {"value": "num", "type": "text"},
+            "ID": {"value": "id", "type": "text"},
             "输入数量": {"value": "num", "type": "inputNumber", "width": "200px"},
           },
           pagination: {
@@ -273,6 +263,7 @@
         },
         // 抄单客户
         customerList: [],
+        customerUid: "",
         // 购物车商品
         cartItemList: [],
         cart: {
@@ -291,29 +282,28 @@
           this.$ltsMessage.show({"type": "error", "message": "请选择客户"})
           return false;
         }
+        this.customerUid = val.callbackParameter.uid;
         this.customerList.push(val.callbackParameter);
+        this.itemTable.api.bizparams.user_id = this.customerUid;
+        this.queryCartList(this.customerUid);
       },
       getItemParameter(val) {
         this.itemform.formInline = val;
       },
       // 添加购物车
-      getCartItem(item) {
-        if (this.cartItemList.length === 0) {
-          this.cartItemList.push(item);
-        } else {
-          let count = 0;
-          for (let value of this.cartItemList) {
-            if (value.id === item.id) {
-              count++;
-              value.num += item.num;
-              break;
-            }
-          }
-          if (count === 0) {
-            this.cartItemList.push(item);
-          }
-        }
-        console.log(this.cartItemList)
+      addCart(item) {
+        cartService.putCartPlus(this.customerUid,item).then((data) => {
+          this.queryCartList();
+        },(msg) => {
+           this.$ltsMessage.show({type:"error",message:msg.errorMessage})
+        });
+      },
+      queryCartList(){
+        cartService.queryCartList(this.customerUid).then((data) => {
+          this.cartItemList = data.data;
+        },(msg) => {
+          this.$ltsMessage.show({type:"error",message:msg.errorMessage})
+        })
       },
       handleClose(index) {
         this.customerList.splice(index, 1);
@@ -327,6 +317,7 @@
       },
       closeOrder() {
         this.isShowOrder = false;
+        this.$refs.itemTable.refresh();
       },
       getJsonData: function (json) {
         if (json) {
@@ -338,15 +329,36 @@
       },
       // 购物车结算
       submit() {
-        let params = {
-          customerList: this.customerList,
-          cartItemList: this.cartItemList
+        let items = [];
+        this.cartItemList.forEach(function(value,index,array){
+          items.push({
+            id : value.id,
+            num : value.num,
+            puser_id : value.puser_id,
+            spu_id : 179886,
+            item_prop_ids :[
+              26,
+              27
+            ],
+          })
+        });
+        console.log(this.cartItemList);
+        let param = {
+          "userId":this.customerUid,
+          "payMethod":"online",
+          "miliPay":0,
+          "items":items,
+          "remarkList":{
+            "37701":"阿亮发货啊",
+            "42170":"雨茜发货啊"
+          },
+          "source":"work.500mi.com.shop.pifa.market"
         }
-        alert('购物车结算')
+        orderService.createTrade(param);
       }
     },
     mounted(){
-      customerOrderService.queryCartList(this.itemTable.api.bizparams)
+
     },
     watch: {
       cartItemList: {
@@ -359,7 +371,7 @@
               array.splice(index, 1);
             }
             this.cart.cartTotal = parseInt(value.num) + parseInt(this.cart.cartTotal);
-            this.cart.cartPriceTotal += parseInt(value.num) * parseInt(value.price_real_value);
+            this.cart.cartPriceTotal += parseInt(value.num) * parseInt(value.price);
           })
         }
       }

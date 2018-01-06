@@ -102,6 +102,7 @@
 </template>
 <script>
     import {request} from 'ltsutil'
+    import segmentsService from '@/services/SegmentsService'
     export default {
         props: {},
         name: 'addSegments',
@@ -117,7 +118,6 @@
                 }
             }
             return {
-                parentBizId: '123',
                 location: ['北京市', '辖区', '东城区'],
                 moreAddress: '',
                 form:{
@@ -143,9 +143,9 @@
                     license: '',        // 营业执照
                     number: '',         // 税号
                     remark: '',
-                    parentBizId:'P215IX',
                     lcCode: '110101000000',
-                    openCode: 'OI82RTU8'
+                    owner_uid:158748,
+                    parentBizId: '',
                 },
                 rules:{
                     checkPass: [
@@ -188,7 +188,7 @@
                     ]
                 }],
                 api: {
-                    method: 'wbm.tp.merchant.market.addChildMarket',
+                    method: '/market/addChildMarket',
                     bizparams: {
                     }
                 },
@@ -259,25 +259,27 @@
                 console.log('自动填入经纬度')
             },
             submit(){
-                let formData = Object.assign({},this.form,{parentBizId:this.parentBizId})
+                let formData = Object.assign({},this.form)
                 delete formData.aaattribute
                 delete formData.select
-
-                let para = Object.assign({},this.api.bizparams)
-                para.addChildMarketRequest = JSON.stringify(formData)
-                console.log(para)
-                let link = request.api(this.api.method, para)
-                link.then((data) => {
+                let addSegments = segmentsService.addSegmentsItem(formData)
+                addSegments.then((data) => {
                     console.log('success')
                 }, (msg) => {
                     console.log(msg)
-
                     this.$ltsMessage.show({type: 'error', message: msg.errorMessage})
                 })
             }
         },
         mounted(){
-
+          let getItemId = segmentsService.getItemId()
+          getItemId.then((data) => {
+            console.log(data)
+            this.form.parentBizId = data.data.id
+          }, (msg) => {
+            console.log(msg)
+            this.$ltsMessage.show({type: 'error', message: msg.errorMessage})
+          })
         }
     }
 </script>

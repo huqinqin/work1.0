@@ -1,25 +1,29 @@
 <template>
     <div>
-        <router-link to="manage"><el-button>库存管理</el-button></router-link>
-        <router-link to="list"><el-button>库存明细</el-button></router-link>
+        <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+          <el-tab-pane label="库存列表" name="list">
+          </el-tab-pane>
+          <el-tab-pane label="库存明细" name="manage"></el-tab-pane>
+        </el-tabs>
         <router-view>
-
         </router-view>
-
     </div>
 </template>
-
 <script>
-    import RepertoryList from './components/repertoryList'
-    import RepertoryManage from './components/repertoryManage'
     export default {
         name: "repertory",
-        components: {RepertoryManage, RepertoryList},
         data(){
             return{
+              activeName : 'list'
             }
         },
-        methods:{}
+        methods:{
+          handleClick(tab){
+            this.$router.push({
+              name : tab.name,params:{}
+            })
+          },
+        }
   }
 </script>
 

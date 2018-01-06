@@ -45,7 +45,18 @@ export  default{
             spec : JSON.stringify({unit : param.spec}),
             child_spu_request_list : JSON.stringify(param.child_spu_request_list),
         };
-        console.log(params);
         return request.api("/spu/add",params);
+    },
+    /**
+     * return datalist
+     * RequestParam(value="spu_id") Long 产品Id
+     * @auth 小猪
+     * @remark 获取spu
+     */
+    getSpudtoist(param){
+      let params = {
+        spu_id : 179944,
+      };
+      return request.api("/spu/get_spudto_list",params);
     },
 }
