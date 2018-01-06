@@ -116,8 +116,8 @@ const webpackConfig = merge(baseWebpackConfig, {
     ])
   ]
 })
-const pages =  utils.getMultiEntry('./src/'+config.moduleName+'/*/*.js');
-for (var pathname in pages) {
+// const pages =  utils.getMultiEntry('./src/'+config.moduleName+'/**/*.js');
+for (let pathname in webpackConfig.entry) {
   // 配置生成的html文件，定义路径等
 
   webpackConfig.plugins.push(new HtmlWebpackPlugin({

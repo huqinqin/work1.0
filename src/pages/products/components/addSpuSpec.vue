@@ -110,8 +110,8 @@
   </div>
 </template>
 <script>
-  import spuService from '@/services/spuService'
-  import categoryService from '@/services/categoryService'
+  import spuService from '@/services/SpuService'
+  import categoryService from '@/services/CategoryService'
   export default {
     name : 'addSpuSpec',
     data(){

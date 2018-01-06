@@ -54,7 +54,7 @@
                     "sort":0,
                     "status":1,
                     "type":2,
-                    "url":"/pages/order.html"
+                    "url":"/store/order"
                 },
                 {
                     "apptype":1,
@@ -79,6 +79,77 @@
             "status":1,
             "type":1
         },
+      {
+        "apptype":1,
+        "cdate":1447217704000,
+        "code":"10167",
+        "description":"运营商批发交易管理",
+        "display":5,
+        "domain":"http://work.500mi.com",
+        "edate":1493375344000,
+        "id":1,
+        "name":"配送管理",
+        "pic":"order",
+        "resourcesList":[
+          {
+            "apptype":1,
+            "cdate":1342499512000,
+            "code":"10048",
+            "description":"",
+            "display":4,
+            "domain":"http://work.500mi.com",
+            "edate":1493375344000,
+            "id":2,
+            "name":"备货管理",
+            "resourcesList":[
+
+            ],
+            "sort":0,
+            "status":1,
+            "type":2,
+            "url":"/store/stock"
+          },
+          {
+            "apptype":1,
+            "cdate":1342499512000,
+            "code":"10048",
+            "description":"",
+            "display":4,
+            "domain":"http://work.500mi.com",
+            "edate":1493375344000,
+            "id":3,
+            "name":"入库管理",
+            "resourcesList":[
+
+            ],
+            "sort":0,
+            "status":1,
+            "type":2,
+            "url":"/store/warehousing"
+          },
+          {
+            "apptype":1,
+            "cdate":1342499512000,
+            "code":"10048",
+            "description":"",
+            "display":4,
+            "domain":"http://work.500mi.com",
+            "edate":1493375344000,
+            "id":4,
+            "name":"发货管理",
+            "resourcesList":[
+
+            ],
+            "sort":0,
+            "status":1,
+            "type":2,
+            "url":"/store/delivery"
+          }
+        ],
+        "sort":1010,
+        "status":1,
+        "type":1
+      },
         {
             "apptype":1,
             "cdate":1447217704000,

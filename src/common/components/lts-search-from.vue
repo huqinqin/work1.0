@@ -4,7 +4,7 @@
             <div v-for="(menubar,menukey) in bar">
                 <el-form :inline="true" :model="formInline" class="demo-form-inline" if="formInline">
                     <el-form-item v-for="(val,key) in menubar" :label="val.label" :key="val.bindValue">
-                        <div v-if="val.type == 'date'">
+                        <div v-if="val.type == 'datetimerange'">
                             <el-date-picker
                                 v-model="formInline[val.bindValue]"
                                 type="datetimerange"
@@ -15,6 +15,23 @@
                                 :picker-options="datePickerOptions"
                                 align="right">
                             </el-date-picker>
+                        </div>
+                        <div v-if="val.type == 'datetime'">
+                          <el-date-picker
+                            v-model="formInline[val.bindValue]"
+                            type="datetime"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            placeholder="选择日期时间">
+                          </el-date-picker>
+                        </div>
+                        <div v-if="val.type == 'date'">
+                          <el-date-picker
+                            v-model="formInline[val.bindValue]"
+                            type="date"
+                            value-format="yyyy-MM-dd"
+                            placeholder="选择日期"
+                            style="width: 150px">
+                          </el-date-picker>
                         </div>
                         <div v-else-if="val.type == 'input'">
                             <el-input v-model="formInline[val.bindValue]" :placeholder="val.bindPlaceholder"

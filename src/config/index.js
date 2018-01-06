@@ -13,8 +13,8 @@ export default {
         api: 'http://work.lts.com:8085/gateway/api',
         service: 'http://work.lts.com:8085/gateway'
     },
-    homePage: '/pages/index.html',
-    loginPage: '/pages/login.html',
+    homePage: '/',
+    loginPage: '/login',
     appKey: '00000-500mi',
     // 用户session在本地存储名
     sessDataName: 'SESSION_DATA',

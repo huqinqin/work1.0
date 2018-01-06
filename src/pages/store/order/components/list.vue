@@ -37,7 +37,7 @@
                                 },
                                 date: {
                                     label: '创建时间',
-                                    type: 'date',
+                                    type: 'datetimerange',
                                     bindValue: 'date'
                                 },
                                 status: {
