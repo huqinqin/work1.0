@@ -9,7 +9,8 @@
         @get-from="getCustomerParameter"
         :form-fileds="customerform.formFileds"
         :form-inlines="customerform.formInline"
-        :autocomplete="customerform.autocomplete"></lts-search-from>
+        :autocomplete="customerform.autocomplete">
+    </lts-search-from>
     <!--customerlist show 抄单模块-->
     <div v-if="customerList.length > 0">
 

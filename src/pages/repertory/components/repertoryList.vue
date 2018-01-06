@@ -6,10 +6,10 @@
           <el-form :model="handle" label-width="80px">
             <el-form-item label="操作类型" prop="radio">
               <el-radio-group v-model="handle.radio" @change="radio">
-                <el-radio :label=1>采购入库</el-radio>
-                <el-radio :label=2>调拨入库</el-radio>
-                <el-radio :label=3>调拨出库</el-radio>
-                <el-radio :label=4>盘点库存</el-radio>
+                <el-radio :label=0>采购入库</el-radio>
+                <el-radio :label=1>调拨入库</el-radio>
+                <el-radio :label=2>调拨出库</el-radio>
+                <el-radio :label=3>盘点库存</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="规格">{{handle.g}}</el-form-item>
@@ -117,7 +117,7 @@
                 api: {
                     method: '/sku/query_list',
                     bizparams: {
-                      wholesale_sku_query : {}
+                        wholesale_sku_query : {}
                     }
                 },
                 activeName : 'manage',

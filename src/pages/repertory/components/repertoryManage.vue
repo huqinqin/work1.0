@@ -1,60 +1,64 @@
 <template>
   <div class="manage">
+    <el-button @click="dialogFormVisible = true">点击</el-button>
     <lts-search-from @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-from>
     <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination" @menuClick="handleMenuItemClick"></lts-table>
     <el-dialog title="库存设置" :visible.sync="dialogFormVisible">
-      <el-form :model="handle" label-width="80px">
-        <el-form-item label="操作类型" prop="radio">
+      <el-form :model="handle" label-width="80px" label-position="right">
+        <el-form-item label="操作类型" prop="radio" :rules="[{ required: true}]">
           <el-radio-group v-model="handle.radio" @change="radio">
-            <el-radio :label=0>采购入库</el-radio>
-            <el-radio :label=1>调拨入库</el-radio>
-            <el-radio :label=2>调拨出库</el-radio>
-            <el-radio :label=3>盘点库存</el-radio>
+            <el-radio :label=10001>采购入库</el-radio>
+            <el-radio :label=10002>调拨入库</el-radio>
+            <el-radio :label=20002>调拨出库</el-radio>
+            <el-radio :label=30002>盘点库存</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="规格">{{handle.g}}</el-form-item>
-        <el-form-item label="现在库存">{{handle.k}}</el-form-item>
-        <el-form-item :label="handle.type">
-          <el-input ></el-input><span>箱</span>
-          <el-input ></el-input><span>罐</span>
+        <el-form-item label="规格">{{handle.unit}}</el-form-item>
+        <el-form-item label="现在库存">{{handle.total + handle.unit}}</el-form-item>
+        <el-form-item :label="handle.type" prop="input">
+          <el-input v-model="handle.input" @input="inputChange"></el-input><span>{{handle.unit}}</span>
         </el-form-item>
-        <el-form-item v-if="handle.radio !== 3"  :label="handle.type + '后数量'">
-          12345
+        <el-form-item v-if="handle.radio !== 30002 && handle.input !== ''"  :label="handle.type + '后数量'">
+          {{handle.count + handle.unit}}
         </el-form-item>
-        <el-form-item v-if="handle.radio === 3" label="盈？亏">
-          54321
+        <el-form-item v-if="handle.radio === 30002 && handle.input !== '' && handle.count >= 0" label="盘盈" style="color:green;">
+          {{handle.count + handle.unit}}
         </el-form-item>
-        <el-form-item label="变更说明" prop="remark">
+        <el-form-item v-if="handle.radio === 30002 && handle.input !== '' && handle.count < 0" label="盘亏" style="color:red;">
+          {{handle.count + handle.unit}}
+        </el-form-item>
+        <el-form-item label="变更说明" prop="remark" :rules="[{ required: true}]">
           <el-input type="textarea"  v-model="handle.remark" placeholder="库存变更说明"></el-input>
         </el-form-item>
-        <el-form-item label="经办人" prop="operator">
+        <el-form-item label="经办人" prop="operator" :rules="[{ required: true}]">
           <el-input v-model="handle.operator"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="submit">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import {request} from 'ltsutil'
+  import repertoryService from '@/services/RepertoryService.js'
   import ltsTable from '@/common/components/lts-table.vue'
   import ltsSearchFrom from '@/common/components/lts-search-from.vue'
-  import repertoryHandle from './repertoryHandle.vue'
   export default {
     name: "repertoryManage",
-    components: {ltsTable, ltsSearchFrom, repertoryHandle},
+    components: {ltsTable, ltsSearchFrom},
     data(){
       return{
         dialogFormVisible: false,
         handle:{
-          radio:0,
+          radio:10001,
           type:'采购入库',
-          g:'310ml*24罐*1箱',
-          k:'10箱0罐',
+          unit:'台',
+          total:20,
+          input:'',
+          count: '',
           remark:'',
           operator: ''
         },
@@ -62,8 +66,7 @@
           formFileds: [
             {
               'search': {
-                shopNmae: {'label': '', 'type': 'input', 'bindValue': 'shopName', 'bindPlaceholder': '搜索产品名称'},
-                contact: {'label': '', 'type': 'input', 'bindValue': 'contact', 'bindPlaceholder': '搜索条码'},
+                shopNmae: {'label': '', 'type': 'input', 'bindValue': 'shopName', 'bindPlaceholder': '搜索产品名称/条码'},
                 cascader: {
                   'label':'',
                   'type': 'cascader',
@@ -140,22 +143,40 @@
           layout: 'total, sizes, prev, pager, next, jumper' // total 总条目数  prev 上一页 next 下一页 sizes 支持分组
         },
         table: {
-          datalist: true,
           tableDataForm: 'api', // json
           tableField: {
-            '名字': {'value': 'shop_name', 'type': 'text'},
-            '地址': {'value': 'address', 'type': 'text'},
-            '联系人': {'value': 'contact', 'type': 'text'},
-            '联系电话': {'value': 'contact_phone', 'type': 'text'},
+            '序号': {'value': 'id', 'type': 'text'},
+            '类目': {'value': 'cate_name', 'type': 'text'},
+            '产品名称': {'value': 'spu_name', 'type': 'text'},
+            '条码': {'value': 'sinr', 'type': 'text'},
+            '规格': {'value': 'unit', 'type': 'text','width':'80'},
+            '成本价': {'value': 'storage_avg_cost', 'type': 'text','width':'80'},
             '功能': {
               'value': '',
               'type': 'menu',
-              'width': '200',
+              'width': '500',
               'menulist': [
-                  { value: '库存设置', command: 'setting' }
+                { value: '采购入库', command: '10001' },
+                { value: '调拨入库', command: '10002' },
+                { value: '调拨出库', command: '20002' },
+                { value: '盘点库存', command: '30002' }
               ]
             }
-          }
+          },
+          // tableField: {
+          //   '名字': {'value': 'shop_name', 'type': 'text'},
+          //   '地址': {'value': 'address', 'type': 'text'},
+          //   '联系人': {'value': 'contact', 'type': 'text'},
+          //   '联系电话': {'value': 'contact_phone', 'type': 'text'},
+          //   '功能': {
+          //     'value': '',
+          //     'type': 'menu',
+          //     'width': '500',
+          //     'menulist': [
+          //         { value: '库存设置', command: 'setting' }
+          //     ]
+          //   }
+          // }
         },
         // 级联选择器
         cascader:[
@@ -219,50 +240,67 @@
           }
         ],
         api: {
-          method: 'wbm.tp.merchant.store.get_store_list_byCondition',
+          method: '/sku/query_list',
           bizparams: {
-            orderBy: '',
-            shop:{},
-            lcCode: '330103',
-            openCode: '331088'
+            wholesale_sku_query : {}
           }
         },
+        activeName : 'manage',
       }
     },
     methods: {
       getParameter (val) {
         this.form.formInline = val
-        this.api.bizparams.shop = JSON.stringify(val)
         console.log(this.api)
         this.search()
       },
       search () {
-        let link = request.api(this.api.method, this.api.bizparams)
-        link.then((data) => {
+        let getManageList = repertoryService.repertoryManage(this.form.formInline)
+        getManageList.then((data) => {
           console.log('success')
         }, (msg) => {
-          this.$ltsMessage.show({type: 'error', message: '查询失败，请稍后重试'})
+          this.$ltsMessage.show({type: 'error', message: msg.errorMessage})
         })
       },
       handleMenuItemClick (command, item) {
         // 库存设置
+        this.handle.unit = item.unit
+        this.handle.total = item.total
+        this.handle.radio = command
         console.log(item)
       },
       radio(value){
         switch (value){
-          case 0:
+          case 10001:
             this.handle.type = '采购入库'
             break
-          case 1:
+          case 10002:
             this.handle.type = '调拨入库'
             break
-          case 2:
+          case 20002:
             this.handle.type = '调拨出库'
             break
-          case 3:
+          case 30002:
             this.handle.type = '盘点库存'
         }
+        this.inputChange()
+      },
+      inputChange(){
+        switch(this.handle.radio){
+          case 10001:
+          case 10002:
+            this.handle.count = this.handle.total + (+this.handle.input)
+            break
+          case 20002:
+            this.handle.count = this.handle.total - (+this.handle.input)
+            break
+          case 30002:
+            this.handle.count = (+this.handle.input) - this.handle.total
+        }
+      },
+      submit(){
         console.log(this.handle)
+        this.dialogFormVisible = false
       }
     }
   }
