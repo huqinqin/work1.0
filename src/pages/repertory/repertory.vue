@@ -7,11 +7,8 @@
 </template>
 
 <script>
-  import RepertoryList from './components/repertoryList'
-  import RepertoryManage from './components/repertoryManage'
   export default {
     name: "repertory",
-    components: {RepertoryManage, RepertoryList},
     data(){
       return{
       }
