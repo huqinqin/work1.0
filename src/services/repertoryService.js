@@ -6,12 +6,17 @@ export default {
    * @autor taohua
    * remark 库存管理-查询列表
    */
-  repertoryManage(formInline){
+  repertoryManage(formInline,pagination){
     let params = {
-      XXXXX:formInline
+        page: pagination.page,
+        page_size: pagination.page_size,
+        wholesale_sku_query: JSON.stringify({
+            keywords: formInline.keywords,
+            cids: formInline.cids
+        })
     };
     console.log(params);
-    return request.api('/XXXXX',params)
+    return request.api('/sku/get_storage_inventory_detail',params)
   },
 
   /**
@@ -60,14 +65,16 @@ export default {
    * return
    * param
    * @autor taohua
-   * remark 库存管理-操作
+   * remark 库存管理-提交操作
    */
-  repertoryHandle(XXXXX){
+  repertoryHandle(handle){
     let params = {
-      XXXXX:XXXXX
+      sku_id:handle.sku_id,
+      storage: handle.radio === 30002 ? handle.input : handle.count,
+      remark: handle.remark,
+      op_type:handle.radio
     };
-    console.log(params);
-    return request.api('/XXXXX',params)
+    return request.api('/sku/change_storage',params)
   },
 
 }
