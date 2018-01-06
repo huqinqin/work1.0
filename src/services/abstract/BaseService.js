@@ -13,10 +13,10 @@ export default class BaseService {
         if (resp.success) {
           resolve(resp.data || resp.datalist || resp.list);
         } else {
-          reject(resp.errorMessage);
+          reject(resp.error_message);
         }
       }, (resp) => {
-        reject(resp.errorMessage);
+        reject(resp.error_message);
       })
     });
   }

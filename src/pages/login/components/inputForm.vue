@@ -50,7 +50,7 @@
                             this.$ltsLoading.show({text: "登录成功跳转中"});
                             session.login({account: this.form.name});
                         }, (err) => {
-                            this.$ltsMessage.show({type: "error", message: err.errorMessage});
+                            this.$ltsMessage.show({type: "error", message: err.error_message});
                         });
                     } else {
                         return false;

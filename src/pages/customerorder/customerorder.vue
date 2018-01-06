@@ -296,14 +296,14 @@
         cartService.putCartPlus(this.customerUid,item).then((data) => {
           this.queryCartList();
         },(msg) => {
-           this.$ltsMessage.show({type:"error",message:msg.errorMessage})
+           this.$ltsMessage.show({type:"error",message:msg.error_message})
         });
       },
       queryCartList(){
         cartService.queryCartList(this.customerUid).then((data) => {
           this.cartItemList = data.data;
         },(msg) => {
-          this.$ltsMessage.show({type:"error",message:msg.errorMessage})
+          this.$ltsMessage.show({type:"error",message:msg.error_message})
         })
       },
       handleClose(index) {
