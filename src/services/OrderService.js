@@ -1,12 +1,12 @@
 import BaseService from "./abstract/BaseService";
 export default class OrderService extends BaseService{
-    get(tid){
+    static get(tid){
         let param = {
             tid : tid,
         };
         return super.getRequest('/store/order/detail', param);
     }
-    accept(tid){
+    static accept(tid){
         let param = {
             tid : tid,
         };
@@ -18,7 +18,7 @@ export default class OrderService extends BaseService{
      * @auth taohua
      * @remark 订单提交
      */
-    createTrade(param){
+    static createTrade(param){
       let params = {
         wholesale_trade_request : JSON.stringify(param)
       }

@@ -1,7 +1,7 @@
 import BaseService from "./abstract/BaseService";
 import md5 from 'md5'
 export default class UserService extends BaseService {
-    login(account, password){
+    static login(account, password){
         let param = {
             account : account,
             password: md5(password),
@@ -9,7 +9,7 @@ export default class UserService extends BaseService {
         };
         return super.getRequest('/user/login', param);
     }
-    logout(){
+    static logout(){
         return super.getRequest('/user/logout', {});
     }
 }

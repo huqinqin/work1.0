@@ -8,7 +8,7 @@ export  default class SpuService extends BaseService{
      * RequestParam(value="order_by") String order_by
      *@auth 小猪
      */
-    getSpuList(categoryId){
+    static getSpuList(categoryId){
        let params = {
            spu : JSON.stringify({cids:categoryId}),
            page : 1,
@@ -24,7 +24,7 @@ export  default class SpuService extends BaseService{
      * RequestParam(value="child_spu_request_list") String child_spu_request_list 规格笛卡尔积
      *@auth 小猪
      */
-    getSkuProps(categoryId){
+    static getSkuProps(categoryId){
         let params = {
             category_id : categoryId,
             sku : true,
@@ -38,7 +38,7 @@ export  default class SpuService extends BaseService{
      * RequestParam(value="child_spu_request_list") String child_spu_request_list 规格笛卡尔积
      *@auth 小猪
      */
-    addSpu(param){
+    static addSpu(param){
         let params = {
             props : [],
             spu_request : JSON.stringify(param.spu_request),
@@ -53,7 +53,7 @@ export  default class SpuService extends BaseService{
      * @auth 小猪
      * @remark 获取spu
      */
-    getSpudtoist(param){
+    static getSpudtoist(param){
       let params = {
         spu_id : 179944,
       };

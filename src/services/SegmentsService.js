@@ -9,7 +9,7 @@ export default class SegmentsService extends BaseService{
    * @auth taohua
    * @remark 获取子市场列表
    */
-  getSegmentsList(pagination,bizparams){
+  static getSegmentsList(pagination,bizparams){
     let params = {
       page:pagination.page,
       page_size:pagination.pagesize,
@@ -23,7 +23,7 @@ export default class SegmentsService extends BaseService{
    * @auth taohua
    * @remark 新增子市场
    */
-  addSegmentsItem(formData){
+  static addSegmentsItem(formData){
     let params = {
       add_child_market_request:JSON.stringify(formData)
     }
@@ -37,7 +37,7 @@ export default class SegmentsService extends BaseService{
    * @auth taohua
    * @remark 编辑子市场
    */
-  editSegmentsItem(formData){
+  static editSegmentsItem(formData){
     let params = {
       bizDO:JSON.stringify(formData)
     }
@@ -46,7 +46,7 @@ export default class SegmentsService extends BaseService{
   }
 
 
-  getItemId(){
+    static getItemId(){
     return super.getRequest('/market/get_parentId_by_openCode')
   }
 }

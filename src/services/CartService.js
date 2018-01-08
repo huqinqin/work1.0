@@ -10,7 +10,7 @@ export default class CartService extends BaseService{
    * @autor 小猪
    * remark 添加购物车
    */
-  putCartPlus(uid,param){
+  static putCartPlus(uid,param){
     let params = {
       user_id : uid,
       num : param.num,
@@ -63,7 +63,7 @@ export default class CartService extends BaseService{
    * @auth taohua
    * @remark 查询购物车
    */
-  queryCartList(bizparams){
+  static queryCartList(bizparams){
     let params = {
       user_id: bizparams.user_id
     };

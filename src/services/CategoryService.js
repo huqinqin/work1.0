@@ -7,7 +7,7 @@ export default class CategoryService extends BaseService {
      * @auth taohua
      * @remark 新增类目
      */
-    addCategory(categoryName,parentId){
+    static addCategory(categoryName,parentId){
        let params = {
            name : categoryName,
            parentId : parentId,
@@ -19,7 +19,7 @@ export default class CategoryService extends BaseService {
      * @auth taohua
      * @remarkl 获取所有的类目列表
      */
-    getAllCategoryList(){
+    static getAllCategoryList(){
         return super.getRequest('/category/getCarrierCategoryList');
     }
     /**
@@ -29,7 +29,7 @@ export default class CategoryService extends BaseService {
      * @auth taohua
      * @remark 修改类目
      */
-    updateCategory(id,categoryName,skuProps){
+    static updateCategory(id,categoryName,skuProps){
         let params = {
             category: JSON.stringify({
                 id: id,
@@ -45,7 +45,7 @@ export default class CategoryService extends BaseService {
      * @auth taohua
      * @remark 删除类目
      */
-    deleteCategory(id){
+    static deleteCategory(id){
         let params = {
             id : id
         }
@@ -58,7 +58,7 @@ export default class CategoryService extends BaseService {
      * @auth taohua
      * @remark 增加属性
      */
-    addCategoryAttr(){
+    static addCategoryAttr(){
       let params = {}
       super.getRequest('',params)
     }
@@ -68,7 +68,7 @@ export default class CategoryService extends BaseService {
      * @auth taohua
      * @remark 获取类目属性
      */
-    getCategoryProps(id){
+    static getCategoryProps(id){
       let params = {
           category_id : id,
           order_by: 'id'
@@ -82,7 +82,7 @@ export default class CategoryService extends BaseService {
      * @auth taohua
      * @remark 添加类目属性
      */
-    addCategoryProps(id,props){
+    static addCategoryProps(id,props){
         let params = {
             category_id : id,
             props : JSON.stringify(props)
@@ -95,7 +95,7 @@ export default class CategoryService extends BaseService {
      * @auth taohua
      * @remark 添加类目属性
      */
-    getCateProps(id){
+    static getCateProps(id){
         let params = {
             category_id : id,
             sku : true,

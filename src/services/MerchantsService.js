@@ -9,7 +9,7 @@ export default class MerchantsService extends BaseService{
    * @auth taohua
    * @remark 搜索工程商列表
    */
-  getMerchantsList(bizparams,pagination){
+  static getMerchantsList(bizparams,pagination){
     let params = {
       order_by:bizparams.order_by,
       shop:bizparams.shop,
@@ -27,7 +27,7 @@ export default class MerchantsService extends BaseService{
    * @auth taohua
    * @remark 新增工程商
    */
-  addMerchantsItem(formData){
+  static addMerchantsItem(formData){
     let params = {
       store_request:JSON.stringify(formData)
     }
@@ -41,7 +41,7 @@ export default class MerchantsService extends BaseService{
    * @auth taohua
    * @remark 编辑工程商
    */
-  editMerchantsItem(formData){
+  static editMerchantsItem(formData){
     let params = {
       store_request:JSON.stringify(formData)
     }
@@ -49,7 +49,7 @@ export default class MerchantsService extends BaseService{
     return super.getRequest('/installer/update',params)
   }
   // 把省市区放到级联选择器里
-  getProvince(item,data,option){
+    static getProvince(item,data,option){
     for (let i = 0; i < data.datalist.length; i++){
       if (item.indexOf(data.datalist[i].province) === -1){
         item.push(data.datalist[i].province)
@@ -68,7 +68,7 @@ export default class MerchantsService extends BaseService{
     return option
   }
   // 获取到市
-  getCity(item,data,option){
+    static getCity(item,data,option){
 
   }
 }
