@@ -1,7 +1,7 @@
 <template>
   <div class="confirmPassword" type="flex" align="center">
     <el-row class="header" type="flex" justify="space-between" align="bottom">
-      <el-col><img class="svg" src="../../../../static/icon/logo.png" alt="logo"></el-col>
+      <el-col><img class="svg" src="../../../assets/icon/shorticon.png" alt="logo"></el-col>
       <el-col><span>找回密码</span></el-col>
     </el-row>
     <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" >

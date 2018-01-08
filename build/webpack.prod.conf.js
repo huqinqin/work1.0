@@ -130,6 +130,7 @@ for (let pathname in webpackConfig.entry) {
     template:'./index.html', // 模板路径
     inject: true,
     chunks: ['vendor', pathname, 'manifest'],
+    favicon : './src/assets/icon/favicon.ico',
     minify: {
       removeComments: true,
       collapseWhitespace: true,
