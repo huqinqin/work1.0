@@ -66,16 +66,16 @@
                 console.log(key, keyPath);
             },
             logout(){
-                userService.logout().then((resp)=>{
+                userService.logout().then((resp) => {
                     session.logout();
-                },(err)=>{
+                },(err) => {
                     this.$ltsMessage.show({type: "error", message: err.error_message});
                 })
             }
         },
         watch: {
             open: function () {
-                consoel.log(this.open)
+                console.log(this.open)
             }
         },
         mounted() {
