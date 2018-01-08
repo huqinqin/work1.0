@@ -93,6 +93,7 @@
       }
     },
     mounted(){
+        console.log(this.$route.params)
         this.categoryList = this.$route.params.category;
         this.ruleForm.spuCategory = this.$route.params.selectCategory;
     },

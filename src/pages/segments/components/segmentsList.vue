@@ -102,7 +102,6 @@
             handleMenuItemClick (command, item) {
                 switch (command) {
                     case 'detail':
-                        console.log(item)
                         alert('详情：' + item.shop_name)
                         break
                     case 'edit':

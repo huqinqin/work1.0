@@ -104,7 +104,7 @@
     },
     methods:{
       getSpudtoist(){
-        spuService.getSpudtoist().then((data)=>{
+        spuService.getSpudtoist().then((data) => {
             data.data.spuPropDOList.forEach(function(value,index,array){
               value.inputVisible = false; // 自己加的 是否显示添加input
               value.propValues = value.propValue.split(",");
@@ -122,7 +122,7 @@
               value.price = "";
             })
             this.spuDO = data.data;
-        },(msg)=>{
+        },(msg) => {
             console.log(msg);
         });
       },
@@ -147,9 +147,11 @@
       },
       submitForm(){
           let props = [];
+          debugger
           this.spuDO.childSpuDTOList.forEach(function (value,index,array) {
             value.spuPropDOList.forEach(function(val,key,array){
-              let objKey = val.name;let propValue = {};
+              let objKey = val.name;
+              let propValue = {};
               propValue[objKey] = val.propValue
               console.log(propValue);
               props.push(
@@ -167,7 +169,9 @@
             })
           });
           this.spuDO.spuPropDOList.forEach(function (value,index,array) {
-            let propValue = {};let objKey = value.name,porpslist = [];
+            let propValue = {};
+            let objKey = value.name;
+            let porpslist = [];
             value.propValues.forEach(function(val,key,array){
               if(val.isSelect){
                 propValue[objKey] = val.value
@@ -188,7 +192,6 @@
                 )
               }
             })
-
           });
           let wholesale_item = {
               "itemName" : this.ruleForm.goodsName,
@@ -206,9 +209,9 @@
             item_props : JSON.stringify(props),
             wholesale_item : JSON.stringify(wholesale_item),
           };
-          goodsService.addWithProps(params).then((data)=>[
-
-          ]);
+          goodsService.addWithProps(params).then((data) => {
+              console.log(data)
+          });
       },
     },
     mounted(){

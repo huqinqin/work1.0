@@ -49,12 +49,11 @@
                     "id":86,
                     "name":"订单列表",
                     "resourcesList":[
-
                     ],
                     "sort":0,
                     "status":1,
                     "type":2,
-                    "url":"/pages/order.html"
+                    "url":"/store/order"
                 },
                 {
                     "apptype":1,
@@ -145,7 +144,7 @@
             "sort":1010,
             "status":1,
             "type":1,
-            "url": '/pages/customerorder.html'
+            "url": '/customerorder'
         },
         {
             "apptype":1,
@@ -162,7 +161,7 @@
             "sort":1010,
             "status":1,
             "type":1,
-            "url": '/pages/category.html'
+            "url": '/category'
         },
         {
             "apptype":1,
@@ -179,7 +178,7 @@
             "sort":1010,
             "status":1,
             "type":1,
-            "url": '/pages/segments.html'
+            "url": '/segments'
         },
         {
             "apptype":1,
@@ -196,7 +195,7 @@
             "sort":1010,
             "status":1,
             "type":1,
-            "url": '/pages/repertory.html'
+            "url": '/repertory'
         },
     ];
     export default {
