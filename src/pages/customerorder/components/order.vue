@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="order">
     <transition name="slide-fade">
         <div slot="header" class="clearfix">
            <span>您正在为<el-tag
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-  import {ltsTable,ltsSearchForm} from 'ui'
+    import {ltsTable,ltsSearchForm} from 'ui'
   import cartService from '@/services/CartService.js'
   export default {
     name: 'order',
@@ -114,6 +114,10 @@
               },
           },
           cartItemListLength:0,
+          cart: {
+              cartTotal: 0,
+              cartPriceTotal: 0,
+          },
 
       }
     },
@@ -127,6 +131,9 @@
                 this.cartItemList = [];
                 this.isShowOrder = false;
             }
+        },
+        showOrder() {
+            this.isShowOrder = true;
         },
         // 添加购物车
         addCart(item) {

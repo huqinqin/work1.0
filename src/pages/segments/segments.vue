@@ -11,13 +11,8 @@
 </template>
 
 <script>
-  import AddSegments from './components/addSegments'
-  import EditSegments from './components/editSegments'
-  import SegmentsList from './components/segmentsList'
-
   export default {
     name: 'segments',
-    components: {AddSegments, EditSegments, SegmentsList},
     data(){
       return{
           a:'b'

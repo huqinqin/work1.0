@@ -194,7 +194,7 @@
              * http://element.eleme.io/#/zh-CN/component/input-number
              */
             inputNumberhandleChange(item) {
-              this.$nextTick( ()=> {
+              this.$nextTick(() => {
                 this.$emit('inputNumberChange', item)
               })
             },

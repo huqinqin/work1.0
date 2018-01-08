@@ -10,7 +10,7 @@
       <el-step title="步骤2" description="选择或添加商品模板"></el-step>
       <el-step title="步骤3" description="完善商品信息"></el-step>
     </el-steps>
-    <lts-search-form @cascAderHandleChange="cascAderHandleChange" :form-fileds="searchform.formFileds" :form-inlines="searchform.formInline" :cascader="searchform.cascader" class="cateform"></lts-search-form>
+    <lts-search-form v-if="searchform.cascader.options.length > 0" @cascAderHandleChange="cascAderHandleChange" :form-fileds="searchform.formFileds" :form-inlines="searchform.formInline" :cascader="searchform.cascader" class="cateform"></lts-search-form>
     <el-card class="box-card" v-if="productList.length > 0">
       <div slot="header" class="clearfix">
         <span>商品模板</span>
@@ -108,7 +108,8 @@
       }
     },
     created(){
-      categoryService.getAllCategoryList().then((data)=>{
+      categoryService.getAllCategoryList().then((data) => {
+          console.log(data.data)
           data.data.forEach(function(value,index,array){
               value.value = value.id;
               value.label = value.name;
@@ -123,19 +124,18 @@
                               threeval.children = ""; // 到三级类目不在展开
                           })
                       }else{
-                          val.children = "";
+                          val.children = [];
                       }
                   })
               }else{
-                  value.children = "";
+                  value.children = [];
               }
           });
           this.searchform.cascader.options = data.data;
+          console.log(this.searchform.cascader.options);
       })
     },
-    mounted(){
 
-    },
     methods:{
       handleChange(val){
         console.log(val);
@@ -148,7 +148,7 @@
       getSpuList(){
          let index = this.selectCategory.length - 1;
          let category_id = this.selectCategory[index];
-         spuService.getSpuList(category_id).then((data)=>{
+         spuService.getSpuList(category_id).then((data) => {
              this.productList = data.datalist;
          })
       },

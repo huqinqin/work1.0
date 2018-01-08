@@ -72,6 +72,10 @@
         </el-card>
       </transition>
     </div>
+    <router-link to="/customerorder/order"><el-button>order</el-button></router-link>
+    <router-link to="/customerorder/cart"><el-button>cart</el-button></router-link>
+    <router-view :list="customerList"></router-view>
+
   </div>
 </template>
 <style lang="less">
@@ -105,7 +109,6 @@
 <script>
   import ltsTable from '@/common/components/lts-table.vue'
   import ltsSearchFrom from '@/common/components/lts-search-from.vue'
-  import customerOrderService from '@/services/CustomerOrderService.js'
   import cartService from '@/services/CartService.js'
   import orderService from '@/services/OrderService.js'
   export default {

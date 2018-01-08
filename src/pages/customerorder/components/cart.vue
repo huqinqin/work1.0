@@ -2,7 +2,7 @@
   <div id="cart">
     <div slot="header" class="clearfix">
       <span>您正在为<el-tag v-for="(val,index) in customerList" :key="val.id" type="success" style="margin:0 5px" @close="handleClose(index)" closable>{{val.value}}</el-tag>下单</span>
-      <div style="float: right; padding: 3px 0" @click="closeOrder"><el-button type="primary" >继续下单</el-button></div>
+      <div style="float: right; padding: 3px 0"><el-button type="primary" >继续下单</el-button></div>
     </div>
     <div class="cart-box">
       <lts-table
@@ -24,12 +24,16 @@
 </template>
 
 <script>
+  import {ltsTable} from 'ui'
   import cartService from '@/services/CartService.js'
   import orderService from '@/services/OrderService.js'
   export default {
     name: "cart",
+    components: {ltsTable},
+    props: ['list'],
     data(){
       return{
+        customerList: this.list,
         // 购物车商品
         cartItemList: [],
         cart: {
@@ -94,6 +98,29 @@
           "source":"work.500mi.com.shop.pifa.market"
         }
         orderService.createTrade(param);
+      },
+      handleClose(index) {
+        this.customerList.splice(index, 1);
+        if (this.customerList.length === 0) {
+            this.cartItemList = [];
+            this.isShowOrder = false;
+        }
+      },
+    },
+    watch: {
+      cartItemList: {
+          deep: true,
+          handler(newval, oldval) {
+              this.cart.cartTotal = 0;
+              this.cart.cartPriceTotal = 0;
+              newval.forEach((value, index, array) => {
+                  if (value.num === 0) {
+                      array.splice(index, 1);
+                  }
+                  this.cart.cartTotal = parseInt(value.num) + parseInt(this.cart.cartTotal);
+                  this.cart.cartPriceTotal += parseInt(value.num) * parseInt(value.price);
+              })
+          }
       }
     }
   }

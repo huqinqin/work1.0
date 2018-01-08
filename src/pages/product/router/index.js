@@ -8,9 +8,13 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/productList',
       name : 'productList',
       component: productList
+    },
+    {
+      path: '/',
+      component: selectCategory
     },
     {
       path: '/selectCategory',
