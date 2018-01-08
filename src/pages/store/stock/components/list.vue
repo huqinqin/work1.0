@@ -3,7 +3,7 @@
         <lts-search-form @get-from="getParameter" :form-fileds="formFileds" :form-inlines="params"></lts-search-form>
 
         <div style="margin: 10px 0">
-            <el-button @click="batchOpt">批量备货</el-button>
+            <el-button type="primary" @click="batchOpt">批量备货</el-button>
         </div>
         <el-table :data="datalist" v-loading="loading" style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="selection"/>
@@ -45,7 +45,7 @@
                 <div>网点名称：{{detail.spot_name}} 联系人：{{detail.owner_name}} 联系电话：{{detail.owner_mobile}} 备货时间：{{detail.to_time | timestamp2str}}</div>
                 <div>备注：{{detail.remark}}</div>
                 <el-table :data="detail.orders" size="small" show-summary :summary-method="getSummaries" style="width: 100%"
-                          :span-method="arraySpanMethod" @selection-change="detailHandleSelectionChange">
+                          @selection-change="detailHandleSelectionChange">
                     <el-table-column type="selection" label="" width="54px"/>
                     <el-table-column type="index" label="#" width="50px"/>
                     <el-table-column prop="item_remark_object.sinr" label="条码" width="120px" />
@@ -53,6 +53,7 @@
                     <el-table-column prop="spec" label="规格" width="60px" />
                     <el-table-column prop="unit" label="单位" width="50px" />
                     <el-table-column prop="real_num" label="数量" width="50px" />
+                    <el-table-column prop="stock_num" label="缺" width="50px" />
                     <el-table-column label="单价" width="85px">
                         <template slot-scope="scope">{{scope.row.item_remark_object.price_real | money2str}}</template>
                     </el-table-column>
@@ -67,7 +68,7 @@
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">关 闭</el-button>
-                <el-button type="primary" @click="dialogVisible = false">批量备货</el-button>
+                <el-button type="primary" @click="detailBatchOpt">批量备货</el-button>
             </span>
         </el-dialog>
     </div>
@@ -129,14 +130,18 @@
                 columns.forEach((column, index) => {
                     if (index === 0) {
                         sums[index] = '合计';
-                    } else if (index === 5 || index === 7 || index === 8) {
+                    } else if (index === 6 || index === 7 || index === 9 || index === 10) {
                         let total = 0;
                         data.forEach((row) => {
-                            if (index === 5) {
+                            if (index === 6) {
                                 if (row.real_num) {
                                     total += row.real_num;
                                 }
                             } else if (index === 7) {
+                                if (row.stock_num) {
+                                    total += row.stock_num;
+                                }
+                            } else if (index === 9) {
                                 if (row.real_pay) {
                                     total += row.real_pay / 100;
                                 }
@@ -146,7 +151,7 @@
                                 }
                             }
                         });
-                        sums[index] = index !== 5 ? total.toFixed(2) : total;
+                        sums[index] = index !== 5 && index !==6 ? total.toFixed(2) : total;
                     } else {
                         sums[index] = '';
                     }
@@ -154,27 +159,42 @@
 
                 return sums;
             },
-            arraySpanMethod({row, column, rowIndex, columnIndex }) {
-                // console.log(row, column, rowIndex, columnIndex)
-                // if (rowIndex === 0) {
-                //     return [1, 2];
-                // } else if (columnIndex === 1) {
-                //     return [0, 0];
-                // }
-            },
+
             batchOpt(){
-                console.log(this.multipleSelection)
+                let idArr = [];
+                this.multipleSelection.forEach(value => {
+                    value.id_arr.forEach(id => {idArr.push(id)})
+                })
+                this._stockup(idArr)
             },
-            handleSelectionChange(val) {
-                console.log(val)
-                this.multipleSelection = val;
+            handleSelectionChange(selectionList) {
+                this.multipleSelection = selectionList;
             },
-            detailHandleSelectionChange(val) {
-                console.log(val)
-                this.detailMultipleSelection = val;
+
+            detailBatchOpt(){
+                let idArr = [];
+                this.detailMultipleSelection.forEach(value => {
+                    idArr.push(value.id)
+                });
+                this._stockup(idArr).then((resp) => {
+                    this.dialogVisible = false;
+                }, (err)=>{
+                    this.dialogVisible = false;
+                });
             },
+            detailHandleSelectionChange(selectionList) {
+                this.detailMultipleSelection = selectionList;
+            },
+
             stockup(item) {
-                console.log(item)
+                this._stockup(item.idArr)
+            },
+            _stockup(ids) {
+                return deliveryService.start_stock_up(ids).then((resp)=>{
+                    this.$ltsMessage.show({type: 'success', message: '备货成功'})
+                },(err)=>{
+                    this.$ltsMessage.show({type: 'error', message: '备货失败，请稍后重试:' + err.error_message})
+                });
             },
             showDetail: function (item) {
                 this.dialogVisible = true;
@@ -186,7 +206,7 @@
             search() {
                 this.loading = true;
                 this.datalist = [];
-                deliveryService.get_picking_list(this.params.stock_time, this.params.status).then((resp) => {
+                deliveryService.get_provider_spot_view_order_list_by_deliver(this.params.stock_time, this.params.status).then((resp) => {
                     this.loading = false;
                     if (resp.datalist.length > 0) {
                         this.datalist = resp.datalist[0].spots;
