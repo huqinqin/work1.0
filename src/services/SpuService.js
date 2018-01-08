@@ -1,5 +1,5 @@
-import {request} from 'ltsutil'
-export  default{
+import BaseService from "./abstract/BaseService";
+export  default class SpuService extends BaseService{
     /**
      * return 产品列表
      * RequestParam(value="spu") String spu
@@ -15,8 +15,8 @@ export  default{
            page_size : 20,
            order_by : 'id',
        };
-       return request.api("/spu/getList",params);
-    },
+       return super.getRequest("/spu/getList",params);
+    }
     /**
      * return 产品属性
      * RequestParam(value="spu_request") Object spu_request 产品基本信息
@@ -29,8 +29,8 @@ export  default{
             category_id : categoryId,
             sku : true,
         };
-        return request.api("/spu/getCateProps",params);
-    },
+        return super.getRequest("/spu/getCateProps",params);
+    }
     /**
      * return 新增产品
      * RequestParam(value="spu_request") Object spu_request 产品基本信息
@@ -45,8 +45,8 @@ export  default{
             spec : JSON.stringify({unit : param.spec}),
             child_spu_request_list : JSON.stringify(param.child_spu_request_list),
         };
-        return request.api("/spu/add",params);
-    },
+        return super.getRequest("/spu/add",params);
+    }
     /**
      * return datalist
      * RequestParam(value="spu_id") Long 产品Id
@@ -57,6 +57,6 @@ export  default{
       let params = {
         spu_id : 179944,
       };
-      return request.api("/spu/get_spudto_list",params);
-    },
+      return super.getRequest("/spu/get_spudto_list",params);
+    }
 }

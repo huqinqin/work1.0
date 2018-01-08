@@ -1,17 +1,17 @@
-import {request} from 'ltsutil'
-export default {
+import BaseService from "./abstract/BaseService";
+export default class OrderService extends BaseService{
     get(tid){
         let param = {
             tid : tid,
         };
-        return request.api('/store/order/detail', param);
-    },
+        return super.getRequest('/store/order/detail', param);
+    }
     accept(tid){
         let param = {
             tid : tid,
         };
-        return request.api('/store/order/accept', param);
-    },
+        return super.getRequest('/store/order/accept', param);
+    }
     /**
      * return
      * params {wholesale_trade_request: JSON} wholesale_trade_request
@@ -22,6 +22,6 @@ export default {
       let params = {
         wholesale_trade_request : JSON.stringify(param)
       }
-      return request.api('/wholesale/trade/create_trade',params)
-    },
+      return super.getRequest('/wholesale/trade/create_trade',params)
+    }
 }

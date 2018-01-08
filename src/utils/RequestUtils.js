@@ -250,23 +250,38 @@ export default {
     }
     ,
 
-    /* 以下为根据api请求的方法 */
-    baseApi(url, parameter, isAddRandom) {
+    /**
+     *
+     * @param type get post
+     * @param method
+     * @param parameter
+     * @param isAddRandom
+     * @returns {PromiseLike<T>}
+     */
+    baseApi(type, method, parameter, isAddRandom) {
         parameter = parameter || {};
-        // param是过滤处理后的parameter
-        return this.mixParam(parameter, isAddRandom).then(param => {
-            return this.getRequest(url, param);
-        }).then(this.checkResponse);
-    }
-    ,
-
-    api(method, parameter, isAddRandom) {
         let url = config.api.service + method;
-
         if (method.startsWith('wbm.')) {
             url = config.api.api;
             parameter.method = method;
         }
-        return this.baseApi(url, parameter, isAddRandom);
+
+        // param是过滤处理后的parameter
+        return this.mixParam(parameter, isAddRandom).then(param => {
+            if (type === 'get') {
+                return this.getRequest(url, param);
+            } else {
+                return this.postRequest(url, param);
+            }
+        }).then(this.checkResponse);
+    },
+    api(method, parameter, isAddRandom){
+        return this.getApi(method, parameter, isAddRandom);
+    },
+    getApi(method, parameter, isAddRandom) {
+        return this.baseApi('get', method, parameter, isAddRandom);
+    },
+    postApi(method, parameter, isAddRandom) {
+        return this.baseApi('post', method, parameter, isAddRandom);
     }
 }

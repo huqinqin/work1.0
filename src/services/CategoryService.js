@@ -1,5 +1,5 @@
-import {request} from 'ltsutil'
-export default{
+import BaseService from "./abstract/BaseService";
+export default class CategoryService extends BaseService {
     /**
      * return LONG 类目id
      * params {name : ''} 类目名称
@@ -12,16 +12,16 @@ export default{
            name : categoryName,
            parentId : parentId,
        };
-       return request.api('/category/add',{category:JSON.stringify(params)});
-    },
+       return super.getRequest('/category/add',{category:JSON.stringify(params)});
+    }
     /**
      * return datalist 类目列表
      * @auth taohua
      * @remarkl 获取所有的类目列表
      */
     getAllCategoryList(){
-        return request.api('/category/getCarrierCategoryList');
-    },
+        return super.getRequest('/category/getCarrierCategoryList');
+    }
     /**
      * return LONG 类目id
      * params {categoryName : ''} 类目名称
@@ -36,8 +36,8 @@ export default{
                 categoryName: categoryName,
             })
         };
-        request.api('/category/update',params);
-    },
+        super.getRequest('/category/update',params);
+    }
     /**
      * return LONG 类目id
      * params {categoryName : ''} 类目名称
@@ -49,8 +49,8 @@ export default{
         let params = {
             id : id
         }
-        request.api('/category/delete',params);
-    },
+        super.getRequest('/category/delete',params);
+    }
     /**
      * return
      * params {}
@@ -60,8 +60,8 @@ export default{
      */
     addCategoryAttr(){
       let params = {}
-      request.api('',params)
-    },
+      super.getRequest('',params)
+    }
     /**
      * return datalist
      * params {id : LONG}
@@ -73,8 +73,8 @@ export default{
           category_id : id,
           order_by: 'id'
       };
-      return request.api('/category/getCateProps',params)
-    },
+      return super.getRequest('/category/getCateProps',params)
+    }
 
     /**
      * return datalist
@@ -87,8 +87,8 @@ export default{
             category_id : id,
             props : JSON.stringify(props)
         };
-        return request.api('/category/propsSetting',params)
-    },
+        return super.getRequest('/category/propsSetting',params)
+    }
     /**
      * return datalist
      * params {id : LONG}
@@ -101,6 +101,6 @@ export default{
             sku : true,
             order_by : "id",
         };
-        return request.api('/category/getCateProps',params)
-    },
+        return super.getRequest('/category/getCateProps',params)
+    }
 }

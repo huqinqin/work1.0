@@ -1,23 +1,9 @@
-import Request from 'request'
-import Config from 'config'
-
+import {request} from 'ltsutil'
 export default class BaseService {
-  /**
-   * 出口封装
-   * @param promise
-   * @returns {Promise}
-   */
-  output(promise) {
-    return new Promise((resolve, reject) => {
-      promise.then((resp) => {
-        if (resp.success) {
-          resolve(resp.data || resp.datalist || resp.list);
-        } else {
-          reject(resp.error_message);
-        }
-      }, (resp) => {
-        reject(resp.error_message);
-      })
-    });
-  }
+    static getRequest(method, param) {
+        return request.getApi(method, param);
+    }
+    static postRequest(method, param) {
+        return request.postApi(method, param);
+    }
 }

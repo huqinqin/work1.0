@@ -1,5 +1,5 @@
-import {request} from 'ltsutil'
-export default {
+import BaseService from "./abstract/BaseService";
+export default class repertoryService extends BaseService{
   /**
    * return
    * param
@@ -16,8 +16,8 @@ export default {
         })
     };
     console.log(params);
-    return request.api('/sku/get_storage_inventory_detail',params)
-  },
+    return super.getRequest('/sku/get_storage_inventory_detail',params)
+  }
 
   /**
    * return
@@ -30,8 +30,8 @@ export default {
       XXXXX:XXXXX
     };
     console.log(params);
-    return request.api('/XXXXX',params)
-  },
+    return super.getRequest('/XXXXX',params)
+  }
 
   /**
    * return
@@ -44,8 +44,8 @@ export default {
       XXXXX:XXXXX
     };
     console.log(params);
-    return request.api('/XXXXX',params)
-  },
+    return super.getRequest('/XXXXX',params)
+  }
 
   /**
    * return
@@ -58,8 +58,8 @@ export default {
       XXXXX:XXXXX
     };
     console.log(params);
-    return request.api('/XXXXX',params)
-  },
+    return super.getRequest('/XXXXX',params)
+  }
 
   /**
    * return
@@ -74,7 +74,7 @@ export default {
       remark: handle.remark,
       op_type:handle.radio
     };
-    return request.api('/sku/change_storage',params)
-  },
+    return super.getRequest('/sku/change_storage',params)
+  }
 
 }

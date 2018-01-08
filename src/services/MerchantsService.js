@@ -1,6 +1,5 @@
-import {request} from 'ltsutil'
-
-export default {
+import BaseService from "./abstract/BaseService";
+export default class MerchantsService extends BaseService{
   /**
    * return  datalist 工程商列表
    * params {page: ''} 页数
@@ -18,8 +17,8 @@ export default {
       page_size:pagination.pagesize
     }
     console.log(params)
-    return request.api('/installer/getStoreList',params)
-  },
+    return super.getRequest('/installer/getStoreList',params)
+  }
   /**
    * return  datalist 工程商列表
    * params {}
@@ -32,8 +31,8 @@ export default {
     let params = {
       store_request:JSON.stringify(formData)
     }
-    return request.api('/installer/add',params)
-  },
+    return super.getRequest('/installer/add',params)
+  }
   /**
    * return  datalist 工程商列表
    * params {store_request：} JDON串
@@ -47,8 +46,8 @@ export default {
       store_request:JSON.stringify(formData)
     }
     console.log(params)
-    return request.api('/installer/update',params)
-  },
+    return super.getRequest('/installer/update',params)
+  }
   // 把省市区放到级联选择器里
   getProvince(item,data,option){
     for (let i = 0; i < data.datalist.length; i++){
@@ -67,7 +66,7 @@ export default {
     }
     console.log(option)
     return option
-  },
+  }
   // 获取到市
   getCity(item,data,option){
 
