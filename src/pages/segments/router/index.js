@@ -7,21 +7,25 @@ import SegmentsList from '../components/segmentsList'
 Vue.use(Router)
 
 export default new Router({
+    mode: 'history',
     routes: [
         {
-            path: '/',
+            path: '/segments',
             component: AddSegments
         },
         {
-            path: '/add',
+            path: '/segments/add',
+            name:'add',
             component: AddSegments
         },
         {
-            path: '/edit/:id',
+            path: '/segments/edit/:id',
+            name:'edit',
             component: EditSegments
         },
         {
-            path: '/list',
+            path: '/segments/list',
+            name:'list',
             component: SegmentsList
         }
     ]

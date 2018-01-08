@@ -2,73 +2,18 @@ import config from 'config'
 import $ from 'jquery'
 
 export default {
-    httpStatusCodeMap: {
-        100: {name: 'CONTINUE', cname: ''},
-        101: {name: 'SWITCHING_PROTOCOLS', cname: ''},
-        102: {name: 'PROCESSING', cname: ''},
-
-        200: {name: 'OK', cname: ''},
-        201: {name: 'CREATED', cname: ''},
-        202: {name: 'ACCEPTED', cname: ''},
-        203: {name: 'NON_AUTHORITATIVE_INFORMATION', cname: ''},
-        204: {name: 'NO_CONTENT', cname: '服务器成功处理了请求，但不需要返回任何实体内容'},
-        205: {name: 'RESET_CONTENT', cname: ''},
-        206: {name: 'PARTIAL_CONTENT', cname: ''},
-        207: {name: 'MULTI_STATUS', cname: ''},
-
-        300: {name: 'MULTIPLE_CHOICES', cname: ''},
-        301: {name: 'MOVED_PERMANENTLY', cname: ''},
-        302: {name: 'MOVED_TEMPORARILY', cname: ''},
-        303: {name: 'SEE_OTHER', cname: ''},
-        304: {name: 'NOT_MODIFIED', cname: ''},
-        305: {name: 'USE_PROXY', cname: ''},
-        307: {name: 'TEMPORARY_REDIRECT', cname: ''},
-
-        400: {name: 'BAD_REQUEST', cname: '错误的请求'},
-        401: {name: 'UNAUTHORIZED', cname: ''},
-        402: {name: 'PAYMENT_REQUIRED', cname: ''},
-        403: {name: 'FORBIDDEN', cname: ''},
-        404: {name: 'NOT_FOUND', cname: ''},
-        405: {name: 'METHOD_NOT_ALLOWED', cname: ''},
-        406: {name: 'NOT_ACCEPTABLE', cname: '无权限'},
-        407: {name: 'PROXY_AUTHENTICATION_REQUIRED', cname: ''},
-        408: {name: 'REQUEST_TIMEOUT', cname: ''},
-        409: {name: 'CONFLICT', cname: ''},
-        410: {name: 'GONE', cname: ''},
-        411: {name: 'LENGTH_REQUIRED', cname: ''},
-        412: {name: 'PRECONDITION_FAILED', cname: ''},
-        413: {name: 'REQUEST_ENTITY_TOO_LARGE', cname: ''},
-        414: {name: 'REQUEST_URI_TOO_LONG', cname: ''},
-        415: {name: 'UNSUPPORTED_MEDIA_TYPE', cname: ''},
-        416: {name: 'REQUESTED_RANGE_NOT_SATISFIABLE', cname: ''},
-        417: {name: 'EXPECTATION_FAILED', cname: ''},
-        422: {name: 'UNPROCESSABLE_ENTITY', cname: ''},
-        423: {name: 'LOCKED', cname: ''},
-        424: {name: 'FAILED_DEPENDENCY', cname: ''},
-
-        500: {name: 'INTERNAL_SERVER_ERROR', cname: '服务器内部错误'},
-        501: {name: 'NOT_IMPLEMENTED', cname: ''},
-        502: {name: 'BAD_GATEWAY', cname: '网关异常'},
-        503: {name: 'SERVICE_UNAVAILABLE', cname: ''},
-        504: {name: 'GATEWAY_TIMEOUT', cname: ''},
-        505: {name: 'HTTP_VERSION_NOT_SUPPORTED', cname: ''},
-        507: {name: 'INSUFFICIENT_STORAGE', cname: ''}
-    },
     /**
      * 给请求的参数自动加随机数
      */
-    mixParam(param, isAddRandom) {
-        param = param == null || param == undefined ? {} : param;
-        isAddRandom = isAddRandom == null || isAddRandom == undefined ? true : isAddRandom;
-
-        if (isAddRandom) param.r = new Date().getTime();
-        return new Promise((resolve) => {
+    mixParam(param = {}, isAddRandom = true) {
+        return new Promise(resolve => {
+                if (isAddRandom) param.r = new Date().getTime();
                 resolve(param);
             }
         )
     },
     parseErrorResult(url, xhr, type, error) {
-        var errorResult = {
+        let errorResult = {
             success: false,
             data: xhr.responseText,
             error_code: 0,
@@ -82,7 +27,7 @@ export default {
                 break;
             case 'error':
                 // BOP封装了下面3个httpStatusCode
-                if (url.indexOf('api.lts.com') > 0 && (xhr.status == 400 || xhr.status == 406 || xhr.status == 500)) {
+                if (url.indexOf('api.lts.com') > 0 && (xhr.status === 400 || xhr.status === 406 || xhr.status === 500)) {
                     return xhr.responseText;
                 }
                 errorResult.error_code = xhr.status;
@@ -275,7 +220,7 @@ export default {
             }
         }).then(this.checkResponse);
     },
-    api(method, parameter, isAddRandom){
+    api(method, parameter, isAddRandom) {
         return this.getApi(method, parameter, isAddRandom);
     },
     getApi(method, parameter, isAddRandom) {

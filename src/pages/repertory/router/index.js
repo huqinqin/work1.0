@@ -8,29 +8,29 @@ import RepertoryCheck from '../components/repertoryCheck'
 Vue.use(Router)
 
 export default new Router({
+    mode: 'history',
     routes: [
         {
-            path: '/',
-            name: "manage",
+            path: '/repertory',
             component: RepertoryManage
         },
         {
-            path: '/list',
+            path: '/repertory/list',
             name: "list",
             component: RepertoryList
         },
         {
-            path: '/manage',
+            path: '/repertory/manage',
             name: 'manage',
             component: RepertoryManage
         },
         {
-            path: '/warning',
+            path: '/repertory/warning',
             name: 'warning',
             component: RepertoryWarning
         },
         {
-            path: '/check',
+            path: '/repertory/check',
             name: 'check',
             component: RepertoryCheck
         }

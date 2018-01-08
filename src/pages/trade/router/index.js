@@ -8,7 +8,7 @@ export default new Router({
   routes: [
     //退款管理
     {
-      path     : '/tradeeverse',
+      path     : '/',
       component: TradeReverse
     }
   ]
