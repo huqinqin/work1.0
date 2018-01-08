@@ -32,7 +32,7 @@
             "code":"10167",
             "description":"运营商批发交易管理",
             "display":5,
-            "domain":"http://work.500mi.com",
+            "domain":"http://work.lts.com",
             "edate":1493375344000,
             "id":224,
             "name":"订单管理",
@@ -44,7 +44,7 @@
                     "code":"10048",
                     "description":"运营商批发交易管理",
                     "display":4,
-                    "domain":"http://work.500mi.com",
+                    "domain":"http://work.lts.com",
                     "edate":1493375344000,
                     "id":86,
                     "name":"订单列表",
@@ -54,7 +54,7 @@
                     "sort":0,
                     "status":1,
                     "type":2,
-                    "url":"/pages/order.html"
+                    "url":"/store/order"
                 },
                 {
                     "apptype":1,
@@ -62,7 +62,7 @@
                     "code":"10048",
                     "description":"运营商批发交易管理",
                     "display":4,
-                    "domain":"http://work.500mi.com",
+                    "domain":"http://work.lts.com",
                     "edate":1493375344000,
                     "id":87,
                     "name":"退货退款",
@@ -79,13 +79,84 @@
             "status":1,
             "type":1
         },
+      {
+        "apptype":1,
+        "cdate":1447217704000,
+        "code":"10167",
+        "description":"运营商批发交易管理",
+        "display":5,
+        "domain":"http://work.lts.com",
+        "edate":1493375344000,
+        "id":1,
+        "name":"配送管理",
+        "pic":"order",
+        "resourcesList":[
+          {
+            "apptype":1,
+            "cdate":1342499512000,
+            "code":"10048",
+            "description":"",
+            "display":4,
+            "domain":"http://work.lts.com",
+            "edate":1493375344000,
+            "id":2,
+            "name":"备货管理",
+            "resourcesList":[
+
+            ],
+            "sort":0,
+            "status":1,
+            "type":2,
+            "url":"/store/stock"
+          },
+          {
+            "apptype":1,
+            "cdate":1342499512000,
+            "code":"10048",
+            "description":"",
+            "display":4,
+            "domain":"http://work.lts.com",
+            "edate":1493375344000,
+            "id":3,
+            "name":"入库管理",
+            "resourcesList":[
+
+            ],
+            "sort":0,
+            "status":1,
+            "type":2,
+            "url":"/store/warehousing"
+          },
+          {
+            "apptype":1,
+            "cdate":1342499512000,
+            "code":"10048",
+            "description":"",
+            "display":4,
+            "domain":"http://work.lts.com",
+            "edate":1493375344000,
+            "id":4,
+            "name":"发货管理",
+            "resourcesList":[
+
+            ],
+            "sort":0,
+            "status":1,
+            "type":2,
+            "url":"/store/delivery"
+          }
+        ],
+        "sort":1010,
+        "status":1,
+        "type":1
+      },
         {
             "apptype":1,
             "cdate":1447217704000,
             "code":"10167",
             "description":"运营商批发交易管理",
             "display":5,
-            "domain":"http://work.500mi.com",
+            "domain":"http://work.lts.com",
             "edate":1493375344000,
             "id":225,
             "name":"产品管理",
@@ -102,7 +173,7 @@
           "code":"10167",
           "description":"运营商批发交易管理",
           "display":5,
-          "domain":"http://work.500mi.com",
+          "domain":"http://work.lts.com",
           "edate":1493375344000,
           "id":23111,
           "name":"商品管理",
@@ -119,7 +190,7 @@
             "code":"10167",
             "description":"运营商批发交易管理",
             "display":5,
-            "domain":"http://work.500mi.com",
+            "domain":"http://work.lts.com",
             "edate":1493375344000,
             "id":226,
             "name":"工程商管理",
@@ -128,7 +199,7 @@
             "sort":1010,
             "status":1,
             "type":1,
-            "url": '/pages/merchants.html#list'
+            "url": '/merchants#list'
         },
         {
             "apptype":1,
@@ -136,7 +207,7 @@
             "code":"10167",
             "description":"运营商批发交易管理",
             "display":5,
-            "domain":"http://work.500mi.com",
+            "domain":"http://work.lts.com",
             "edate":1493375344000,
             "id":227,
             "name":"代客下单",
@@ -145,7 +216,7 @@
             "sort":1010,
             "status":1,
             "type":1,
-            "url": '/pages/customerorder.html'
+            "url": '/customerorder'
         },
         {
             "apptype":1,
@@ -153,7 +224,7 @@
             "code":"10167",
             "description":"运营商批发交易管理",
             "display":5,
-            "domain":"http://work.500mi.com",
+            "domain":"http://work.lts.com",
             "edate":1493375344000,
             "id":228,
             "name":"类目管理",
@@ -162,7 +233,7 @@
             "sort":1010,
             "status":1,
             "type":1,
-            "url": '/pages/category.html'
+            "url": '/category'
         },
         {
             "apptype":1,
@@ -170,7 +241,7 @@
             "code":"10167",
             "description":"运营商批发交易管理",
             "display":5,
-            "domain":"http://work.500mi.com",
+            "domain":"http://work.lts.com",
             "edate":1493375344000,
             "id":229,
             "name":"子市场管理",
@@ -179,7 +250,7 @@
             "sort":1010,
             "status":1,
             "type":1,
-            "url": '/pages/segments.html'
+            "url": '/segments'
         },
         {
             "apptype":1,
@@ -187,7 +258,7 @@
             "code":"10167",
             "description":"运营商批发交易管理",
             "display":5,
-            "domain":"http://work.500mi.com",
+            "domain":"http://work.lts.com",
             "edate":1493375344000,
             "id":230,
             "name":"库存管理",
@@ -196,7 +267,7 @@
             "sort":1010,
             "status":1,
             "type":1,
-            "url": '/pages/repertory.html'
+            "url": '/repertory'
         },
     ];
     export default {

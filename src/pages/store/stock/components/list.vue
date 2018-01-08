@@ -28,7 +28,7 @@
             <el-table-column label="订单总额">
                 <template slot-scope="scope">{{scope.row.real_pay | money2str}}</template>
             </el-table-column>
-            <el-table-column prop="status" label="状态"></el-table-column>
+            <el-table-column prop="status_title" label="状态"></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
                     <el-button round size="small" @click="showDetail(scope.row)">查看</el-button>
@@ -42,8 +42,24 @@
             :visible.sync="dialogVisible"
             width="1100px">
             <div style="margin-top: -20px">
-                <div>网点名称：{{detail.spot_name}} 联系人：{{detail.owner_name}} 联系电话：{{detail.owner_mobile}} 备货时间：{{detail.to_time | timestamp2str}}</div>
-                <div>备注：{{detail.remark}}</div>
+                <el-form label-position="left" inline class="detail-info">
+                    <el-form-item label="备货时间">
+                        <span>{{detail.to_time | timestamp2str}}</span>
+                    </el-form-item>
+                    <el-form-item label="网点名称">
+                        <span>{{detail.spot_name}}</span>
+                    </el-form-item>
+                    <el-form-item label="联系人">
+                        <span>{{detail.owner_name}}</span>
+                    </el-form-item>
+                    <el-form-item label="联系电话">
+                        <span>{{detail.owner_mobile}}</span>
+                    </el-form-item>
+                    <el-form-item label="备注" style="width: 100%">
+                        <span v-if="detail.remark">{{detail.remark}}</span>
+                        <span v-else>无</span>
+                    </el-form-item>
+                </el-form>
                 <el-table :data="detail.orders" size="small" show-summary :summary-method="getSummaries" style="width: 100%"
                           @selection-change="detailHandleSelectionChange">
                     <el-table-column type="selection" label="" width="54px"/>
@@ -63,12 +79,12 @@
                     <el-table-column label="优惠" width="60px">
                         <template slot-scope="scope">{{scope.row.item_remark_object.discount | money2str}}</template>
                     </el-table-column>
-                    <el-table-column label="状态" width="65px"><template slot-scope="scope">未备货</template></el-table-column>
+                    <el-table-column prop="status_title" label="状态" width="65px"></el-table-column>
                 </el-table>
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">关 闭</el-button>
-                <el-button type="primary" @click="detailBatchOpt">批量备货</el-button>
+                <el-button type="primary" @click="detailBatchOpt" v-if="params.status === 0">批量备货</el-button>
             </span>
         </el-dialog>
     </div>
@@ -165,7 +181,7 @@
                 this.multipleSelection.forEach(value => {
                     value.id_arr.forEach(id => {idArr.push(id)})
                 })
-                this._stockup(idArr)
+                this._confirmWarehousing(idArr)
             },
             handleSelectionChange(selectionList) {
                 this.multipleSelection = selectionList;
@@ -176,20 +192,19 @@
                 this.detailMultipleSelection.forEach(value => {
                     idArr.push(value.id)
                 });
-                this._stockup(idArr).then((resp) => {
+                this._confirmWarehousing(idArr).then((resp) => {
                     this.dialogVisible = false;
                 }, (err)=>{
-                    this.dialogVisible = false;
                 });
             },
             detailHandleSelectionChange(selectionList) {
                 this.detailMultipleSelection = selectionList;
             },
 
-            stockup(item) {
-                this._stockup(item.idArr)
+            confirmWarehousing(item) {
+                this._confirmWarehousing(item.id_arr)
             },
-            _stockup(ids) {
+            _confirmWarehousing(ids) {
                 return deliveryService.start_stock_up(ids).then((resp)=>{
                     this.$ltsMessage.show({type: 'success', message: '备货成功'})
                 },(err)=>{
@@ -206,7 +221,7 @@
             search() {
                 this.loading = true;
                 this.datalist = [];
-                deliveryService.get_provider_spot_view_order_list_by_deliver(this.params.stock_time, this.params.status).then((resp) => {
+                deliveryService.get_provider_spot_view_order_list_by_deliver(this.params.status, this.params.stock_time, null).then((resp) => {
                     this.loading = false;
                     if (resp.datalist.length > 0) {
                         this.datalist = resp.datalist[0].spots;
@@ -220,5 +235,16 @@
     }
 </script>
 <style lang="less">
-
+    .detail-info {
+        font-size: 0;
+    }
+    .detail-info label {
+        width: 90px;
+        color: #99a9bf;
+    }
+    .detail-info .el-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 25%;
+    }
 </style>
