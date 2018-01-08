@@ -63,9 +63,9 @@ export default class CartService extends BaseService{
    * @auth taohua
    * @remark 查询购物车
    */
-  static queryCartList(bizparams){
+  static queryCartList(userId){
     let params = {
-      user_id: bizparams.user_id
+      user_id: userId
     };
     console.log(params);
     return super.getRequest('/wholesale/cart/queryCartList',params)
