@@ -3,7 +3,7 @@
         <el-header height="60px">
             <h1>
                 <a :href="homePage" class="router-link-active">
-                    <img src="../../../static/icon/logo.png" alt="ltst-logo" class="nav-logo" />
+                    <img src="../../assets/icon/shorticon.png" alt="ltst-logo" class="nav-logo" />
                 </a>
             </h1>
             <el-menu class="nav" mode="horizontal" @select="handleSelect">
@@ -44,7 +44,6 @@
     </el-container>
 </template>
 <script>
-    import '../../../static/font_516449_wdlmisobbd2njyvi.css'
     import {store} from 'ltsutil'
     import config from 'config'
     import userService from '@/services/UserService'

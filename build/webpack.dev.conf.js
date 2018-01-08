@@ -62,6 +62,7 @@ for (let pathname in devWebpackConfig.entry) {
     template:'./index.html', // 模板路径
     chunks: ['vendor', pathname, 'manifest'], // 每个html引用的js模块
     inject: true,              // js插入位置
+    favicon : './src/assets/icon/favicon.ico',
     title: 'LTS工作台'
   };
   if (!baseWebpackConfig.plugins) baseWebpackConfig.plugins = [];
