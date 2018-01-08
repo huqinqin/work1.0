@@ -10,7 +10,7 @@
              closable>{{val.value}}</el-tag>抄单</span>
           <div @click="showOrder" style="float: right; padding: 3px 0" >
             <el-badge :value="cart.cartTotal" class="item">
-              <el-button type="primary" icon="el-icon-goods" :disabled="cartItemList.length == 0"></el-button>
+              <el-button type="primary" icon="el-icon-goods" :disabled="cartItemListLength == 0"></el-button>
             </el-badge>
           </div>
         </div>
@@ -33,6 +33,7 @@
 
 <script>
   import {ltsTable,ltsSearchForm} from 'ui'
+  import cartService from '@/services/CartService.js'
   export default {
     name: 'order',
     components: {ltsTable, ltsSearchForm},
@@ -112,6 +113,7 @@
                   callbackParameter: {},
               },
           },
+          cartItemListLength:0,
 
       }
     },
@@ -125,6 +127,21 @@
                 this.cartItemList = [];
                 this.isShowOrder = false;
             }
+        },
+        // 添加购物车
+        addCart(item) {
+            cartService.putCartPlus(this.customerUid,item).then((data) => {
+                this.queryCartList();
+            },(msg) => {
+                this.$ltsMessage.show({type:"error",message:msg.error_message})
+            });
+        },
+        queryCartList(){
+            cartService.queryCartList(this.customerUid).then((data) => {
+                this.cartItemListLength = data.data.length;
+            },(msg) => {
+                this.$ltsMessage.show({type:"error",message:msg.error_message})
+            })
         },
     }
   }

@@ -41,12 +41,17 @@ export default {
     let params = {
       bizDO:JSON.stringify(formData)
     }
-    console.log(params)
     return request.api('/market/update',params)
   },
 
-
   getItemId(){
     return request.api('/market/get_parentId_by_openCode')
+  },
+    // 检测openCode 是否可用
+  checkCode(openCode){
+    let params = {
+      open_code:openCode
+    }
+    return request.api('/market/openCodeIsExist',params)
   }
 }
