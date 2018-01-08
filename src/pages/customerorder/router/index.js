@@ -9,14 +9,17 @@ export default new Router({
   routes: [
     {
       path: '/cart',
+      name: '/cart',
       component: Cart
     },
     {
       path: '/order',
+      name: '/order',
       component: Order
     },
     {
       path: '/order',
+      name: '/order',
       component: Order
     }
   ]

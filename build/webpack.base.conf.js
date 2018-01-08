@@ -8,7 +8,7 @@ function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
-const entries  = utils.getMultiEntry('./src/' + config.moduleName + '/*/*.js');
+const entries  = utils.getMultiEntry('./src/' + config.moduleName + '/**/*.js');
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry  : entries,

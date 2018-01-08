@@ -54,14 +54,15 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   ]
 })
 
-const pages =  utils.getMultiEntry('./src/'+config.moduleName+'/*/*.js');
-for (var pathname in pages) {
+// const pages =  utils.getMultiEntry('./src/'+config.moduleName+'/**/*.js');
+for (let pathname in devWebpackConfig.entry) {
   // 配置生成的html文件，定义路径等
-  var conf = {
+  let conf = {
     filename: pathname + '.html',
     template:'./index.html', // 模板路径
     chunks: ['vendor', pathname, 'manifest'], // 每个html引用的js模块
     inject: true,              // js插入位置
+    favicon : './src/assets/icon/favicon.ico',
     title: 'LTS工作台'
   };
   if (!baseWebpackConfig.plugins) baseWebpackConfig.plugins = [];

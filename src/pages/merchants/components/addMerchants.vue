@@ -1,14 +1,17 @@
 <template>
   <div class="addMerchants">
-    <el-breadcrumb separator="/" style="margin-bottom:20px;">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item >新增工程商</el-breadcrumb-item>
-      <el-button @click="test">123</el-button>
-    </el-breadcrumb>
-
+    <el-button @click="test">123</el-button>
     <el-form ref="form" :model="form" :rules="rules" label-position="left">
-      <el-form-item label="登陆账号" label-width="100px" prop="account" class="form-button" position="relative">
-        <el-input v-model="form.account" @input="checkName" debounce="1000"></el-input>
+      <el-form-item
+        label="登陆账号"
+        label-width="100px"
+        prop="account"
+        class="form-button"
+        position="relative">
+        <el-input
+          v-model="form.account"></el-input>
+        <!--@input="checkName"-->
+
         <div class="message">{{checkApi.message}}</div>
         <span>注：登陆账号不可填手机号码，如需手机登陆，后续可以自主绑定手机登陆</span>
         <span class="checkResult">{{this.checkResult}}</span>
@@ -27,8 +30,16 @@
         <el-input v-model="form.shopName"></el-input>
       </el-form-item>
 
-      <el-form-item label="所在地区" :rules="[{required: true}]" label-width="100px" props="location">
-        <el-cascader :options="locationOptions" v-model="location" @change="changeLocation"></el-cascader>
+      <el-form-item
+        label="所在地区"
+        :rules="[{required: true}]"
+        label-width="100px"
+        props="location">
+        <el-cascader
+          :options="locationOptions"
+          v-model="location"
+          @change="changeLocation"
+          @active-item-change="province"></el-cascader>
       </el-form-item>
 
       <el-form-item label="详细地址" label-width="100px" class="address"
@@ -36,10 +47,15 @@
         <el-input v-model="moreAddress"></el-input>
         <el-button @click="getLocation" class="location form-button">定位</el-button>
       </el-form-item>
-      <el-form-item class="inline" label="经纬度" :rules="[{required: true, message: '经度', trigger: 'blur'}]" label-width="100px" prop="lat">
+      <el-form-item
+        class="inline" label="经纬度"
+        :rules="[{required: true, message: '经度', trigger: 'blur'}]"
+        label-width="100px" prop="lat">
         <span>经度：</span><el-input v-model="form.lat"></el-input>
       </el-form-item>
-      <el-form-item class="inline" prop="lng" :rules="[{required: true, message: '纬度', trigger: 'blur'}]" >
+      <el-form-item
+        class="inline" prop="lng"
+        :rules="[{required: true, message: '纬度', trigger: 'blur'}]" >
         <span>纬度：</span><el-input v-model="form.lng"></el-input>
       </el-form-item>
       <el-form-item label="类型" label-width="100px" prop="type">
@@ -74,8 +90,10 @@
         <span>注：此联系电话主要用于小店管理消费者，可为小店座机号码</span>
       </el-form-item>
       <el-form-item label="备注" label-width="100px" prop="remark" class="remark">
-        <el-input type="textarea" v-model="form.remark"
-                  :autosize="{minRows:4}"></el-input>
+        <el-input
+          type="textarea"
+          v-model="form.remark"
+          :autosize="{minRows:4}"></el-input>
       </el-form-item>
       <el-form-item label="负责人" label-width="100px" prop="owner">
         <el-select  placeholder="请选择负责人" v-model="form.owner">
@@ -92,6 +110,7 @@
 </template>
 <script>
   import {request} from 'ltsutil'
+  import merchantsService from '@/services/MerchantsService.js'
   export default {
     name: 'addMerchants',
     data () {
@@ -123,8 +142,8 @@
         isRequired: true,
         checkResult: '',
         locationOptions: [{
-          value: '浙江省',
-          label: '浙江省',
+          value: '浙江',
+          label: '浙江',
           children: [{
             value: '杭州市',
             label: '杭州市',
@@ -142,22 +161,8 @@
               label: '乐清市'}
             ]}
           ]
-        }, {
-          value: '云南省',
-          label: '云南省',
-          children: [{
-            value: '丽江市',
-            label: '丽江市',
-            children: [{
-              value: '古城区',
-              label: '古城区'
-            }, {
-              value: '永胜县',
-              label: '永胜县'}
-            ]}
-          ]
         }],
-        location: ['北京市', '辖区', '东城区'],
+        location: ['','',''],
         moreAddress: '',
         address: '北京市辖区东城区',
         form: {
@@ -177,10 +182,8 @@
           owner: '',
           inin: false,
           partnerName: '测试用户',
-          openCode: '331102',
           lcCode: '110101000000',
-          carrierUid: '45412',
-          ip: '58.83.225.0'
+          carrier_uid: 45412
         },
         rules: {
           account: [
@@ -203,9 +206,8 @@
           ]
         },
         api: {
-          method: 'wbm.tp.merchant.store.add',
+          method: '/installer/add',
           bizparams: {
-            app_key: '00000-500mi',
             session: '1111'
           }
         },
@@ -213,16 +215,19 @@
           method: '',
           message: '',
           bizparams: {
-            app_key: '00000-500mi',
-
             session: '1111'
           }
         },
         locationApi:{
-          method: '',
+          method: 'wbm.basic.spot.location.get_ode_byName',
           bizparams: {
-            app_key: '00000-500mi',
             session: '1111'
+          }
+        },
+        lApi:{
+          method:'wbm.basic.spot.location.get_province_city_district',
+          bizparams:{
+              session:'1111'
           }
         }
       }
@@ -246,23 +251,25 @@
         console.log(this.location[0] + this.location[1] + this.location[2])
         alert('自动填入经纬度')
       },
-      checkName () {
-        var account = {acount: this.form.account.trim()}
-        var param = Object.assign({}, account, this.checkApi.bizparams)
-        let link = request.api(this.checkApi.method, param)
-        link.then((data) => {
-          console.log(data)
-          this.checkApi.message = '该账号不可用，请重新输入'
-        }, (msg) => {
-          console.log(msg)
-          this.checkApi.message = '该账号不可用，请重新输入'
-        })
-      },
+      // 检测账号是否可用
+      // checkName () {
+      //   var account = {acount: this.form.account.trim()}
+      //   var param = Object.assign({}, account, this.checkApi.bizparams)
+      //   let link = request.api(this.checkApi.method, param)
+      //   link.then((data) => {
+      //     console.log(data)
+      //     this.checkApi.message = '该账号可用'
+      //   }, (msg) => {
+      //     console.log(msg)
+      //     this.checkApi.message = '该账号不可用，请重新输入'
+      //   })
+      // },
       changeLocation (value){
         var location = {}
         location.province = value[0]
         location.city = value[1]
         location.district = value[2]
+        this.address = value[0] + value[1] + value[2]
         let para = Object.assign({},this.locationApi.bizparams,location)
         let link = request.api(this.locationApi.method, para)
         link.then((data) => {
@@ -273,24 +280,55 @@
         })
         console.log(para)
       },
+
+      // 新增工程商提交
       submit () {
         let formData = Object.assign({}, this.getAddress(), this.form)
         formData.type = this.form.type ? '加盟' : '直营'
-        let para = Object.assign({}, this.api.bizparams)
-        para.store_request = JSON.stringify(formData)
-        let link = request.api(this.api.method, para)
-        link.then((data) => {
+        let addItem = merchantsService.addMerchantsItem(formData)
+        addItem.then((data) => {
           console.log(data)
         }, (msg) => {
-          this.$ltsMessage.show({type: 'error', message: '新建工程商出错，请稍后重试'})
+          this.$ltsMessage.show({type: 'error', message: msg.error_message})
+        })
+      },
+      province(value){
+        console.log(this.location)
+        let location = {}
+        location.province = value[0] ? value[0] : ''
+        location.city = value[1] ? value[1] : ''
+        location.district = value[2] ? value[2] : ''
+        console.log(location)
+
+        let para = Object.assign({},this.lApi.bizparams,location)
+        let link = request.api(this.lApi.method, para)
+
+        link.then((data) => {
+          console.log(data.datalist)
+          let city = []
+          merchantsService.getPCD(city,'city',data,this.locationOptions[location.province])
+        }, (msg) => {
+          this.$ltsMessage.show({type: 'error', message: '获取省市区失败'})
         })
       }
     },
     mounted(){
-      this.$on('confirm',function(msg){
-        alert(msg)
+      // this.$on('confirm',function(msg){
+      //   alert(msg)
+      // })
+
+      // 把省市区放到级联选择器里
+      let para = Object.assign({},this.lApi.bizparams,{province:'',city:'',district:''})
+      let link = request.api(this.lApi.method, para)
+
+      link.then((data) => {
+        let province = []
+        this.locationOptions = merchantsService.getPCD(province,data,this.locationOptions)
+        // console.log(this.locationOptions)
+      }, (msg) => {
+        this.$ltsMessage.show({type: 'error', message: '获取省市区失败'})
       })
-    },
+    }
   }
 </script>
 <style lang="less">

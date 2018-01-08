@@ -1,9 +1,5 @@
 <template>
   <div>
-    <el-breadcrumb separator="/" style="margin-bottom:20px;">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <router-link to="/edit">编辑</router-link>
-    </el-breadcrumb>
     <lts-search-form @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-form>
     <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination" @menuClick="handleMenuItemClick"></lts-table>
   </div>
@@ -12,6 +8,7 @@
 <script>
   import {request} from 'ltsutil'
   import {ltsTable,ltsSearchForm} from 'ui'
+  import merchantsService from '@/services/MerchantsService.js'
 
   export default {
     name: 'list',
@@ -21,10 +18,10 @@
     data () {
       return {
         api: {
-          method: 'wbm.tp.merchant.store.get_store_list_byCondition',
+          method: '/installer/getStoreList',
+          // method: '/installer/getStoreListByCondition',
           bizparams: {
-            orderBy: '',
-            shop:{}
+            order_by: 'id',
           }
         },
         form: {
@@ -33,13 +30,11 @@
               'search': {
                 shopNmae: {'label': '', 'type': 'input', 'bindValue': 'shopName', 'bindPlaceholder': '搜索店铺名称'},
                 submit: {'bindValue': '确定', 'type': 'submitbutton'}
-              }
+              },
             }
           ],
           formInline: {
             shopName: '',
-            lcCode: '330103',
-            openCode: '331088'
           }
         },
         pagination: {
@@ -84,7 +79,8 @@
             alert('详情：' + item.shop_name)
             break
           case 'edit':
-            alert('编辑：' + item.uid)
+            const uid = item.uid
+            this.$router.push({path: `/edit/${uid}`})
             break
           case 'delete':
             alert('删除：' + item.shop_name)
@@ -94,28 +90,38 @@
       getParameter (val) {
         this.form.formInline = val
         this.api.bizparams.shop = JSON.stringify(val)
-        this.search()
+        this.getList()
       },
-      search () {
-        let link = request.api(this.api.method, this.api.bizparams)
-        link.then((data) => {
+      getList() {
+        let getList = merchantsService.getMerchantsList(this.api.bizparams,this.pagination)
+        getList.then((data) => {
           console.log('success')
-        }, (msg) => {
-          this.$ltsMessage.show({type: 'error', message: '查询失败，请稍后重试'})
+        },(msg) => {
+          this.$ltsMessage.show({type: 'error', message: '2333'})
         })
+        // let link = request.api(this.api.method, this.api.bizparams)
+        // console.log(this.api.bizparams)
+        // link.then((data) => {
+        //   console.log('success')
+        // }, (msg) => {
+        //   this.$ltsMessage.show({type: 'error', message: msg.error_message})
+        // })
       }
     },
     created(){
-      this.api.bizparams.shop = JSON.stringify(this.form.formInline)
+      // this.api.bizparams.shop = JSON.stringify(this.form.formInline)
+
+    },
+    mounted(){
+      // merchantsService.getMerchantsList()
     },
     watch: {
-      form: {
-        handler: function () {
-          this.api.bizparams.shop = JSON.stringify(this.form.formInline)
-          console.log(this.api.bizparams.shop)
-        },
-        deep: true
-      }
+      // form: {
+      //   handler: function () {
+      //     this.api.bizparams.shop = JSON.stringify(this.form.formInline)
+      //   },
+      //   deep: true
+      // }
     }
   }
 </script>

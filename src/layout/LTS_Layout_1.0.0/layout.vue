@@ -3,7 +3,7 @@
         <el-header height="60px">
             <h1>
                 <a :href="homePage" class="router-link-active">
-                    <img src="../../../static/icon/logo.png" alt="ltst-logo" class="nav-logo" />
+                    <img src="../../assets/icon/shorticon.png" alt="ltst-logo" class="nav-logo" />
                 </a>
             </h1>
             <el-menu class="nav" mode="horizontal" @select="handleSelect">
@@ -44,7 +44,6 @@
     </el-container>
 </template>
 <script>
-    import '../../../static/font_516449_wdlmisobbd2njyvi.css'
     import {store} from 'ltsutil'
     import config from 'config'
     import userService from '@/services/UserService'
@@ -70,7 +69,7 @@
                 userService.logout().then((resp)=>{
                     session.logout();
                 },(err)=>{
-                    this.$ltsMessage.show({type: "error", message: err.errorMessage});
+                    this.$ltsMessage.show({type: "error", message: err.error_message});
                 })
             }
         },
@@ -80,7 +79,7 @@
             }
         },
         mounted() {
-            // session.checkLogin();
+            session.checkLogin();
             this.account = store.getItem('account');
         }
     }
@@ -138,6 +137,7 @@
         .el-aside {
             color: #666;
             background-color: white;
+            overflow: inherit;
             .el-submenu {
                 .el-submenu_title {
                     line-height: 70px;

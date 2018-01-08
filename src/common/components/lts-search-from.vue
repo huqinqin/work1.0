@@ -4,15 +4,34 @@
             <div v-for="(menubar,menukey) in bar">
                 <el-form :inline="true" :model="formInline" class="demo-form-inline" if="formInline">
                     <el-form-item v-for="(val,key) in menubar" :label="val.label" :key="val.bindValue">
-                        <div v-if="val.type == 'date'">
+                        <div v-if="val.type == 'datetimerange'">
                             <el-date-picker
-                                v-model="datelist"
+                                v-model="formInline[val.bindValue]"
                                 type="datetimerange"
                                 range-separator="至"
                                 start-placeholder="开始日期"
                                 end-placeholder="结束日期"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                :picker-options="datePickerOptions"
                                 align="right">
                             </el-date-picker>
+                        </div>
+                        <div v-if="val.type == 'datetime'">
+                          <el-date-picker
+                            v-model="formInline[val.bindValue]"
+                            type="datetime"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            placeholder="选择日期时间">
+                          </el-date-picker>
+                        </div>
+                        <div v-if="val.type == 'date'">
+                          <el-date-picker
+                            v-model="formInline[val.bindValue]"
+                            type="date"
+                            value-format="yyyy-MM-dd"
+                            placeholder="选择日期"
+                            style="width: 150px">
+                          </el-date-picker>
                         </div>
                         <div v-else-if="val.type == 'input'">
                             <el-input v-model="formInline[val.bindValue]" :placeholder="val.bindPlaceholder"
@@ -37,6 +56,15 @@
                                            :value="opt.bindValue"></el-option>
                             </el-select>
                         </div>
+                        <div v-else-if="val.type === 'cascader'">
+                            <el-cascader
+                                v-model="formInline[val.bindValue]"
+                                :placeholder="val.bindPlaceholder"
+                                expand-trigger="hover"
+                                @change="cascAderHandleChange"
+                                :options="val.options">
+                            </el-cascader>
+                        </div>
                         <div v-else-if="val.type == 'searchbutton'">
                             <el-button type="primary" @click="onSubmit" icon="el-icon-search">{{val.bindValue}}
                             </el-button>
@@ -51,11 +79,11 @@
     </div>
 </template>
 <script>
-    import {request} from 'ltsutil'
+    import {request, dateUtils} from 'ltsutil'
 
     export default {
         name: 'lts-form',
-        props: ['formInlines', 'formFileds', 'autocomplete'],
+        props: ['formInlines', 'formFileds', 'autocomplete','cascader'],
         data() {
             return {
                 datelist: '',
@@ -65,7 +93,10 @@
 
                 restaurants: [],
                 state1: '',
-                state2: ''
+                state2: '',
+                datePickerOptions: {
+                    shortcuts: dateUtils.datePickerOptionsShortcuts
+                }
             }
         },
         mounted() {
@@ -85,13 +116,13 @@
             },
             loadAutoCompleteData(keywords) {
                 return new Promise((resolve, reject) => {
-                    let link = request.api(this.tApi.method, this.getParameter())
+                    let link = request.api(this.autocomplete.method, this.getParameter())
                     link.then((resp) => {
                         this.restaurants = resp.datalist;
                         let datalist = this.autocomplete.callBack ? this.autocomplete.callBack(resp.datalist) : resp.datalist;
                         resolve(datalist);
                     }, (msg) => {
-                        this.$ltsMessage.show({type: 'error', message: msg.errorMessage});
+                        this.$ltsMessage.show({type: 'error', message: msg.error_message});
                     });
                 });
             },
@@ -110,7 +141,10 @@
                 });
             },
             handleSelect(item) {
-                this.formInline.callbackParameter = item;
+              this.formInline.callbackParameter = item;
+            },
+            cascAderHandleChange(val){
+                this.$emit("cascAderHandleChange",val);
             },
         }
     }

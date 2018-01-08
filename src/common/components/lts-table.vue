@@ -9,6 +9,7 @@
                              :key="field.value"
                              :type="field.type"
                              :prop="field.value"
+                             :width="field.width"
                              :label="index">
             </el-table-column>
             <el-table-column v-for="(field, index) in table.tableField"
@@ -38,8 +39,8 @@
                         </div>
                     </div>
                     <div v-else-if="field.type === 'inputNumber'">
-                        <el-input-number v-model="scope.row[field.value]" size="small"
-                                         @change="inputNumberhandleChange(scope.row)" :min="0"></el-input-number>
+                        <el-input-number v-model="scope.row[field.value]" :data="scope.row" size="small"
+                                         @change="inputNumberhandleChange(scope.row)"  :min="0"></el-input-number>
                     </div>
                 </template>
             </el-table-column>
@@ -129,7 +130,7 @@
                     this.pagination.total.default = resp.total
                 }, (msg) => {
                     this.loading = false
-                    this.$ltsMessage.show({type: 'error', message: msg.errorMessage})
+                    this.$ltsMessage.show({type: 'error', message: msg.error_message})
                 })
             },
 
@@ -143,7 +144,7 @@
                  * @type {number|*}
                  */
                 this.tApi.bizparams.page = this.pagination.page.default
-                this.tApi.bizparams.pageSize = this.pagination.pageSize.default
+                this.tApi.bizparams.page_size = this.pagination.pageSize.default
                 /**
                  * 加入搜索的参数
                  * Object.assign 后一个参数会覆盖前面的
@@ -193,7 +194,9 @@
              * http://element.eleme.io/#/zh-CN/component/input-number
              */
             inputNumberhandleChange(item) {
-                this.$emit('inputNumberChang', item)
+              this.$nextTick( ()=> {
+                this.$emit('inputNumberChange', item)
+              })
             },
             /**
              * 自定义封装 TABLE 下拉菜单点击传递数据给父类做处理
@@ -202,11 +205,27 @@
                 const item = data.$vnode.data.attrs.data
                 this.$emit('menuClick', command, item)
             },
+            emitInputChange(){
+              console.log(this);
+            },
+            /**
+            * 自定义封装 TABLE 下拉菜单点击传递数据给父类做处理
+            */
+            tableRowChange(command, data) {
+                const item = data.$vnode.data.attrs.data
+                this.$emit('menuClick', command, item)
+            },
             /**
              * 自定义封装 TABLE 单个菜单点击传递数据给父类做处理
              */
             menuClick(command, data) {
                 this.$emit('menuClick', command, data)
+            },
+            /**
+            * 自定义封装 TABLE refresh 父组件通过ref调用
+            */
+            refresh(command, data) {
+              this.getTableList();
             }
         },
         /**

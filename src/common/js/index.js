@@ -3,6 +3,7 @@ import ElementUI from 'element-ui'
 import VueI18n from 'vue-i18n'
 import VueResource from 'vue-resource'
 import Router from 'vue-router'
+import {dateUtils} from 'ltsutil'
 
 import Layout from 'layout'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -29,7 +30,14 @@ const i18n = new VueI18n({
     en: require('@/lang/en').default
   }
 })
-
+Vue.filter('timestamp2str', function (timestamp) {
+    if (!timestamp) return ''
+    return dateUtils.format(new Date(timestamp))
+})
+Vue.filter('money2str', function (money) {
+    if (!money) return ''
+    return (money / 100).toFixed(2)
+})
 export default function (App, router = new Router()) {
   Layout.components = {'lts-content': App,'left-menu': leftMenu}
   new Vue({

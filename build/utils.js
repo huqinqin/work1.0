@@ -103,22 +103,19 @@ exports.createNotifierCallback = () => {
 
 //获取多级的入口文件
 exports.getMultiEntry = function (globPath) {
-  var entries = {},
-    basename, tmp, pathname;
+  let entries = {};
 
-  glob.sync(globPath).forEach(function (entry) {
-    console.log(entry);
-    basename = path.basename(entry, path.extname(entry));
-    tmp = entry.split('/').splice(-4);
-
-    var pathsrc = tmp[0]+'/'+tmp[1];
-    if( tmp[0] == 'src' ){
-      pathsrc = tmp[1];
+  glob.sync(globPath).forEach(function (filepath) {
+    if (filepath.indexOf('components') > -1 || filepath.indexOf('router') > -1) {
+      return;
     }
-    //console.log(pathsrc)
-    pathname = pathsrc + '/' + basename; // 正确输出js和html的路径
-    entries[pathname] = entry;
+    let basename = path.basename(filepath, path.extname(filepath));
+    let htmlPage = filepath.split('/').slice(3, -1).join('/') + '/' + basename;
+    if (htmlPage === 'index/index') {
+      htmlPage = 'index';
+    }
+    entries[htmlPage] = filepath;
   });
-
+  console.log(entries);
   return entries;
 }

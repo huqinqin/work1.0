@@ -31,5 +31,6 @@ module.exports = {
     'semi': 'off',
     'keyword-spacing': 'off',
     'indent': 'off',
+    'no-unused-vars': 'off'
   }
 }

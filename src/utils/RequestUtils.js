@@ -2,103 +2,48 @@ import config from 'config'
 import $ from 'jquery'
 
 export default {
-    httpStatusCodeMap: {
-        100: {name: 'CONTINUE', cname: ''},
-        101: {name: 'SWITCHING_PROTOCOLS', cname: ''},
-        102: {name: 'PROCESSING', cname: ''},
-
-        200: {name: 'OK', cname: ''},
-        201: {name: 'CREATED', cname: ''},
-        202: {name: 'ACCEPTED', cname: ''},
-        203: {name: 'NON_AUTHORITATIVE_INFORMATION', cname: ''},
-        204: {name: 'NO_CONTENT', cname: '服务器成功处理了请求，但不需要返回任何实体内容'},
-        205: {name: 'RESET_CONTENT', cname: ''},
-        206: {name: 'PARTIAL_CONTENT', cname: ''},
-        207: {name: 'MULTI_STATUS', cname: ''},
-
-        300: {name: 'MULTIPLE_CHOICES', cname: ''},
-        301: {name: 'MOVED_PERMANENTLY', cname: ''},
-        302: {name: 'MOVED_TEMPORARILY', cname: ''},
-        303: {name: 'SEE_OTHER', cname: ''},
-        304: {name: 'NOT_MODIFIED', cname: ''},
-        305: {name: 'USE_PROXY', cname: ''},
-        307: {name: 'TEMPORARY_REDIRECT', cname: ''},
-
-        400: {name: 'BAD_REQUEST', cname: '错误的请求'},
-        401: {name: 'UNAUTHORIZED', cname: ''},
-        402: {name: 'PAYMENT_REQUIRED', cname: ''},
-        403: {name: 'FORBIDDEN', cname: ''},
-        404: {name: 'NOT_FOUND', cname: ''},
-        405: {name: 'METHOD_NOT_ALLOWED', cname: ''},
-        406: {name: 'NOT_ACCEPTABLE', cname: '无权限'},
-        407: {name: 'PROXY_AUTHENTICATION_REQUIRED', cname: ''},
-        408: {name: 'REQUEST_TIMEOUT', cname: ''},
-        409: {name: 'CONFLICT', cname: ''},
-        410: {name: 'GONE', cname: ''},
-        411: {name: 'LENGTH_REQUIRED', cname: ''},
-        412: {name: 'PRECONDITION_FAILED', cname: ''},
-        413: {name: 'REQUEST_ENTITY_TOO_LARGE', cname: ''},
-        414: {name: 'REQUEST_URI_TOO_LONG', cname: ''},
-        415: {name: 'UNSUPPORTED_MEDIA_TYPE', cname: ''},
-        416: {name: 'REQUESTED_RANGE_NOT_SATISFIABLE', cname: ''},
-        417: {name: 'EXPECTATION_FAILED', cname: ''},
-        422: {name: 'UNPROCESSABLE_ENTITY', cname: ''},
-        423: {name: 'LOCKED', cname: ''},
-        424: {name: 'FAILED_DEPENDENCY', cname: ''},
-
-        500: {name: 'INTERNAL_SERVER_ERROR', cname: '服务器内部错误'},
-        501: {name: 'NOT_IMPLEMENTED', cname: ''},
-        502: {name: 'BAD_GATEWAY', cname: '网关异常'},
-        503: {name: 'SERVICE_UNAVAILABLE', cname: ''},
-        504: {name: 'GATEWAY_TIMEOUT', cname: ''},
-        505: {name: 'HTTP_VERSION_NOT_SUPPORTED', cname: ''},
-        507: {name: 'INSUFFICIENT_STORAGE', cname: ''}
-    },
     /**
      * 给请求的参数自动加随机数
      */
-    mixParam(param, isAddRandom) {
-        param = param == null || param == undefined ? {} : param;
-        isAddRandom = isAddRandom == null || isAddRandom == undefined ? true : isAddRandom;
-
-        if (isAddRandom) param.r = new Date().getTime();
-        return new Promise((resolve) => {
+    mixParam(param = {}, isAddRandom = true) {
+        return new Promise(resolve => {
+                if (isAddRandom) param.r = new Date().getTime();
                 resolve(param);
             }
         )
     },
     parseErrorResult(url, xhr, type, error) {
-        var errorResult = {
+        let errorResult = {
             success: false,
             data: xhr.responseText,
-            errorCode: 0,
-            errorName: type,
-            errorMessage: ''
+            error_code: 0,
+            error_name: type,
+            error_message: ''
         };
         switch (type) {
             case 'timeout':
-                errorResult.errorCode = 9001;
-                errorResult.errorMessage = '请求超时';
+                errorResult.error_code = 9001;
+                errorResult.error_message = '请求超时';
                 break;
             case 'error':
                 // BOP封装了下面3个httpStatusCode
-                if (url.indexOf('api.lts.com') > 0 && (xhr.status == 400 || xhr.status == 406 || xhr.status == 500)) {
+                if (url.indexOf('api.lts.com') > 0 && (xhr.status === 400 || xhr.status === 406 || xhr.status === 500)) {
                     return xhr.responseText;
                 }
-                errorResult.errorCode = xhr.status;
-                errorResult.errorMessage = error;
+                errorResult.error_code = xhr.status;
+                errorResult.error_message = error;
                 break;
             case 'abort':
-                errorResult.errorCode = 9003;
-                errorResult.errorMessage = '请求中断,请检查网络是否连接';
+                errorResult.error_code = 9003;
+                errorResult.error_message = '请求中断,请检查网络是否连接';
                 break;
             case 'parseerror':
-                errorResult.errorCode = 9004;
-                errorResult.errorMessage = '返回的数据解析失败';
+                errorResult.error_code = 9004;
+                errorResult.error_message = '返回的数据解析失败';
                 break;
             default:
-                errorResult.errorCode = 9005;
-                errorResult.errorMessage = '请求异常';
+                errorResult.error_code = 9005;
+                errorResult.error_message = '请求异常';
         }
         return errorResult;
     }
@@ -115,7 +60,7 @@ export default {
                 type: 'GET',
                 url: url,
                 data: parameter,
-                timeout: 5 * 1000,
+                timeout: 30 * 1000,
                 cache: false,
                 // status: "success", "notmodified", "error", "timeout", "abort", "parsererror"
                 success(data, status, xhr) {
@@ -137,8 +82,8 @@ export default {
                     if (config.isDebug && errorResult) {
                         console.log(errorResult);
                     }
-                    if (errorResult.errorMessage == '') {
-                        errorResult.errorMessage = '接口获取失败'
+                    if (errorResult.error_message == '') {
+                        errorResult.error_message = '接口获取失败'
                     }
                     reject(errorResult)
                 }
@@ -227,9 +172,9 @@ export default {
                     var errorResult = {
                         success: false,
                         data: '',
-                        errorCode: respObj.error_response.code,
-                        errorName: '',
-                        errorMessage: respObj.error_response.msg
+                        error_code: respObj.error_response.code,
+                        error_name: '',
+                        error_message: respObj.error_response.msg
                     };
                     reject(errorResult);
                 }
@@ -241,34 +186,47 @@ export default {
                 reject({
                     success: false,
                     data: '',
-                    errorCode: 99999,
-                    errorName: '',
-                    errorMessage: '系统错误，响应的格式异常！'
+                    error_code: 99999,
+                    error_name: '',
+                    error_message: '系统错误，响应的格式异常！'
                 });
             }
         })
     }
     ,
 
-    /* 以下为根据api请求的方法 */
-    baseApi(url, parameter, isAddRandom) {
+    /**
+     *
+     * @param type get post
+     * @param method
+     * @param parameter
+     * @param isAddRandom
+     * @returns {PromiseLike<T>}
+     */
+    baseApi(type, method, parameter, isAddRandom) {
         parameter = parameter || {};
-        parameter.style = 'underline_dateformat';
-        // parameter.format = parameter.format ? parameter.format : 'jsonOnly';
-        // param是过滤处理后的parameter
-        return this.mixParam(parameter, isAddRandom).then(param => {
-            return this.getRequest(url, param);
-        }).then(this.checkResponse);
-    }
-    ,
-
-    api(method, parameter, isAddRandom) {
         let url = config.api.service + method;
-
         if (method.startsWith('wbm.')) {
             url = config.api.api;
             parameter.method = method;
         }
-        return this.baseApi(url, parameter, isAddRandom);
+
+        // param是过滤处理后的parameter
+        return this.mixParam(parameter, isAddRandom).then(param => {
+            if (type === 'get') {
+                return this.getRequest(url, param);
+            } else {
+                return this.postRequest(url, param);
+            }
+        }).then(this.checkResponse);
+    },
+    api(method, parameter, isAddRandom) {
+        return this.getApi(method, parameter, isAddRandom);
+    },
+    getApi(method, parameter, isAddRandom) {
+        return this.baseApi('get', method, parameter, isAddRandom);
+    },
+    postApi(method, parameter, isAddRandom) {
+        return this.baseApi('post', method, parameter, isAddRandom);
     }
 }

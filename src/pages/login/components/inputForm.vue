@@ -1,7 +1,7 @@
 <template>
     <div class="login" type="flex" align="center">
         <el-form :model="form" status-icon :rules="rules" ref="form">
-            <el-row><img class="svg" src="../../../../static/icon/logo.png" alt="logo"></el-row>
+            <el-row><img class="svg" src="../../../assets/icon/shorticon.png" alt="logo"></el-row>
             <el-form-item label="用户名" prop="name">
                 <el-input placeholder="请输入您的用户名" type="text" v-model="form.name" clearable></el-input>
             </el-form-item>
@@ -48,9 +48,9 @@
                     if (valid) {
                         userService.login(this.form.name, this.form.password).then( (resp) =>{
                             this.$ltsLoading.show({text: "登录成功跳转中"});
-                            session.login(resp.data);
+                            session.login({account: this.form.name});
                         }, (err) => {
-                            this.$ltsMessage.show({type: "error", message: err.errorMessage});
+                            this.$ltsMessage.show({type: "error", message: err.error_message});
                         });
                     } else {
                         return false;

@@ -1,8 +1,12 @@
 <template>
   <div>
-    <router-view>
-
-    </router-view>
+    <el-breadcrumb separator="/" style="margin-bottom:20px;">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/add' }">新增工程商</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/edit' }">编辑工程商</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/list' }">工程商列表</el-breadcrumb-item>
+    </el-breadcrumb>
+    <router-view></router-view>
   </div>
 </template>
 <script>
