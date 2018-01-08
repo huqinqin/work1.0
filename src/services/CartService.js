@@ -1,5 +1,5 @@
-import {request} from 'ltsutil'
-export default {
+import BaseService from "./abstract/BaseService";
+export default class CartService extends BaseService{
   /**
    * return ture
    * param userId 工程商ID
@@ -10,7 +10,7 @@ export default {
    * @autor 小猪
    * remark 添加购物车
    */
-  putCartPlus(uid,param){
+  static putCartPlus(uid,param){
     let params = {
       user_id : uid,
       num : param.num,
@@ -52,8 +52,8 @@ export default {
       ]),
     };
     console.log(params);
-    return request.api('//wholesale/cart/putCartPlus',params);
-  },
+    return super.getRequest('//wholesale/cart/putCartPlus',params);
+  }
 
   /**
    * return
@@ -63,11 +63,11 @@ export default {
    * @auth taohua
    * @remark 查询购物车
    */
-  queryCartList(bizparams){
+  static queryCartList(bizparams){
     let params = {
       user_id: bizparams.user_id
     };
     console.log(params);
-    return request.api('/wholesale/cart/queryCartList',params)
+    return super.getRequest('/wholesale/cart/queryCartList',params)
   }
 }

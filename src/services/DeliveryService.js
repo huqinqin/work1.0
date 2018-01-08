@@ -1,10 +1,10 @@
-import {request} from 'ltsutil'
-export default {
-    get_picking_list(stock_time, status){
+import BaseService from "./abstract/BaseService";
+export default class DeliveryService extends BaseService {
+    static get_picking_list(stock_time, status){
         let param = {
             stock_time : stock_time,
             status: status
         };
-        return request.api('/store/delivery/get_picking_list', param);
+        return super.getRequest('/store/delivery/get_picking_list', param);
     }
 }
