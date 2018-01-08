@@ -1,11 +1,11 @@
-import {request} from 'ltsutil'
-export default {
+import BaseService from "./abstract/BaseService";
+export default class customerOrderService extends BaseService {
 
-    submitCart(cart){
+    static submitCart(cart){
         let params = {
             cart: cart
         }
-        return request.api('',params)
+        return super.getRequest('',params)
     }
 
 }

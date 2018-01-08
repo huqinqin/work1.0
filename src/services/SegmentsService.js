@@ -1,5 +1,5 @@
-import {request} from 'ltsutil'
-export default {
+import BaseService from "./abstract/BaseService";
+export default class SegmentsService extends BaseService{
 
   /**
    * return datalist
@@ -9,27 +9,27 @@ export default {
    * @auth taohua
    * @remark 获取子市场列表
    */
-  getSegmentsList(pagination,bizparams){
+  static getSegmentsList(pagination,bizparams){
     let params = {
       page:pagination.page,
       page_size:pagination.pagesize,
       order_by: bizparams.order_by
     }
-    return request.api('/market/getChildrenByOpenCode',params)
-  },
+    return super.getRequest('/market/getChildrenByOpenCode',params)
+  }
   /**
    * return
    * params {addChildMarketRequest : ''} json串
    * @auth taohua
    * @remark 新增子市场
    */
-  addSegmentsItem(formData){
+  static addSegmentsItem(formData){
     let params = {
       add_child_market_request:JSON.stringify(formData)
     }
     console.log(params)
-    return request.api('/market/addChildMarket',params)
-  },
+    return super.getRequest('/market/addChildMarket',params)
+  }
 
   /**
    * return
@@ -37,16 +37,16 @@ export default {
    * @auth taohua
    * @remark 编辑子市场
    */
-  editSegmentsItem(formData){
+  static editSegmentsItem(formData){
     let params = {
       bizDO:JSON.stringify(formData)
     }
     console.log(params)
-    return request.api('/market/update',params)
-  },
+    return super.getRequest('/market/update',params)
+  }
 
 
-  getItemId(){
-    return request.api('/market/get_parentId_by_openCode')
+    static getItemId(){
+    return super.getRequest('/market/get_parentId_by_openCode')
   }
 }
