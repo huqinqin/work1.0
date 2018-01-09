@@ -125,7 +125,7 @@
           });
           this.spuDO = data.data;
           this.itemPropDTO = data.data.itemPropDTO;
-        },(msg)=>{
+        },(msg) => {
           console.log(msg);
         });
       },
@@ -165,7 +165,9 @@
             )
         });
         this.itemPropDTO.itemPropMapList.forEach(function (value,index,array) {
-          let propValue = {};let objKey = value.propName,porpslist = [];
+          let propValue = {};
+          let objKey = value.propName;
+          let porpslist = [];
           value.propValues.forEach(function(val,key,array){
             if(val.isSelect){
               propValue[objKey] = val.value
@@ -189,7 +191,6 @@
               )
             }
           })
-
         });
         let wholesale_item = {
           "itemName" : this.spuDO.item_name,

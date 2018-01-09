@@ -176,7 +176,7 @@
         let count = 0; let selectProps = []; let subSelectProps = [];
         item.propValues.forEach(function(value,index){
           if(value.isSelected){
-            count ++ ;
+            count++;
             selectProps.push(value);
           }
         });
@@ -188,7 +188,7 @@
         let selectedNum = 0;
         this.spuSpecList.forEach(function(value,index){
             if(value.isSelect){
-              selectedNum ++;
+              selectedNum++;
             }
         });
         if(selectedNum > 2){
@@ -199,21 +199,21 @@
         }
         let cloneItem = Object.assign({},item);
         cloneItem.propValues = selectProps;
-        if(this.selectedSpecList.length == 0){
+        if(this.selectedSpecList.length === 0){
           this.selectedSpecList.push(cloneItem);
         }else{
           let selectCount = 0;
           this.selectedSpecList.forEach(function(value,index,array){
-            if(value.name == cloneItem.name || value.id == cloneItem.id){
+            if(value.name === cloneItem.name || value.id === cloneItem.id){
               if(cloneItem.isSelect){
                 array[index] = cloneItem;
               }else{
                 array.splice(index,1);
               }
-              selectCount ++
+              selectCount++
             }
           })
-          if(selectCount == 0){
+          if(selectCount === 0){
             this.selectedSpecList.push(cloneItem);
           }
         }
@@ -228,19 +228,19 @@
         this.postSelectedSpecList = [];
         let self = this;
         var discards = [];
-        for(var i = 0;i<this.selectedSpecList.length;i++){
+        for(var i = 0; i < this.selectedSpecList.length; i++){
           this.postSelectedSpecList = [];
-          if(discards.length == 0){
+          if(discards.length === 0){
             for (let prop of this.selectedSpecList[i].propValues) {
               discards.push(this.makeSpecList(this.selectedSpecList[i],prop));
             }
             this.postSelectedSpecList = discards;
           }else{
             let cloneDiscards = JSON.parse(JSON.stringify(discards)); // 深度clone
-            for(var j = 0;j<this.selectedSpecList[i].propValues.length;j++){
+            for(var j = 0; j < this.selectedSpecList[i].propValues.length; j++){
               var prop = this.selectedSpecList[i].propValues[j];
               var newcloneDiscards = JSON.parse(JSON.stringify(cloneDiscards)); // 深度clone
-              for(var r = 0;r<newcloneDiscards.length;r++){
+              for(var r = 0; r < newcloneDiscards.length; r++){
                 newcloneDiscards[r].propsList.push(this.makeProp(this.selectedSpecList[i],prop));
                 this.postSelectedSpecList.push(newcloneDiscards[r]);
               }
@@ -274,7 +274,7 @@
             {
               value : inputValue,
               isCanEdit : true,
-              isSelected : type == 'spec' ? false : true,
+              isSelected : type === 'spec' ? false : true,
             }
           );
         }
@@ -330,7 +330,7 @@
               spec : this.$route.params.spuInfo.saleSpec,
               child_spu_request_list : this.postSelectedSpecList,
           };
-          spuService.addSpu(params).then((data)=>{
+          spuService.addSpu(params).then((data) => {
               console.log(data);
           });
       },

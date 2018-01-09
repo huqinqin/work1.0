@@ -10,37 +10,44 @@
       <el-step title="步骤2" description="选择或添加商品模板"></el-step>
       <el-step title="步骤3" description="完善商品信息"></el-step>
     </el-steps>
-    <lts-search-form v-if="searchform.cascader.options.length > 0" @cascAderHandleChange="cascAderHandleChange" :form-fileds="searchform.formFileds" :form-inlines="searchform.formInline" :cascader="searchform.cascader" class="cateform"></lts-search-form>
-    <el-card class="box-card" v-if="productList.length > 0">
-      <div slot="header" class="clearfix">
-        <span>商品模板</span>
-        <div class="productsearch">
-          <lts-search-form @get-from="getProductParameter" :form-fileds="productsearch.formFileds" :form-inlines="productsearch.formInline"></lts-search-form>
+    <lts-search-form @cascAderHandleChange="cascAderHandleChange" :form-fileds="searchform.formFileds" :form-inlines="searchform.formInline" :cascader="searchform.cascader" class="cateform"></lts-search-form>
+    <el-card class="box-card" v-show="isCardShow">
+        <div v-if="productList.length > 0">
+            <div slot="header" class="clearfix">
+                <span>商品模板</span>
+                <div class="productsearch">
+                    <lts-search-form @get-from="getProductParameter" :form-fileds="productsearch.formFileds" :form-inlines="productsearch.formInline"></lts-search-form>
+                </div>
+            </div>
+            <lts-table :t-table="table" :t-pagination="table.pagination" :t-tabledata="productList"  @menuClick="handleMenuItemClick" @currentRowHandleCurrentChange="currentRowHandleCurrentChange" id="spuTable"></lts-table>
+            <div @click="addSpuInfo">
+                <el-alert
+                    title="没有我要的模板"
+                    center
+                    :closable="false"
+                    type="warning">
+                </el-alert>
+            </div>
         </div>
-      </div>
-      <lts-table :t-table="table" :t-pagination="table.pagination" :t-tabledata="productList"  @menuClick="handleMenuItemClick" @currentRowHandleCurrentChange="currentRowHandleCurrentChange" id="spuTable"></lts-table>
-       <div @click="addSpuInfo">
-           <el-alert
-              title="没有我要的模板"
-              center
-              :closable="false"
-              type="warning">
-            </el-alert>
-       </div>
+        <div v-if="productList.length === 0">
+            该类目下没有产品, <el-button @click="addSpuInfo">新增</el-button>
+        </div>
     </el-card>
+
   </div>
 </template>
 <script>
   import {ltsTable,ltsSearchForm} from 'ui'
   import categoryService from '@/services/CategoryService'
   import spuService from '@/services/SpuService'
-  export  default {
+  export default {
     name : 'selectCategory',
     components : {
       ltsTable,ltsSearchForm
     },
     data(){
       return{
+        isCardShow:false,
         searchform : {
           formFileds:[
             {
@@ -109,7 +116,6 @@
     },
     created(){
       categoryService.getAllCategoryList().then((data) => {
-          console.log(data.data)
           data.data.forEach(function(value,index,array){
               value.value = value.id;
               value.label = value.name;
@@ -132,7 +138,6 @@
               }
           });
           this.searchform.cascader.options = data.data;
-          console.log(this.searchform.cascader.options);
       })
     },
 
@@ -150,6 +155,7 @@
          let category_id = this.selectCategory[index];
          spuService.getSpuList(category_id).then((data) => {
              this.productList = data.datalist;
+             this.isCardShow = true
          })
       },
       currentRowHandleCurrentChange(val){
@@ -166,7 +172,7 @@
         alert("加载商品");
       },
       getProductParameter(val){
-        if(this.selectCategory.length == 0  &&  val.keywords == ''){
+        if(this.selectCategory.length === 0 && val.keywords === ''){
           this.$ltsMessage.show({type:"error",message:'请输入搜索参数'});
           return false;
         }
