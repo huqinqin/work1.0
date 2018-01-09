@@ -1,14 +1,19 @@
 <template>
     <div>
-        <el-steps active="3" simple style="margin-bottom: 20px">
+        <el-steps :active="2" simple style="margin-bottom: 20px">
             <el-step title="仓库备货" icon="el-icon-tickets" ></el-step>
             <el-step title="配送入库" icon="el-icon-menu" ></el-step>
             <el-step title="配送发货" icon="el-icon-printer" ></el-step>
         </el-steps>
 
         <lts-search-form @get-from="getParameter" :form-fileds="formFileds" :form-inlines="params"></lts-search-form>
-        <el-select size="mini" placeholder="请选择打印机">
-            <el-option label="打印机1" value="1"></el-option>
+        <el-select v-model="printer" placeholder="请选择打印机">
+            <el-option
+                v-for="item in printerList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+            </el-option>
         </el-select>
         <div v-if="params.status===1" style="margin-top: 10px">
             <el-checkbox-group v-model="selectedBatchList" size="small">
@@ -22,8 +27,8 @@
                     <el-table :data="scope.row.spots" style="width: 100%">
                         <el-table-column type="selection"/>
                         <el-table-column type="index" label="#"/>
-                        <el-table-column prop="spot_name" label="网点名称"></el-table-column>
-                        <el-table-column prop="spot_addr" label="地址"></el-table-column>
+                        <el-table-column prop="spot_name" label="网点名称" show-overflow-tooltip></el-table-column>
+                        <el-table-column prop="spot_addr" label="地址" show-overflow-tooltip></el-table-column>
                         <el-table-column label="操作">
                             <template slot-scope="spot">
                                 <el-button round size="small" @click="showDetail(spot.row)">查看</el-button>
@@ -44,7 +49,7 @@
             <div style="margin-top: -20px">
                 <el-form label-position="left" inline class="detail-info">
                     <el-form-item label="线路名称">
-                        <span>{{detail.line_name}}</span>
+                        <el-tag>{{detail.line_name}}</el-tag>
                     </el-form-item>
                     <el-form-item label="网点名称">
                         <span>{{detail.spot_name}}</span>
@@ -55,7 +60,7 @@
                     <el-table-column type="selection" label="" width="54px"/>
                     <el-table-column type="index" label="#" width="50px"/>
                     <el-table-column prop="item_remark_object.sinr" label="条码" width="120px" />
-                    <el-table-column prop="item_remark_object.item_name" label="商品" />
+                    <el-table-column prop="item_remark_object.item_name" label="商品" show-overflow-tooltip />
                     <el-table-column prop="spec" label="规格" width="60px" />
                     <el-table-column prop="unit" label="单位" width="50px" />
                     <el-table-column prop="real_num" label="数量" width="50px" />
@@ -107,6 +112,17 @@
         },
         data() {
             return {
+                printer: 1,
+                printerList: [
+                    {
+                        value: 1,
+                        label: '打印机1'
+                    },
+                    {
+                        value: 2,
+                        label: '打印机2'
+                    }
+                ],
                 // 批次号
                 batchList: ['1111','2222','3333'],
                 selectedBatchList: [],
@@ -181,7 +197,7 @@
                                 }
                             }
                         });
-                        sums[index] = index !== 5 && index !==6 ? total.toFixed(2) : total;
+                        sums[index] = index !== 6 && index !== 7 ? total.toFixed(2) : total;
                     } else {
                         sums[index] = '';
                     }
@@ -227,6 +243,10 @@
                 this._inCar(item.id_arr)
             },
             _inCar(ids) {
+                if (!ids || ids.length === 0) {
+                    this.$ltsMessage.show({type: 'warning', message: '未选中项目'})
+                    return;
+                }
                 return deliveryService.consignment(ids).then((resp)=>{
                     this.$ltsMessage.show({type: 'success', message: '发货成功'})
                 },(err)=>{

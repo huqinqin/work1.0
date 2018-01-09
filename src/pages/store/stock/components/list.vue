@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-steps active="1" simple style="margin-bottom: 20px">
+        <el-steps :active="0" simple style="margin-bottom: 20px">
             <el-step title="仓库备货" icon="el-icon-tickets" ></el-step>
             <el-step title="配送入库" icon="el-icon-menu" ></el-step>
             <el-step title="配送发货" icon="el-icon-printer" ></el-step>
@@ -10,12 +10,20 @@
 
         <div style="margin: 10px 0">
             <el-button type="primary" @click="batchOpt">批量备货</el-button>
+            <el-select v-model="printer" placeholder="请选择打印机">
+                <el-option
+                    v-for="item in printerList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                </el-option>
+            </el-select>
         </div>
         <el-table :data="datalist" v-loading="loading" style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="selection"/>
             <el-table-column type="index" label="#"/>
-            <el-table-column prop="spot_name" label="网点"></el-table-column>
-            <el-table-column prop="spot_addr" label="地址"></el-table-column>
+            <el-table-column prop="spot_name" label="网点" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="spot_addr" label="地址" show-overflow-tooltip></el-table-column>
             <el-table-column label="预期到达时间">
                 <template slot-scope="scope">{{scope.row.to_time | timestamp2str}}</template>
             </el-table-column>
@@ -49,8 +57,8 @@
             width="1100px">
             <div style="margin-top: -20px">
                 <el-form label-position="left" inline class="detail-info">
-                    <el-form-item label="备货时间">
-                        <span>{{detail.to_time | timestamp2str}}</span>
+                    <el-form-item label="备货时间" v-if="detail.to_time">
+                        <el-tag>{{detail.to_time | timestamp2str}}</el-tag>
                     </el-form-item>
                     <el-form-item label="网点名称">
                         <span>{{detail.spot_name}}</span>
@@ -71,7 +79,7 @@
                     <el-table-column type="selection" label="" width="54px"/>
                     <el-table-column type="index" label="#" width="50px"/>
                     <el-table-column prop="item_remark_object.sinr" label="条码" width="120px" />
-                    <el-table-column prop="item_remark_object.item_name" label="商品" />
+                    <el-table-column prop="item_remark_object.item_name" label="商品" show-overflow-tooltip />
                     <el-table-column prop="spec" label="规格" width="60px" />
                     <el-table-column prop="unit" label="单位" width="50px" />
                     <el-table-column prop="real_num" label="数量" width="50px" />
@@ -106,6 +114,17 @@
         },
         data() {
             return {
+                printer: 1,
+                printerList: [
+                    {
+                        value: 1,
+                        label: '打印机1'
+                    },
+                    {
+                        value: 2,
+                        label: '打印机2'
+                    }
+                ],
                 loading: true,
                 dialogVisible: false,
                 datalist: [],
@@ -173,7 +192,7 @@
                                 }
                             }
                         });
-                        sums[index] = index !== 5 && index !==6 ? total.toFixed(2) : total;
+                        sums[index] = index !== 6 && index !== 7 ? total.toFixed(2) : total;
                     } else {
                         sums[index] = '';
                     }
@@ -187,7 +206,7 @@
                 this.multipleSelection.forEach(value => {
                     value.id_arr.forEach(id => {idArr.push(id)})
                 })
-                this._confirmWarehousing(idArr)
+                this._stockup(idArr)
             },
             handleSelectionChange(selectionList) {
                 this.multipleSelection = selectionList;
@@ -198,7 +217,7 @@
                 this.detailMultipleSelection.forEach(value => {
                     idArr.push(value.id)
                 });
-                this._confirmWarehousing(idArr).then((resp) => {
+                this._stockup(idArr).then((resp) => {
                     this.dialogVisible = false;
                 }, (err)=>{
                 });
@@ -207,10 +226,14 @@
                 this.detailMultipleSelection = selectionList;
             },
 
-            confirmWarehousing(item) {
-                this._confirmWarehousing(item.id_arr)
+            stockup(item) {
+                this._stockup(item.id_arr)
             },
-            _confirmWarehousing(ids) {
+            _stockup(ids = []) {
+                if (!ids || ids.length === 0) {
+                    this.$ltsMessage.show({type: 'warning', message: '未选中项目'})
+                    return;
+                }
                 return deliveryService.start_stock_up(ids).then((resp)=>{
                     this.$ltsMessage.show({type: 'success', message: '备货成功'})
                 },(err)=>{
