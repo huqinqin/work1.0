@@ -1,5 +1,11 @@
 <template>
     <div>
+        <el-steps active="1" simple style="margin-bottom: 20px">
+            <el-step title="仓库备货" icon="el-icon-tickets" ></el-step>
+            <el-step title="配送入库" icon="el-icon-menu" ></el-step>
+            <el-step title="配送发货" icon="el-icon-printer" ></el-step>
+        </el-steps>
+
         <lts-search-form @get-from="getParameter" :form-fileds="formFileds" :form-inlines="params"></lts-search-form>
 
         <div style="margin: 10px 0">

@@ -1,9 +1,18 @@
 <template>
     <div>
+        <el-steps active="2" simple style="margin-bottom: 20px">
+            <el-step title="仓库备货" icon="el-icon-tickets" ></el-step>
+            <el-step title="配送入库" icon="el-icon-menu" ></el-step>
+            <el-step title="配送发货" icon="el-icon-printer" ></el-step>
+        </el-steps>
+
         <lts-search-form @get-from="getParameter" :form-fileds="formFileds" :form-inlines="params"></lts-search-form>
 
         <div style="margin: 10px 0">
             <el-button type="primary" @click="batchOpt">批量入库</el-button>
+            <el-select size="mini" placeholder="请选择打印机" style="margin-bottom: 10px">
+                <el-option label="打印机1" value="1"></el-option>
+            </el-select>
         </div>
         <el-table :data="datalist" v-loading="loading" style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="selection"/>
