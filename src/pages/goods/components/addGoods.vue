@@ -104,6 +104,7 @@
     },
     methods:{
       getSpudtoist(){
+        debugger
         spuService.getSpudtoist().then((data) => {
             data.data.spuPropDOList.forEach(function(value,index,array){
               value.inputVisible = false; // 自己加的 是否显示添加input
@@ -147,7 +148,6 @@
       },
       submitForm(){
           let props = [];
-          debugger
           this.spuDO.childSpuDTOList.forEach(function (value,index,array) {
             value.spuPropDOList.forEach(function(val,key,array){
               let objKey = val.name;

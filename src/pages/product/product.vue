@@ -4,7 +4,6 @@
       <router-view></router-view>
     </transition>
   </div>
-
 </template>
 <style>
   .slide-fade-enter-active {
