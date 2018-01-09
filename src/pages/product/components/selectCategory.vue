@@ -11,8 +11,8 @@
       <el-step title="步骤3" description="完善商品信息"></el-step>
     </el-steps>
     <lts-search-form @cascAderHandleChange="cascAderHandleChange" :form-fileds="searchform.formFileds" :form-inlines="searchform.formInline" :cascader="searchform.cascader" class="cateform"></lts-search-form>
-    <el-card class="box-card" v-if="productList.length > 0">
-        <div>
+    <el-card class="box-card" v-show="isCardShow">
+        <div v-if="productList.length > 0">
             <div slot="header" class="clearfix">
                 <span>商品模板</span>
                 <div class="productsearch">
@@ -29,9 +29,9 @@
                 </el-alert>
             </div>
         </div>
-        <!--<div v-if="productList.length === 0">-->
-            <!--该类目下没有产品, <el-button @click="addSpuInfo">新增</el-button>-->
-        <!--</div>-->
+        <div v-if="productList.length === 0">
+            该类目下没有产品, <el-button @click="addSpuInfo">新增</el-button>
+        </div>
     </el-card>
 
   </div>
@@ -47,6 +47,7 @@
     },
     data(){
       return{
+        isCardShow:false,
         searchform : {
           formFileds:[
             {
@@ -154,6 +155,7 @@
          let category_id = this.selectCategory[index];
          spuService.getSpuList(category_id).then((data) => {
              this.productList = data.datalist;
+             this.isCardShow = true
          })
       },
       currentRowHandleCurrentChange(val){

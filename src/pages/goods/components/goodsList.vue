@@ -1,8 +1,15 @@
 <template>
   <div>
-    <lts-search-form  :form-fileds="form.formFileds" :form-inlines="form.formInline"  class="cateform"></lts-search-form>
-    <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination"
-             @menuClick="handleMenuItemClick"></lts-table>
+    <lts-search-form
+        :form-fileds="form.formFileds"
+        :form-inlines="form.formInline"
+        class="cateform"></lts-search-form>
+    <lts-table
+        :t-api="api"
+        :t-form="form.formInline"
+        :t-table="table"
+        :t-pagination="pagination"
+        @menuClick="handleMenuItemClick"></lts-table>
   </div>
 </template>
 <script>

@@ -104,7 +104,6 @@
     },
     methods:{
       getSpudtoist(){
-        debugger
         spuService.getSpudtoist().then((data) => {
             data.data.spuPropDOList.forEach(function(value,index,array){
               value.inputVisible = false; // 自己加的 是否显示添加input
