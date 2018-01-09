@@ -51,7 +51,7 @@
                 console.log(val)
                 this.multipleSelection = val;
             },
-            stockup(item) {
+            confirmWarehousing(item) {
                 console.log(item)
             }
         }
