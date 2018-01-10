@@ -39,9 +39,11 @@
                 </el-table-column>
             </el-table>
         </div>
-        <div v-if="datalist.length == 0">
-            暂无数据
-        </div>
+        <el-alert v-if="datalist.length == 0" style="margin-top: 20px"
+             center
+            title="暂无数据"
+            type="info">
+        </el-alert>
 
         <el-dialog
             title="详情"
