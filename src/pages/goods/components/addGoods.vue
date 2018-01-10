@@ -1,10 +1,15 @@
 <template>
   <div class="addGoods">
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+      <el-steps :active="stepActive" align-center style="padding-bottom:12px;margin-bottom:12px;">
+          <el-step title="步骤1" description="选择并确定类目"></el-step>
+          <el-step title="步骤2" description="选择或添加商品模板"></el-step>
+          <el-step title="步骤3" description="完善商品信息"></el-step>
+      </el-steps>
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <el-form-item label="商品名称" prop="goodsName">
         <el-input v-model="ruleForm.goodsName"></el-input>
       </el-form-item>
-      <el-form-item label="库存" >
+      <el-form-item >
         <el-table
           :data="spuDO.childSpuDTOList"
           style="width: 100%">
@@ -47,7 +52,7 @@
           </el-table-column>
         </el-table>
       </el-form-item>
-      <el-form-item label="属性">
+      <el-form-item >
         <el-form  label-width="12%" :inline="true" class="propsBox">
             <el-form-item style="width:31%"  v-for="(value,index) in spuDO.spuPropDOList" :key="value.id" :label="value.name" >
                 <el-select
@@ -65,20 +70,6 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-          <!--<el-tag   :key="value.value" :closable="value.isCanEdit" v-if="value.value != ''"  @close="deleteTag(scope.row.propValues,index)">-->
-            <!--<el-checkbox name="type"  v-model="value.isSelect">{{value.value}}</el-checkbox>-->
-          <!--</el-tag>-->
-          <!--<el-input-->
-            <!--class="input-new-tag"-->
-            <!--v-if="scope.row.inputVisible"-->
-            <!--v-model="inputValue"-->
-            <!--size="small"-->
-            <!--@keyup.enter.native="handleInputConfirm"-->
-            <!--@blur="handleInputConfirm(scope.row)"-->
-          <!--&gt;-->
-          <!--</el-input>-->
-          <!--<el-button v-else class="button-new-tag" size="small" @click="showInput(scope.row)">+ 添加</el-button>-->
-
         </el-form>
       </el-form-item>
       <el-form-item>
@@ -96,6 +87,7 @@
       name : 'addGoods',
     data(){
       return{
+        stepActive : 3,
         ruleForm: {
           goodsName: '',
         },
@@ -160,7 +152,6 @@
               let objKey = val.name;
               let propValue = {};
               propValue[objKey] = val.propValue
-              console.log(propValue);
               props.push(
                 {
                   "price":value.price * 100,
@@ -224,7 +215,7 @@
     },
   }
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .el-table__header th{
     padding-top: 0px;
   }
