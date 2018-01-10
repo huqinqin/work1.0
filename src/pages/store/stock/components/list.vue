@@ -45,8 +45,8 @@
             <el-table-column prop="status_title" label="状态"></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <el-button round size="small" @click="showDetail(scope.row)">查看</el-button>
-                    <el-button round type="primary" size="small" v-if="scope.row.status == 0" @click.native.prevent="stockup(scope.row)">备货</el-button>
+                    <el-button round size="mini" @click="showDetail(scope.row)">查看</el-button>
+                    <el-button round type="primary" size="mini" v-if="scope.row.status == 0" @click.native.prevent="stockup(scope.row)">备货</el-button>
                 </template>
             </el-table-column>
         </el-table>

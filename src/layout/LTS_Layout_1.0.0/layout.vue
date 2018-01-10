@@ -36,7 +36,7 @@
                 <el-main>
                     <lts-content/>
                 </el-main>
-                <el-footer height="60px">
+                <el-footer height="30px">
                     copyright 2000-2017
                 </el-footer>
             </el-container>
