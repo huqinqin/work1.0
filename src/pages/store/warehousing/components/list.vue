@@ -43,8 +43,8 @@
             <el-table-column prop="status_title" label="状态"></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <el-button round size="small" @click="showDetail(scope.row)">查看</el-button>
-                    <el-button round type="primary" size="small" v-if="params.status == 2" @click.native.prevent="confirmWarehousing(scope.row)">入库</el-button>
+                    <el-button round size="mini" @click="showDetail(scope.row)">查看</el-button>
+                    <el-button round type="primary" size="mini" v-if="params.status == 2" @click.native.prevent="confirmWarehousing(scope.row)">入库</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -105,7 +105,7 @@
                                     <el-button type="primary" size="mini" @click="stockOut(scope.row)">确定</el-button>
                                 </div>
                             </el-popover>
-                            <el-button round size="small" v-popover:popoverStockOut>缺货</el-button>
+                            <el-button round size="mini" v-popover:popoverStockOut>缺货</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
