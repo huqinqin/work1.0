@@ -28,7 +28,7 @@
                 <div style="float: right;padding: 0 5px;color: #409EFF;">
                   <el-popover
                     ref="popover4"
-                    placement="bottom"
+                    placement="left"
                     trigger="click"
                     >
                     <div class="shuffParentBox" v-if="postSelectedSpecList.length > 0" >
@@ -331,7 +331,9 @@
               child_spu_request_list : this.postSelectedSpecList,
           };
           spuService.addSpu(params).then((data) => {
-              console.log(data);
+              if(data.success){
+                  location.href = "http://work.local.lts.com:8085/goods#/addGoods?id=" + data.data;
+              }
           });
       },
     },

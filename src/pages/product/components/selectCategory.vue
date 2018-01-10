@@ -11,8 +11,8 @@
       <el-step title="步骤3" description="完善商品信息"></el-step>
     </el-steps>
     <lts-search-form @cascAderHandleChange="cascAderHandleChange" :form-fileds="searchform.formFileds" :form-inlines="searchform.formInline" :cascader="searchform.cascader" class="cateform"></lts-search-form>
-    <el-card class="box-card" v-show="isCardShow">
-        <div v-if="productList.length > 0">
+    <el-card class="box-card" v-if="isCardShow">
+        <div>
             <div slot="header" class="clearfix">
                 <span>商品模板</span>
                 <div class="productsearch">
@@ -29,11 +29,7 @@
                 </el-alert>
             </div>
         </div>
-        <div v-if="productList.length === 0">
-            该类目下没有产品, <el-button @click="addSpuInfo">新增</el-button>
-        </div>
     </el-card>
-
   </div>
 </template>
 <script>
@@ -161,15 +157,15 @@
       currentRowHandleCurrentChange(val){
         this.selectProduct = val;
       },
-      handleMenuItemClick(val){
+      handleMenuItemClick(val,item){
         switch(val){
           case 'next' :
-            this.next();
+            this.next(item);
             break;
         }
       },
-      next(){
-        alert("加载商品");
+      next(item){
+        location.href = "http://work.local.lts.com:8085/goods#/addGoods?id=" + item.id;
       },
       getProductParameter(val){
         if(this.selectCategory.length === 0 && val.keywords === ''){
