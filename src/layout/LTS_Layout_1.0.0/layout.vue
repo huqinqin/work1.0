@@ -13,7 +13,7 @@
                     <template slot="title"><i class="iconfont icon-shezhi"></i>设置</template>
                     <el-menu-item index="2-1">我的账户</el-menu-item>
                     <el-menu-item index="2-2">账号安全</el-menu-item>
-                    <el-menu-item index="2-3" @click="logout">退出</el-menu-item>
+                    <el-menu-item index="2-3"><a href="/logout">退出</a></el-menu-item>
                 </el-submenu>
                 <el-menu-item index="4" class="notice">
                     <a href="#">
@@ -46,7 +46,6 @@
 <script>
     import {store} from 'ltsutil'
     import config from 'config'
-    import userService from '@/services/UserService'
     import session from '@/library/Session'
     import {ltsTable,ltsSearchForm} from 'ui'
     export default {
@@ -64,13 +63,6 @@
         methods: {
             handleSelect(key, keyPath) {
                 console.log(key, keyPath);
-            },
-            logout(){
-                userService.logout().then((resp) => {
-                    session.logout();
-                },(err) => {
-                    this.$ltsMessage.show({type: "error", message: err.error_message});
-                })
             }
         },
         watch: {
