@@ -4,9 +4,16 @@
         <el-table :data="datalist" v-loading="loading" style="width: 100%">
             <el-table-column type="index" label="#"/>
             <el-table-column prop="oid" label="订单编号"></el-table-column>
+            <el-table-column prop="item_remark.item_name" label="商品"></el-table-column>
+            <el-table-column prop="user_name" label="退款用户"></el-table-column>
+            <el-table-column prop="total_num" label="申请数量"></el-table-column>
+            <el-table-column prop="status_title" label="状态"></el-table-column>
+            <el-table-column label="创建时间">
+                <template slot-scope="scope">{{scope.row.start_time | timestamp2str}}</template>
+            </el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <el-button round size="mini">详情</el-button>
+                    <el-button round size="mini"><router-link :to="'/detail/' + scope.row.id">详情</router-link></el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -41,6 +48,7 @@
                     start_time: '',
                     end_time: '',
                     oid: '',
+                    item_name:'',
                     status: '',
                 },
                 form: {
@@ -53,6 +61,12 @@
                                     bindValue : 'oid',
                                     bindPlaceholder: '订单号'
                                 },
+                                item_name: {
+                                    label: '商品名称',
+                                    type: 'input',
+                                    bindValue : 'item_name',
+                                    bindPlaceholder: '商品名称'
+                                },
                                 date: {
                                     label: '创建时间',
                                     type: 'datetimerange',
@@ -62,7 +76,6 @@
                                     label: "状态",
                                     type: "select",
                                     bindValue: "status",
-                                    bindPlaceholder: "请选择",
                                     children: [
                                         {label: "所有状态", bindValue: ''},
                                         {label: "退款申请中", bindValue: 1},
@@ -73,15 +86,16 @@
                                         {label: "退款关闭", bindValue: 9}
                                     ]
                                 },
-                                search: {bindValue: "确定", type: "submitbutton"}
+                                search: {bindValue: "搜索", type: "submitbutton"}
                             }
                         }
                     ],
                     // 若需要把form参数供其他组件使用。需要把这些参数传给使用的组件
                     formInline: {
                         oid: '',
+                        item_name:'',
                         status: '',
-                        date: [dateUtils.timeToStr(new Date().getTime() - 3600 * 1000 * 24 * 7), dateUtils.format(new Date())],
+                        date: [dateUtils.timeToStr(new Date().getTime() - 3600 * 1000 * 24 * 30), dateUtils.format(new Date())],
                     },
                 },
                 pagination: {
@@ -143,6 +157,7 @@
                     this.params.end_time = this.form.formInline.date[1];
                 }
                 this.params.oid = this.form.formInline.oid;
+                this.params.item_name = this.form.formInline.item_name;
                 this.params.status = this.form.formInline.status;
             },
             handleSizeChange(val) {
