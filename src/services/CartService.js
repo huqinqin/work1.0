@@ -10,7 +10,7 @@ export default class CartService extends BaseService{
    * @autor 小猪
    * remark 添加购物车
    */
-  static putCartPlus(uid,param){
+  static putCartPlus(uid,param,checkedSpu){
     let params = {
       user_id : uid,
       num : param.num,
@@ -23,32 +23,7 @@ export default class CartService extends BaseService{
         }
       ),
       item_props : JSON.stringify([
-        {
-          "attribute":0,
-          "id":26,
-          "img_url":"",
-          "price":1500,
-          "price_action":0,
-          "prop_value":"{'配件':'支架'}",
-          "props":"支架",
-          "sin":"",
-          "spuId":0,
-          "storage":0,
-          "value_type":0
-        },
-        {
-          "attribute":0,
-          "id":29,
-          "img_url":"",
-          "price":35000,
-          "price_action":1,
-          "prop_value":"{'颜色':'红色','内存:'32G'}",
-          "props":"红色,32G",
-          "sin":"CMIP2832DW-S",
-          "spuId":179886,
-          "storage":0,
-          "value_type":0
-        }
+          checkedSpu
       ]),
     };
     console.log(params);
