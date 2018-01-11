@@ -83,8 +83,8 @@
   import goodsService from '@/services/GoodsService.js'
   import ElForm from '../../../../node_modules/element-ui/packages/form/src/form.vue'
   export default {
-      components: {ElForm},
-      name : 'addGoods',
+    components: {ElForm},
+    name : 'addGoods',
     data(){
       return{
         stepActive : 3,

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="customerorder">
     <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-bottom:12px;margin-bottom:12px;border-bottom:solid 1px #eeeeee">
       <el-breadcrumb-item ><a href="http://www.baidu.com">首页</a></el-breadcrumb-item>
       <el-breadcrumb-item>代客下单</el-breadcrumb-item>
@@ -35,25 +35,7 @@
                @get-from="getItemParameter"
                :form-fileds="itemform.formFileds"
                :form-inlines="itemform.formInline"></lts-search-from>
-             <el-popover
-                 ref="popover4"
-                 placement="left"
-                 width="400"
-                 trigger="click">
-                 <el-form  label-width="50px" class="demo-ruleForm">
-                     <el-form-item label="颜色" prop="name">
-                         <el-radio-group v-model="radio3">
-                             <el-radio-button label="红"></el-radio-button>
-                             <el-radio-button label="黄"></el-radio-button>
-                             <el-radio-button label="蓝"></el-radio-button>
-                         </el-radio-group>
-                         <dd>红色</dd>
-                         <dd>红色蓝色</dd>
-                     </el-form-item>
-                 </el-form>
-             </el-popover>
 
-             <el-button type="primary" v-popover:popover4>test</el-button>
            <!--<lts-table-->
                <!--:t-api="itemTable.api"-->
                <!--:t-form="itemform.formInline"-->
@@ -77,10 +59,23 @@
                                   v-if="field.type === 'popver'"
                                   :key="field.value"
                                   :type="field.type"
-                                  :prop="field.value"
                                   :width="field.width"
                                   :label="index">
-                     <template></template>
+                     <template slot-scope="scope">
+                         <el-popover
+                             placement="left"
+                             width="400"
+                             trigger="click">
+                             <el-form  label-width="50px" class="demo-ruleForm">
+                                 <el-form-item  prop="name" v-for="prop in scope.row.item_prop_value_maps" :label="prop.prop_name" :key="prop.prop_name">
+                                     <el-radio-group v-model="prop.checked_prop" :change.once="checkedProp(prop,scope.row)">
+                                         <el-radio-button  v-for="propvalue in prop.prop_values" :label="propvalue.value" :disabled="propvalue.canChecked" :key="propvalue.value"></el-radio-button>
+                                     </el-radio-group>
+                                 </el-form-item>
+                             </el-form>
+                             <el-button type="primary" slot="reference">加入购物车</el-button>
+                         </el-popover>
+                     </template>
                  </el-table-column>
              </el-table>
          </div>
@@ -269,7 +264,228 @@
             },
           },
           tableDataForm: 'json',
-          tableData : [],
+          tableData : [
+              {
+                  "activity_price":null,
+                  "advance":false,
+                  "app_show":false,
+                  "attr_activity":false,
+                  "attribute":0,
+                  "best_box":false,
+                  "beyond_num":0,
+                  "biz_type":101,
+                  "brand":"",
+                  "cart":[
+
+                  ],
+                  "category_name":"",
+                  "category_id":9487566,
+                  "cdate":1515416034000,
+                  "commission_s":0,
+                  "commission_t":0,
+                  "cost_price_value":"0",
+                  "cost_price":0,
+                  "count":null,
+                  "cut":false,
+                  "description":"",
+                  "discount":0,
+                  "discount_type_cname":"无优惠",
+                  "discount_type":0,
+                  "distribution":false,
+                  "diy_price":false,
+                  "edate":1515415747000,
+                  "end_time":null,
+                  "fixed":false,
+                  "follow_num":0,
+                  "group":false,
+                  "hd_method":0,
+                  "id":2101176,
+                  "image_value":"http://res.500mi.com/item/03e9b4c9ccb834126518e34593b85a8e.jpg",
+                  "item_prop_value_maps":[
+                      {
+                          "prop_name":"形状",
+                          "checked_prop" : '',
+                          "is_disabled" : false,
+                          "prop_values":[
+                              {value : "圆形", canChecked : false},
+                              {value : "椭圆形", canChecked : false},
+                          ]
+                      },
+                      {
+                          "prop_name":"颜色",
+                          "checked_prop" : '',
+                          "is_disabled" : false,
+                          "prop_values":[
+                              {value : "蓝", canChecked : false},
+                              {value : "红", canChecked : false},
+                              {value : "黄", canChecked : false},
+                          ]
+                      }
+                  ],
+                  "item_name":"球形闪电",
+                  "item_struct_props":[
+                      {
+                          "attribute":1792,
+                          "id":196,
+                          "img_url":"",
+                          "price":12300,
+                          "price_action":0,
+                          "prop_value":"{'颜色':'红','形状':'椭圆形'}",
+                          "props":"红",
+                          "sin":"23",
+                          "spu_id":179945,
+                          "storage":123,
+                          "value_type":0
+                      },
+                      {
+                          "attribute":1792,
+                          "id":197,
+                          "img_url":"",
+                          "price":23400,
+                          "price_action":0,
+                          "prop_value":"{'颜色':'黄','形状':'椭圆形'}",
+                          "props":"黄",
+                          "sin":"432",
+                          "spu_id":179946,
+                          "storage":0,
+                          "value_type":0
+                      },
+                      {
+                          "attribute":1792,
+                          "id":198,
+                          "img_url":"",
+                          "price":34500,
+                          "price_action":0,
+                          "prop_value":"{'颜色':'蓝','形状':'椭圆形'}",
+                          "props":"蓝",
+                          "sin":"423432",
+                          "spu_id":179947,
+                          "storage":0,
+                          "value_type":0
+                      },
+                      {
+                          "attribute":1792,
+                          "id":199,
+                          "img_url":"",
+                          "price":12300,
+                          "price_action":0,
+                          "prop_value":"{'颜色':'红','形状':'圆形'}",
+                          "props":"红",
+                          "sin":"23",
+                          "spu_id":179945,
+                          "storage":123,
+                          "value_type":0
+                      },
+                      {
+                          "attribute":1792,
+                          "id":200,
+                          "img_url":"",
+                          "price":23400,
+                          "price_action":0,
+                          "prop_value":"{'颜色':'黄','形状':'圆形'}",
+                          "props":"黄",
+                          "sin":"432",
+                          "spu_id":179946,
+                          "storage":0,
+                          "value_type":0
+                      },
+                      {
+                          "attribute":1792,
+                          "id":201,
+                          "img_url":"",
+                          "price":34500,
+                          "price_action":0,
+                          "prop_value":"{'颜色':'蓝','形状':'圆形'}",
+                          "props":"蓝",
+                          "sin":"423432",
+                          "spu_id":179947,
+                          "storage":0,
+                          "value_type":0
+                      },
+                  ],
+                  "manager_cate_name":"",
+                  "manager_cate_id":0,
+                  "member_price":100,
+                  "member_price_value":"1.00",
+                  "min_num":0,
+                  "module_id":null,
+                  "module_sku_id":null,
+                  "no_rebate":false,
+                  "num":0,
+                  "open_code":"lts2open",
+                  "open_codes":"",
+                  "order_promotion":false,
+                  "order_num":0,
+                  "orign":"",
+                  "parent_id":0,
+                  "partner":null,
+                  "partner_id":79376,
+                  "partner_name":"",
+                  "percent":false,
+                  "prepay":false,
+                  "presale":false,
+                  "price":100,
+                  "price_real":100,
+                  "price_real_value":"1.00",
+                  "price_value":"1.00",
+                  "price_define":"",
+                  "price_define_do":null,
+                  "promotion_title":"",
+                  "props":"{}",
+                  "props_ext":"",
+                  "puser_id":158667,
+                  "rank":0,
+                  "retail":false,
+                  "safe_num":0,
+                  "sale_rule":"",
+                  "sale_rule_do":{
+                      "commission_rate":null,
+                      "end_time":"",
+                      "maxinum":null,
+                      "minimum":null,
+                      "price":null,
+                      "start_time":"",
+                      "total":null,
+                      "virtual_start":null
+                  },
+                  "send_rule":"",
+                  "share_num":0,
+                  "shop_name":"",
+                  "shop_id":28616,
+                  "short_code":"",
+                  "sin":"2010000436783",
+                  "sinr":"2010000436783",
+                  "sku_cost_price_value":"",
+                  "sku_cost_price":null,
+                  "sku_id":818898,
+                  "sku_total":0,
+                  "soldout":false,
+                  "spec":"无描述",
+                  "special":"",
+                  "spot_price_value":"0",
+                  "spot_rule_d_o":null,
+                  "spot_price":0,
+                  "spot_rule":"",
+                  "spu_d_o":null,
+                  "spu_id":179944,
+                  "start_time":null,
+                  "status":1,
+                  "status_cname":"已上架",
+                  "stock_out":0,
+                  "storage":0,
+                  "storage_num":null,
+                  "tag":"",
+                  "type":0,
+                  "type_ch":false,
+                  "type_fa":false,
+                  "unit":"球形",
+                  "upshelf":true,
+                  "url":"03e9b4c9ccb834126518e34593b85a8e.jpg",
+                  "urls":"03e9b4c9ccb834126518e34593b85a8e.jpg",
+                  "warehousing":true,
+                  "wholesale":true
+              }
+          ],
           tableField: {
             "名字": {"value": "item_name", "type": "text"},
             "ID": {"value": "puser_id", "type": "text"},
@@ -278,7 +494,7 @@
             "类型": {"value": "discount_type", "type": "text"},
             "订单数量": {"value": "order_num", "type": "text"},
             "abced": {"value": "id", "type": "text"},
-            "属性": {"value": "num", "type": "popver", "width": "200px"},
+            "属性": {"value": "", "type": "popver", "width": "200px"},
           },
           pagination: {
             page: 1,
@@ -378,6 +594,26 @@
           return json;
         }
       },
+      checkedProp(prop,data){
+          if(prop.checked_prop != ""){
+              this.skuMapEach(prop,data);
+          }
+      },
+      skuMapEach(prop,data){
+          let key = prop[prop_name];
+          let prop_value = {
+              key : prop[checked_prop]
+          }
+          data.item_prop_value_maps.forEach((value,index,array)=>{
+              if(value.prop_name !== prop.prop_name){
+                  value.prop_values.forEach((val,key,array)=>{
+                      prop_value[value.prop_name] = val.value;
+                      console.log(prop_value);
+                  })
+              }
+
+          })
+      },
       // 购物车结算
       submit() {
         let items = [];
@@ -409,7 +645,8 @@
       }
     },
     mounted(){
-
+        let array = [];
+        let itemlist = this.itemTable.tableData;
     },
     watch: {
       cartItemList: {
@@ -430,7 +667,13 @@
   }
 </script>
 <style lang="less">
-dd{
-    width: 60px;
+.customerorder{
+    .el-radio-button{
+        margin-right: 5px;
+    }
+    .el-radio-button__inner{
+        border-radius: 4px;
+    }
 }
+
 </style>
