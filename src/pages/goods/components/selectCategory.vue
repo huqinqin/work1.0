@@ -1,10 +1,5 @@
 <template>
-  <div class="addCategory">
-    <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-bottom:12px;margin-bottom:12px;border-bottom:solid 1px #eeeeee">
-      <el-breadcrumb-item ><a href="http://www.baidu.com">首页</a></el-breadcrumb-item>
-      <el-breadcrumb-item ><a href="http://www.baidu.com">商品</a></el-breadcrumb-item>
-      <el-breadcrumb-item>发布商品</el-breadcrumb-item>
-    </el-breadcrumb>
+  <div class="selectcategory">
     <el-steps :active="stepActive" align-center style="padding-bottom:12px;margin-bottom:12px;">
       <el-step title="步骤1" description="选择并确定类目"></el-step>
       <el-step title="步骤2" description="选择或添加商品模板"></el-step>
@@ -16,10 +11,10 @@
             <div slot="header" class="clearfix">
                 <span>商品模板</span>
                 <div class="productsearch">
-                    <lts-search-form @get-from="getProductParameter" :form-fileds="productsearch.formFileds" :form-inlines="productsearch.formInline"></lts-search-form>
+                    <lts-search-form @get-from="getProductParameter" :form-fileds="productsearch.formFileds" :form-inlines="productsearch.formInline" ></lts-search-form>
                 </div>
             </div>
-            <lts-table :t-table="table" :t-pagination="table.pagination" :t-tabledata="productList"  @menuClick="handleMenuItemClick" @currentRowHandleCurrentChange="currentRowHandleCurrentChange" id="spuTable"></lts-table>
+                    <lts-table :t-table="table" :t-pagination="table.pagination" :t-tabledata="productList"  @menuClick="handleMenuItemClick" @currentRowHandleCurrentChange="currentRowHandleCurrentChange" id="spuTable"></lts-table>
             <div @click="addSpuInfo">
                 <el-alert
                     title="没有我要的模板"
@@ -100,7 +95,7 @@
             pagesize : 10,
             total : 0,
             sizes : [10,20,30],
-            layout : "" // total 总条目数  prev 上一页 next 下一页 sizes 支持分组
+            layout : "total, sizes, prev, pager, next, jumper" // total 总条目数  prev 上一页 next 下一页 sizes 支持分组
           },
         },
         productList : [],
@@ -152,7 +147,9 @@
          spuService.getSpuList(category_id).then((data) => {
              this.productList = data.datalist;
              this.isCardShow = true
-         })
+         },(msg)=>{
+             this.$ltsMessage.show({type:"error",message:message})
+          })
       },
       currentRowHandleCurrentChange(val){
         this.selectProduct = val;
@@ -181,23 +178,23 @@
   }
 </script>
 <style lang="less">
-  .el-table__body tr.current-row>td{
-    background-color: #f0f9eb !important;
-  }
-  .el-alert{
-    cursor: pointer;
-  }
-  #spuTable{
-    padding-bottom:  0px !important;
-  }
-  .productsearch{
-    float: right;
-    display: flex;
-    align-items: center;
-    align-self: center;
-    margin-top: -8px;
-  }
-  .cateform .el-form-item,.el-form-item__content,.el-cascader{
-    width: 100%;
-  }
+    .selectcategory{
+        .el-table__body tr.current-row>td{
+            background-color: #f0f9eb !important;
+        }
+        .el-alert{
+            cursor: pointer;
+        }
+        .productsearch{
+            float: right;
+            display: flex;
+            align-items: center;
+            align-self: center;
+            margin-top: -8px;
+        }
+        .cateform .el-form-item,.el-form-item__content,.el-cascader{
+            width: 100%;
+        }
+    }
+
 </style>

@@ -35,13 +35,54 @@
                @get-from="getItemParameter"
                :form-fileds="itemform.formFileds"
                :form-inlines="itemform.formInline"></lts-search-from>
-           <lts-table
-               :t-api="itemTable.api"
-               :t-form="itemform.formInline"
-               :t-table="itemTable"
-               :t-pagination="itemTable.pagination"
-               ref="itemTable"
-               @inputNumberChange="addCart"></lts-table>
+             <el-popover
+                 ref="popover4"
+                 placement="left"
+                 width="400"
+                 trigger="click">
+                 <el-form  label-width="50px" class="demo-ruleForm">
+                     <el-form-item label="颜色" prop="name">
+                         <el-radio-group v-model="radio3">
+                             <el-radio-button label="红"></el-radio-button>
+                             <el-radio-button label="黄"></el-radio-button>
+                             <el-radio-button label="蓝"></el-radio-button>
+                         </el-radio-group>
+                         <dd>红色</dd>
+                         <dd>红色蓝色</dd>
+                     </el-form-item>
+                 </el-form>
+             </el-popover>
+
+             <el-button type="primary" v-popover:popover4>test</el-button>
+           <!--<lts-table-->
+               <!--:t-api="itemTable.api"-->
+               <!--:t-form="itemform.formInline"-->
+               <!--:t-table="itemTable"-->
+               <!--:t-pagination="itemTable.pagination"-->
+               <!--ref="itemTable"-->
+               <!--@inputNumberChange="addCart"></lts-table>-->
+             <el-table
+                 :data="itemTable.tableData"
+                 v-loading="loading"
+                 style="width: 100%">
+                 <el-table-column v-for="(field, index) in itemTable.tableField"
+                          v-if="field.type === 'text' || field.type === 'selection'"
+                          :key="field.value"
+                          :type="field.type"
+                          :prop="field.value"
+                          :width="field.width"
+                          :label="index">
+                 </el-table-column>
+                 <el-table-column v-for="(field, index) in itemTable.tableField"
+                                  v-if="field.type === 'popver'"
+                                  :key="field.value"
+                                  :type="field.type"
+                                  :prop="field.value"
+                                  :width="field.width"
+                                  :label="index">
+                     <template></template>
+                 </el-table-column>
+             </el-table>
          </div>
         </el-card>
       </transition>
@@ -227,6 +268,8 @@
               user_id: '',
             },
           },
+          tableDataForm: 'json',
+          tableData : [],
           tableField: {
             "名字": {"value": "item_name", "type": "text"},
             "ID": {"value": "puser_id", "type": "text"},
@@ -235,7 +278,7 @@
             "类型": {"value": "discount_type", "type": "text"},
             "订单数量": {"value": "order_num", "type": "text"},
             "abced": {"value": "id", "type": "text"},
-            "输入数量": {"value": "num", "type": "inputNumber", "width": "200px"},
+            "属性": {"value": "num", "type": "popver", "width": "200px"},
           },
           pagination: {
             page: 1,
@@ -266,7 +309,7 @@
           },
         },
         // 抄单客户
-        customerList: [],
+        customerList: [1,2],
         customerUid: "",
         // 购物车商品
         cartItemList: [],
@@ -278,6 +321,10 @@
         isShowOrder: false,
 
         callBack: Function,
+
+        loading  : false,
+
+          radio3 :'上海',
       }
     },
     methods: {
@@ -383,5 +430,7 @@
   }
 </script>
 <style lang="less">
-
+dd{
+    width: 60px;
+}
 </style>

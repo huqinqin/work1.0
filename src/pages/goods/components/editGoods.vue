@@ -132,7 +132,6 @@
       showInput(item) {
         item.inputVisible = true;
       },
-
       handleInputConfirm(item) {
         let inputValue = this.inputValue;
         if (inputValue) {

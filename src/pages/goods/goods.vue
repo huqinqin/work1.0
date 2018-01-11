@@ -1,8 +1,12 @@
 <template>
   <div>
-    <transition name="slide-fade">
-      <router-view></router-view>
-    </transition>
+      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+          <el-tab-pane label="商品列表" name="goodsList"></el-tab-pane>
+          <el-tab-pane label="添加商品" name="selectCategory"></el-tab-pane>
+      </el-tabs>
+      <transition name="slide-fade">
+          <router-view></router-view>
+      </transition>
   </div>
 </template>
 <style>
@@ -18,3 +22,20 @@
     opacity: 0;
   }
 </style>
+<script>
+    export default {
+        name: "goods",
+        data(){
+            return{
+                activeName : 'goodsList'
+            }
+        },
+        methods:{
+            handleClick(tab){
+                this.$router.push({
+                    name : tab.name,params:{}
+                })
+            },
+        }
+    }
+</script>

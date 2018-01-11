@@ -150,23 +150,6 @@
         "type":1
       },
         {
-            "apptype":1,
-            "cdate":1447217704000,
-            "code":"10167",
-            "description":"运营商批发交易管理",
-            "display":5,
-            "domain":"http://work.lts.com",
-            "edate":1493375344000,
-            "id":225,
-            "name":"产品管理",
-            "pic":"order",
-            "resourcesList":[],
-            "sort":1010,
-            "status":1,
-            "type":1,
-            "url": '/product'
-        },
-        {
           "apptype":1,
           "cdate":1447217704000,
           "code":"10167",
