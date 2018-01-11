@@ -71,7 +71,7 @@
                     "sort":0,
                     "status":1,
                     "type":2,
-                    "url":"javascript:void(0)"
+                    "url":"/store/reverse"
                 }
             ],
             "sort":1010,
