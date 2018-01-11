@@ -1,5 +1,5 @@
 import BaseService from "./abstract/BaseService";
-export default class repertoryService extends BaseService{
+export default class RepertoryService extends BaseService{
   /**
    * return
    * param

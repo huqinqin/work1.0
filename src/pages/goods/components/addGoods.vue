@@ -1,10 +1,15 @@
 <template>
   <div class="addGoods">
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+      <el-steps :active="stepActive" align-center style="padding-bottom:12px;margin-bottom:12px;">
+          <el-step title="步骤1" description="选择并确定类目"></el-step>
+          <el-step title="步骤2" description="选择或添加商品模板"></el-step>
+          <el-step title="步骤3" description="完善商品信息"></el-step>
+      </el-steps>
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <el-form-item label="商品名称" prop="goodsName">
         <el-input v-model="ruleForm.goodsName"></el-input>
       </el-form-item>
-      <el-form-item label="库存" >
+      <el-form-item >
         <el-table
           :data="spuDO.childSpuDTOList"
           style="width: 100%">
@@ -47,34 +52,25 @@
           </el-table-column>
         </el-table>
       </el-form-item>
-      <el-form-item label="属性" >
-        <el-table
-          :data="spuDO.spuPropDOList"
-          style="width: 100%">
-          <el-table-column
-            prop="name"
-            label="名称"
-            width="180">
-          </el-table-column>
-          <el-table-column
-            label="属性">
-            <template slot-scope="scope">
-              <el-tag  v-for="(value,index) in scope.row.propValues" :key="value.value" :closable="value.isCanEdit" v-if="value.value != ''"  @close="deleteTag(scope.row.propValues,index)">
-                <el-checkbox name="type"  v-model="value.isSelect">{{value.value}}</el-checkbox>
-              </el-tag>
-              <el-input
-                class="input-new-tag"
-                v-if="scope.row.inputVisible"
-                v-model="inputValue"
-                size="small"
-                @keyup.enter.native="handleInputConfirm"
-                @blur="handleInputConfirm(scope.row)"
-              >
-              </el-input>
-              <el-button v-else class="button-new-tag" size="small" @click="showInput(scope.row)">+ 添加</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+      <el-form-item >
+        <el-form  label-width="12%" :inline="true" class="propsBox">
+            <el-form-item style="width:31%"  v-for="(value,index) in spuDO.spuPropDOList" :key="value.id" :label="value.name" >
+                <el-select
+                    v-model="value.checkedProp"
+                    multiple
+                    filterable
+                    allow-create
+                    default-first-option
+                    placeholder="请选择属性值">
+                    <el-option
+                        v-for="item in value.propValues"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+        </el-form>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">创建</el-button>
@@ -85,10 +81,13 @@
 <script>
   import spuService from '@/services/SpuService.js'
   import goodsService from '@/services/GoodsService.js'
+  import ElForm from '../../../../node_modules/element-ui/packages/form/src/form.vue'
   export default {
-    name : 'addGoods',
+      components: {ElForm},
+      name : 'addGoods',
     data(){
       return{
+        stepActive : 3,
         ruleForm: {
           goodsName: '',
         },
@@ -104,10 +103,11 @@
     },
     methods:{
       getSpudtoist(){
-        spuService.getSpudtoist().then((data)=>{
+        spuService.getSpudtoist( this.$route.query.id).then((data) => {
             data.data.spuPropDOList.forEach(function(value,index,array){
               value.inputVisible = false; // 自己加的 是否显示添加input
               value.propValues = value.propValue.split(",");
+              value.checkedProp = [];
               value.propValues.forEach(function(prop,key,array){
                 let Obj = {
                   isCanEdit : false,
@@ -122,7 +122,7 @@
               value.price = "";
             })
             this.spuDO = data.data;
-        },(msg)=>{
+        },(msg) => {
             console.log(msg);
         });
       },
@@ -145,13 +145,13 @@
       deleteTag(proplist,key){
         proplist.splice(key,1);
       },
-      submitForm(){
+      submitForm(){debugger;
           let props = [];
           this.spuDO.childSpuDTOList.forEach(function (value,index,array) {
             value.spuPropDOList.forEach(function(val,key,array){
-              let objKey = val.name;let propValue = {};
+              let objKey = val.name;
+              let propValue = {};
               propValue[objKey] = val.propValue
-              console.log(propValue);
               props.push(
                 {
                   "price":value.price * 100,
@@ -167,9 +167,10 @@
             })
           });
           this.spuDO.spuPropDOList.forEach(function (value,index,array) {
-            let propValue = {};let objKey = value.name,porpslist = [];
-            value.propValues.forEach(function(val,key,array){
-              if(val.isSelect){
+            let propValue = {};
+            let objKey = value.name;
+            let porpslist = [];
+            value.checkedProp.forEach(function(val,key,array){
                 propValue[objKey] = val.value
                 props.push(
                   {
@@ -186,9 +187,7 @@
                     "propValue":JSON.stringify(propValue)
                   }
                 )
-              }
             })
-
           });
           let wholesale_item = {
               "itemName" : this.ruleForm.goodsName,
@@ -206,9 +205,9 @@
             item_props : JSON.stringify(props),
             wholesale_item : JSON.stringify(wholesale_item),
           };
-          goodsService.addWithProps(params).then((data)=>[
-
-          ]);
+//          goodsService.addWithProps(params).then((data) => {
+//              console.log(data)
+//          });
       },
     },
     mounted(){
@@ -216,7 +215,7 @@
     },
   }
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .el-table__header th{
     padding-top: 0px;
   }
@@ -231,4 +230,15 @@
     margin-left: 10px;
     vertical-align: bottom;
   }
+  .propsBox{
+      .el-form-item__content{
+          width: calc(100% - 12%);
+          margin-bottom: 20px;
+      }
+      .el-select{
+          width: 100%;
+      }
+  }
+
+
 </style>

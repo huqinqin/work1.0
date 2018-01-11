@@ -53,9 +53,9 @@ export  default class SpuService extends BaseService{
      * @auth 小猪
      * @remark 获取spu
      */
-    static getSpudtoist(param){
+    static getSpudtoist(spuId){
       let params = {
-        spu_id : 179944,
+        spu_id : spuId,
       };
       return super.getRequest("/spu/get_spudto_list",params);
     }

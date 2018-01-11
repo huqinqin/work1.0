@@ -1,5 +1,5 @@
 import BaseService from "./abstract/BaseService";
-export default class customerOrderService extends BaseService {
+export default class CustomerOrderService extends BaseService {
 
     static submitCart(cart){
         let params = {

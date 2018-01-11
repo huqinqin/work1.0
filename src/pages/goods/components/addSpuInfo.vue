@@ -1,10 +1,5 @@
 <template>
   <div class="spuInfo">
-    <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-bottom:12px;margin-bottom:12px;border-bottom:solid 1px #eeeeee">
-      <el-breadcrumb-item ><a href="http://www.baidu.com">首页</a></el-breadcrumb-item>
-      <el-breadcrumb-item ><a href="http://www.baidu.com">商品</a></el-breadcrumb-item>
-      <el-breadcrumb-item>添加商品模板基本信息</el-breadcrumb-item>
-    </el-breadcrumb>
     <el-steps :active="stepActive" align-center style="padding-bottom:12px;margin-bottom:12px;">
       <el-step title="步骤1" description="选择并确定类目"></el-step>
       <el-step title="步骤2.1" description="完善产品基本信息"></el-step>
@@ -47,7 +42,7 @@
            </el-upload>
          </el-form-item>
          <el-form-item>
-           <router-link to="/addSpuSpec"><el-button type="primary" @click="addSpuSpec('ruleForm')">下一步</el-button></router-link>
+           <el-button type="primary" @click="addSpuSpec('ruleForm')">下一步</el-button>
            <el-button @click="resetForm('ruleForm')">重置</el-button>
          </el-form-item>
        </el-form>
@@ -107,9 +102,9 @@
       cascAderHandleChange(){
 
       },
-      addSpuSpec(formName){
+      addSpuSpec(formName){debugger;
         this.$refs[formName].validate((valid) => {
-            if(valid){
+            if(valid){debugger;
                 let index = this.ruleForm.spuCategory.length - 1;
                 let category_id = this.ruleForm.spuCategory[index];
                 this.ruleForm.categoryId = category_id;

@@ -45,7 +45,6 @@ export default class SegmentsService extends BaseService{
     return super.getRequest('/market/update',params)
   }
 
-
     static getItemId(){
     return super.getRequest('/market/get_parentId_by_openCode')
   }

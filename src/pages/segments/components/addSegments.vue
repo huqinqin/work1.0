@@ -8,6 +8,10 @@
             <el-form-item label="市场英文名称" label-width="110px" prop="bizEname">
                 <el-input v-model="form.bizEname" ></el-input>
             </el-form-item>
+            <el-form-item label="业务开放码" label-width="110px" prop="open_code">
+                <el-input v-model="form.open_code" @blur="checkCode"></el-input>
+                <span v-if="checkCodeResult" style="color:red;">开放码已存在，请换一个</span>
+            </el-form-item>
             <el-form-item label="特性" label-width="110px" prop="aaattribute" >
                 <el-checkbox-group v-model="form.aaattribute" @change="checkHandle">
                     <el-checkbox label="批发" ></el-checkbox>
@@ -120,6 +124,7 @@
             return {
                 location: ['北京市', '辖区', '东城区'],
                 moreAddress: '',
+                checkCodeResult:false,
                 form:{
                     bizName: 'qw21e1',
                     bizEname: 'qw12e1',
@@ -146,11 +151,15 @@
                     lcCode: '110101000000',
                     owner_uid:158748,
                     parentBizId: '',
+                    open_code:''
                 },
                 rules:{
                     checkPass: [
                         {validator: validatePass, trigger: 'blur'}
                     ],
+                    open_code: [
+                        {required:true,message:'数字与字母组合的八位编码',trigger: 'blur'}
+                    ]
                 },
                 locationOptions: [{
                     value: '浙江省',
@@ -257,6 +266,18 @@
             },
             getLocation(value){
                 console.log('自动填入经纬度')
+            },
+            // check openCode
+            checkCode(value){
+                console.log(value.target.value)
+                let checkCode = segmentsService.checkCode(value.target.value)
+                checkCode.then((data) => {
+                    console.log(data)
+                    this.checkCodeResult = false
+                },(msg) => {
+                    console.log(msg)
+                    this.checkCodeResult = true
+                })
             },
             submit(){
                 let formData = Object.assign({},this.form)
