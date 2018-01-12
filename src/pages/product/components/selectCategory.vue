@@ -165,7 +165,7 @@
         }
       },
       next(item){
-        location.href = "http://work.local.lts.com:8085/goods#/addGoods?id=" + item.id;
+        location.href = "http://work.lts.com:8085/goods#/addGoods?id=" + item.id;
       },
       getProductParameter(val){
         if(this.selectCategory.length === 0 && val.keywords === ''){

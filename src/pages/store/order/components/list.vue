@@ -53,7 +53,7 @@
                                         {label: "已关闭", bindValue: "9"}
                                     ]
                                 },
-                                search: {bindValue: "确定", type: "submitbutton"}
+                                search: {bindValue: "搜索", type: "submitbutton"}
                             }
                         }
                     ],

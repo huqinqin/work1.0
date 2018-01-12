@@ -6,11 +6,11 @@
     </div>
 </template>
 <script>
-    import list from './components/list'
+    import stock from './components/stock'
     export default {
         props: {},
         name: 'stock',
-        components: {list},
+        components: {stock},
         data () {
             return {
             }
