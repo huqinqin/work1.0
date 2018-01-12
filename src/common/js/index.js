@@ -35,7 +35,7 @@ Vue.filter('timestamp2str', function (timestamp) {
     return dateUtils.format(new Date(timestamp))
 })
 Vue.filter('money2str', function (money) {
-    if (!money) return ''
+    if (money == null || money === '') return ''
     return (money / 100).toFixed(2)
 })
 export default function (App, router = new Router()) {

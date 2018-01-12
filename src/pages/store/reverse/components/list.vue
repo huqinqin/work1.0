@@ -40,7 +40,7 @@
                              :show-overflow-tooltip="true"></el-table-column>
             <el-table-column prop="user_name" label="工程商" header-align="center" align="left" width="200"
                              :show-overflow-tooltip="true"></el-table-column>
-            <el-table-column prop="total_num" label="退货数量" align="center" width="80">
+            <el-table-column label="退货数量" align="center" width="80">
                 <template slot-scope="scope">
                     <el-tooltip placement="top">
                         <div slot="content">
@@ -118,11 +118,11 @@
                 loading: true,
                 datalist: [],
                 params: {
-                    start_time: '',
-                    end_time: '',
                     oid: '',
                     item_name: '',
                     status: '',
+                    start_time: '',
+                    end_time: '',
                 },
                 form: {
                     formFileds: [
@@ -181,9 +181,6 @@
             }
         },
         methods: {
-            getParameter(val) {
-                this.search()
-            },
             search() {
                 reverseService.getList(this.params.oid, this.params.status, this.params.start_time, this.params.end_time,
                     this.params.page, this.params.page_size, this.params.order_by).then((resp) => {
@@ -194,6 +191,9 @@
                     this.datalist = [];
                     this.$ltsMessage.show({type: 'error', message: '查询失败，请稍后重试:' + err.error_message})
                 });
+            },
+            getParameter(val) {
+                this.search()
             },
             syncFormParam() {
                 if (this.form.formInline.date.length > 0) {

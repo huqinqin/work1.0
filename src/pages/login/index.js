@@ -23,4 +23,4 @@ Lib(App, new Router({
             component: ConfirmPassword
         }
     ]
-})
+}));
