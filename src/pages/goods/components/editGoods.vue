@@ -99,118 +99,116 @@
       }
     },
     methods:{
-      getWithProps(){
-        let itemId = this.$route.params.id;
-        goodsService.getWithProps(itemId).then((data)=>{
-          data.data.itemPropDTO.skuItemPropList.forEach(function(value,index,array){
-            value.price = value.price / 100;
-            value.propValue = JSON.parse(value.propValue);
-          })
-          data.data.itemPropDTO.itemPropMapList.forEach(function(value,index,array){
-            value.propValues = [];
-            value.inputVisible = "";
-            value.propList.forEach(function(val,key,array){
-              val.propValue = JSON.parse(val.propValue);
-              for(let prop in val.propValue){
-                value.propValues.push({
-                   value : val.propValue[prop],
-                   isCanEdit : true,
-                   isSelect : true,
-                   spuId : val.spuId,
-                   id : val.id,
-                   itemId : '',
+        getWithProps () {
+            let itemId = this.$route.params.id
+            goodsService.getWithProps(itemId).then((data) => {
+                data.data.itemPropDTO.skuItemPropList.forEach(function (value, index, array) {
+                    value.price = value.price / 100
+                    value.propValue = JSON.parse(value.propValue)
                 })
-              }
+                data.data.itemPropDTO.itemPropMapList.forEach(function (value, index, array) {
+                    value.propValues = []
+                    value.inputVisible = ''
+                    value.propList.forEach(function (val, key, array) {
+                        val.propValue = JSON.parse(val.propValue)
+                        for (let prop in val.propValue) {
+                            value.propValues.push({
+                                value: val.propValue[prop],
+                                isCanEdit: true,
+                                isSelect: true,
+                                spuId: val.spuId,
+                                id: val.id,
+                                itemId: '',
+                            })
+                        }
+                    })
+                })
+                this.spuDO = data.data
+                this.itemPropDTO = data.data.itemPropDTO
+            }, (msg) => {
+                console.log(msg)
             })
-          });
-          this.spuDO = data.data;
-          this.itemPropDTO = data.data.itemPropDTO;
-        },(msg) => {
-          console.log(msg);
-        });
-      },
-      showInput(item) {
-        item.inputVisible = true;
-      },
-      handleInputConfirm(item) {
-        let inputValue = this.inputValue;
-        if (inputValue) {
-          item.propValues.push({
-            value : inputValue,
-            isCanEdit : true,
-            isSelect : true,
-            itemId : this.spuDO.id,
-            skuId : '',
-            id : '',
-          });
-        }
-        console.log(item);
-        item.inputVisible = false;
-        this.inputValue = '';
-      },
-      deleteTag(proplist,key){
-        proplist.splice(key,1);
-      },
-      submitForm(){
-        let props = [];
-        this.itemPropDTO.skuItemPropList.forEach(function (value,index,array) {
-            props.push(
-              {
-                "price":value.price * 100,
-                "storage" : value.storage,
-                "id" : value.id,
-                "sku" : true,
-              }
-            )
-        });
-        this.itemPropDTO.itemPropMapList.forEach(function (value,index,array) {
-          let propValue = {};
-          let objKey = value.propName;
-          let porpslist = [];
-          value.propValues.forEach(function(val,key,array){
-            if(val.isSelect){
-              propValue[objKey] = val.value
-              props.push(
-                {
-                  "attribute":0,
-                  "multiSelect":false,
-                  "required":false,
-                  "search":false,
-                  "selectable":false,
-                  "show":false,
-                  "sku":false,
-                  "spec":false,
-                  "system":false,
-                  "valueType":0,
-                  "spuId" : val.spuId,
-                  "itemId" : val.itemId,
-                  "id" : val.id,
-                  "propValue":JSON.stringify(propValue)
-                }
-              )
+        },
+        showInput (item) {
+            item.inputVisible = true
+        },
+        handleInputConfirm (item) {
+            let inputValue = this.inputValue
+            if (inputValue) {
+                item.propValues.push({
+                    value: inputValue,
+                    isCanEdit: true,
+                    isSelect: true,
+                    itemId: this.spuDO.id,
+                    skuId: '',
+                    id: '',
+                })
             }
-          })
-        });
-        let wholesale_item = {
-          "itemName" : this.spuDO.item_name,
-          "id": this.spuDO.id,
-          "spuId":this.spuDO.spuId,
-          "sin" : this.spuDO.sin,
-          "price":100,
-          "storage" : 0,
-          "unit":this.spuDO.unit,
-          "spec":"无描述",
-          "status" : 1,
-          "categoryId": this.spuDO.categoryId,
-        };
-        let params = {
-          item_props : JSON.stringify(props),
-          wholesale_item : JSON.stringify(wholesale_item),
-        };
-        goodsService.modifyWithProps(params).then((data)=>[
-
-        ]);
-      },
+            console.log(item)
+            item.inputVisible = false
+            this.inputValue = ''
+        },
+        deleteTag (proplist, key) {
+            proplist.splice(key, 1)
+        },
+        submitForm () {
+            let props = []
+            this.itemPropDTO.skuItemPropList.forEach(function (value, index, array) {
+                props.push(
+                    {
+                        'price': value.price * 100,
+                        'storage': value.storage,
+                        'id': value.id,
+                        'sku': true,
+                    }
+                )
+            })
+            this.itemPropDTO.itemPropMapList.forEach(function (value, index, array) {
+                let propValue = {}
+                let objKey = value.propName
+                let porpslist = []
+                value.propValues.forEach(function (val, key, array) {
+                    if (val.isSelect) {
+                        propValue[objKey] = val.value
+                        props.push(
+                            {
+                                'attribute': 0,
+                                'multiSelect': false,
+                                'required': false,
+                                'search': false,
+                                'selectable': false,
+                                'show': false,
+                                'sku': false,
+                                'spec': false,
+                                'system': false,
+                                'valueType': 0,
+                                'spuId': val.spuId,
+                                'itemId': val.itemId,
+                                'id': val.id,
+                                'propValue': JSON.stringify(propValue)
+                            }
+                        )
+                    }
+                })
+            })
+            let wholesale_item = {
+                'itemName': this.spuDO.item_name,
+                'id': this.spuDO.id,
+                'spuId': this.spuDO.spuId,
+                'sin': this.spuDO.sin,
+                'price': 100,
+                'storage': 0,
+                'unit': this.spuDO.unit,
+                'spec': '无描述',
+                'status': 1,
+                'categoryId': this.spuDO.categoryId,
+            }
+            let params = {
+                item_props: JSON.stringify(props),
+                wholesale_item: JSON.stringify(wholesale_item),
+            }
+            goodsService.modifyWithProps(params).then((data) => [])
+        },
     },
     mounted(){
       this.getWithProps();

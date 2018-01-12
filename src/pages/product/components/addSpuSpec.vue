@@ -332,7 +332,7 @@
           };
           spuService.addSpu(params).then((data) => {
               if(data.success){
-                  location.href = "http://work.local.lts.com:8085/goods#/addGoods?id=" + data.data;
+                  location.href = "http://work.lts.com:8085/goods#/addGoods?id=" + data.data;
               }
           });
       },
