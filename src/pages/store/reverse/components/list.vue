@@ -9,6 +9,7 @@
                         <el-form-item label="条码">
                             {{scope.row.item_remark.sinr}}
                         </el-form-item>
+
                         <el-form-item label="规格">
                             {{scope.row.item_remark.spec}}
                         </el-form-item>
