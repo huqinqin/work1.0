@@ -177,36 +177,6 @@
             }
         },
         methods: {
-            handleMenuItemClick(command, order) {
-                switch (command) {
-                    case "accept":
-                        if (order.pay_type !== 3) {
-                            this.$ltsMessage.show({type: 'error', message: "不支持非货到付款订单"})
-                        } else if (order.status !== 0) {
-                            this.$ltsMessage.show({type: 'error', message: "不支持的订单状态"})
-                        } else {
-                            orderService.accept(order.tid).then((resp) => {
-                                this.$ltsMessage.show({type: 'success', message: "通过成功"});
-                            }, (err) => {
-                                this.$ltsMessage.show({type: 'success', message: "通过失败：" + err.error_message});
-                            });
-                        }
-
-                        break;
-                    case "reject":
-                        if (order.pay_type !== 3) {
-                            this.$ltsMessage.show({type: 'error', message: "不支持非货到付款订单"})
-                        } else if (order.status !== 0) {
-                            this.$ltsMessage.show({type: 'error', message: "不支持的订单状态"})
-                        } else {
-                            this.$ltsMessage.show({type: 'success', message: "拒绝" + order.tid});
-                        }
-                        break;
-                    case "remark":
-                        this.$ltsMessage.show({type: 'success', message: "备注:" + order.tid});
-                        break;
-                }
-            },
             getParameter(val) {
                 this.search()
             },
@@ -258,17 +228,15 @@
 <style lang="less">
     .detail-table-expand {
         font-size: 0;
-    }
-
-    .detail-table-expand label {
-        width: 90px;
-        color: #99a9bf;
-    }
-
-    .detail-table-expand .el-form-item {
-        margin-right: 0;
-        margin-bottom: 0;
-        width: 20%;
+        label {
+            width: 90px;
+            color: #99a9bf;
+        }
+        .el-form-item {
+            margin-right: 0;
+            margin-bottom: 0;
+            width: 20%;
+        }
     }
     .el-dropdown-link {
         cursor: pointer;
