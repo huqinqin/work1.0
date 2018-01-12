@@ -7,7 +7,7 @@
 <script>
   import ForgetPassword from './components/forgetPassword'
   import ConfirmPassword from './components/confirmPassword'
-  import Login from './components/ogin'
+  import Login from './components/login'
 
   export default {
     name: 'Login',
