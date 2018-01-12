@@ -25,12 +25,12 @@
                         <el-table-column prop="status_title" label="状态" align="center" width="100"></el-table-column>
                         <el-table-column label="操作" align="center" width="80">
                             <template slot-scope="subscope">
-                                <el-dropdown>
+                                <el-dropdown @command="handleMenuItemClick">
                                     <span class="el-dropdown-link">
                                         操作<i class="el-icon-arrow-down el-icon--right"></i>
                                     </span>
                                     <el-dropdown-menu slot="dropdown">
-                                        <el-dropdown-item @click="handleMenuItemClick('refund', subscope.row)">退货退款</el-dropdown-item>
+                                        <el-dropdown-item command="refund" :data="subscope.row">退货退款</el-dropdown-item>
                                     </el-dropdown-menu>
                                 </el-dropdown>
                             </template>
@@ -75,15 +75,15 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="80">
                 <template slot-scope="scope">
-                    <el-dropdown>
+                    <el-dropdown @command="handleMenuItemClick">
                         <span class="el-dropdown-link">
                             操作<i class="el-icon-arrow-down el-icon--right"></i>
                         </span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item><router-link :to="'/detail/' + scope.row.tid">详情</router-link></el-dropdown-item>
-                            <el-dropdown-item @click="handleMenuItemClick('reject', scope.row)">拒绝</el-dropdown-item>
-                            <el-dropdown-item v-if="scope.row.pay_type == 3 && scope.row.status == 0" @click="handleMenuItemClick('accept', scope.row)">受理</el-dropdown-item>
-                            <el-dropdown-item v-if="scope.row.pay_type == 3 && scope.row.status == 0" @click="handleMenuItemClick('reject', scope.row)">拒绝</el-dropdown-item>
+                            <el-dropdown-item command="reject" :data="scope.row">拒绝</el-dropdown-item>
+                            <el-dropdown-item command="accept" v-if="scope.row.pay_type == 3 && scope.row.status == 0">受理</el-dropdown-item>
+                            <el-dropdown-item command="reject" v-if="scope.row.pay_type == 3 && scope.row.status == 0">拒绝</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </template>
@@ -101,6 +101,7 @@
             :total="pagination.total">
         </el-pagination>
     </div>
+    
 </template>
 <script>
     import {dateUtils} from 'ltsutil'
@@ -169,10 +170,8 @@
             }
         },
         methods: {
-            handleMenuItemClick(command, order) {
-                alert(1)
-                debugger
-                console.log(command, order)
+            handleMenuItemClick(command, data) {
+                const order = data.$vnode.data.attrs.data;
                 switch (command) {
                     case "accept":
                         orderService.accept(order.tid).then((resp)=>{
