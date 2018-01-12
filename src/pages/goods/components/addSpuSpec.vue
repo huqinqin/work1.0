@@ -129,21 +129,23 @@
       },
       mounted() {
           categoryService.getCateProps(this.$route.params.spuInfo.categoryId).then((data) => {
-              data.datalist.forEach(function (value, index, array) {
-                  value.inputVisible = false // 自己加的 是否显示添加input
-                  value.isDelete = false //自己加的 单条是否可删除
-                  value.isSelect = false //自己加的 单条是否被选中
-                  value.isSearch = false //自己加的 可搜索
-                  value.isShow = false //自己加的 可展示
-                  value.propValues.forEach(function (prop, key, array) {
-                      let Obj = {
-                          isCanEdit: false,
-                          isSelected: false,
-                          value: prop
-                      }
-                      array[key] = Obj
+              if(data.datalist.length > 0){
+                  data.datalist.forEach(function (value, index, array) {
+                      value.inputVisible = false // 自己加的 是否显示添加input
+                      value.isDelete = false //自己加的 单条是否可删除
+                      value.isSelect = false //自己加的 单条是否被选中
+                      value.isSearch = false //自己加的 可搜索
+                      value.isShow = false //自己加的 可展示
+                      value.propValues.forEach(function (prop, key, array) {
+                          let Obj = {
+                              isCanEdit: false,
+                              isSelected: false,
+                              value: prop
+                          }
+                          array[key] = Obj
+                      })
                   })
-              })
+              }
               this.spuSpecList = data.datalist
           })
       },
@@ -165,7 +167,7 @@
 //        });
           },
 
-          chcekedProp(item, itemprop) {
+          chcekedProp(item, itemprop) {debugger;
               let count = 0
               let selectProps = []
               let subSelectProps = []
@@ -199,7 +201,7 @@
               } else {
                   let selectCount = 0
                   this.selectedSpecList.forEach(function (value, index, array) {
-                      if (value.name === cloneItem.name || value.id === cloneItem.id) {
+                      if (value.name === cloneItem.name) {
                           if (cloneItem.isSelect) {
                               array[index] = cloneItem
                           } else {
