@@ -7,25 +7,28 @@
                 <template slot-scope="scope">
                     <el-form label-position="left" inline class="detail-table-expand">
                         <el-form-item label="条码">
-                            <span>{{scope.row.item_remark.sinr}}</span>
+                            {{scope.row.item_remark.sinr}}
                         </el-form-item>
                         <el-form-item label="规格">
-                            <span>{{scope.row.item_remark.spec}}</span>
+                            {{scope.row.item_remark.spec}}
                         </el-form-item>
                         <el-form-item label="原订单数量">
-                            <span>{{scope.row.item_remark.num}}</span>
+                            {{scope.row.item_remark.num}}
                         </el-form-item>
                         <el-form-item label="原订单单价">
-                            <span>{{scope.row.item_remark.price | money2str}}</span>
+                            {{scope.row.item_remark.price | money2str}}
+                        </el-form-item>
+                        <el-form-item label="退款类型">
+                            {{scope.row.refund_type_title}}
                         </el-form-item>
                         <el-form-item label="下单时间">
-                            <span>{{scope.row.item_remark.order_cdate}}</span>
+                            {{scope.row.item_remark.order_cdate}}
                         </el-form-item>
                         <el-form-item label="付款时间">
-                            <span>{{scope.row.item_remark.pay_time}}</span>
+                            {{scope.row.item_remark.pay_time}}
                         </el-form-item>
                         <el-form-item label="出库时间">
-                            <span>{{scope.row.item_remark.out_time}}</span>
+                            {{scope.row.item_remark.out_time}}
                         </el-form-item>
                     </el-form>
                 </template>
@@ -41,7 +44,7 @@
                     <el-tooltip placement="top">
                         <div slot="content">
                             <p v-if="scope.row.reverse_remark.stockout_item">
-                                缺货:{{scope.row.reverse_remark.stockout_item.num}}{scope.row.reverse_remark.stockout_item.unit}}</p>
+                                缺货:{{scope.row.reverse_remark.stockout_item.num}}{{scope.row.reverse_remark.stockout_item.unit}}</p>
                             <p v-if="scope.row.reverse_remark.return_item">
                                 退货:{{scope.row.reverse_remark.return_item.num}}{{scope.row.reverse_remark.return_item.unit}}</p>
                         </div>
@@ -49,7 +52,7 @@
                     </el-tooltip>
                 </template>
             </el-table-column>
-            <el-table-column prop="reverse_reason" label="退货原因" header-align="center" align="left"
+            <el-table-column prop="reverse_reason_title" label="退货原因" header-align="center" align="left"
                              width="200"></el-table-column>
             <el-table-column label="退货金额" align="center" width="80">
                 <template slot-scope="scope">{{scope.row.refund_real | money2str}}</template>
