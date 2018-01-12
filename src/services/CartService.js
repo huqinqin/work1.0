@@ -11,23 +11,23 @@ export default class CartService extends BaseService{
    * remark 添加购物车
    */
   static putCartPlus(uid,param,checkedSpu){
-    let params = {
-      user_id : uid,
-      num : param.num,
-      carrier_uid : 158635,
-      cart_item_key : JSON.stringify(
-        {
-          puserId : 158635,
-          spuId : param.spuId,
-          itemId : param.id,
-        }
-      ),
-      item_props : JSON.stringify([
-          checkedSpu
-      ]),
-    };
-    console.log(params);
-    return super.getRequest('//wholesale/cart/putCartPlus',params);
+      let params
+      params = {
+          user_id: uid,
+          num: param.num,
+          carrier_uid: 158635,
+          item_props: JSON.stringify([
+              checkedSpu
+          ]),
+          cart_item_key: JSON.stringify(
+              {
+                  puserId: 158635,
+                  spuId: param.spuId,
+                  itemId: param.id,
+              }
+          ),
+      };
+      return super.getRequest('//wholesale/cart/putCartPlus',params);
   }
 
   /**
@@ -39,10 +39,10 @@ export default class CartService extends BaseService{
    * @remark 查询购物车
    */
   static queryCartList(userId){
-    let params = {
-      user_id: userId
-    };
-    console.log(params);
-    return super.getRequest('/wholesale/cart/queryCartList',params)
+      let params
+      params = {
+          user_id: userId
+      };
+      return super.getRequest('/wholesale/cart/queryCartList',params)
   }
 }

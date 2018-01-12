@@ -31,4 +31,14 @@ export default class GoodsService extends BaseService{
   static modifyWithProps(params){
     return super.getRequest('/wholesale/item/modify_with_props',params)
   }
+  /**
+  * @returns {*}
+  * 获取商品列表
+  */
+  static getList(userId){
+      let params = {
+          user_id : userId
+      };
+      return super.getRequest('/wholesale/item/getList',params);
+  }
 }
