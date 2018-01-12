@@ -81,7 +81,6 @@
                         </span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item><router-link :to="'/detail/' + scope.row.tid">详情</router-link></el-dropdown-item>
-                            <el-dropdown-item command="reject" :data="scope.row">拒绝</el-dropdown-item>
                             <el-dropdown-item command="accept" v-if="scope.row.pay_type == 3 && scope.row.status == 0">受理</el-dropdown-item>
                             <el-dropdown-item command="reject" v-if="scope.row.pay_type == 3 && scope.row.status == 0">拒绝</el-dropdown-item>
                         </el-dropdown-menu>
@@ -101,7 +100,7 @@
             :total="pagination.total">
         </el-pagination>
     </div>
-    
+
 </template>
 <script>
     import {dateUtils} from 'ltsutil'
