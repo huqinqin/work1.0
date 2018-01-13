@@ -1,7 +1,6 @@
 <template>
     <div>
-        <lts-search-form @get-from="getParameter" :form-fileds="form.formFileds"
-                         :form-inlines="form.formInline"></lts-search-form>
+        <lts-search-form @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-form>
         <el-table :data="datalist" v-loading="loading" default-expand-all style="width: 100%">
             <el-table-column type="expand">
                 <template slot-scope="scope">
@@ -23,13 +22,13 @@
                             {{scope.row.refund_type_title}}
                         </el-form-item>
                         <el-form-item label="下单时间">
-                            {{scope.row.item_remark.order_cdate}}
+                            {{scope.row.item_remark.order_cdate | strtime2str}}
                         </el-form-item>
                         <el-form-item label="付款时间">
-                            {{scope.row.item_remark.pay_time}}
+                            {{scope.row.item_remark.pay_time | strtime2str}}
                         </el-form-item>
                         <el-form-item label="出库时间">
-                            {{scope.row.item_remark.out_time}}
+                            {{scope.row.item_remark.out_time | strtime2str}}
                         </el-form-item>
                     </el-form>
                 </template>
@@ -104,12 +103,11 @@
     </div>
 </template>
 <script>
-    import {request, dateUtils} from 'ltsutil'
+    import {dateUtils} from 'ltsutil'
     import {ltsSearchForm} from 'ui'
     import reverseService from '@/services/ReverseService'
 
     export default {
-        props: {},
         components: {
             ltsSearchForm
         },
@@ -168,7 +166,7 @@
                         oid: '',
                         item_name: '',
                         status: '',
-                        date: [dateUtils.timeToStr(new Date().getTime() - 3600 * 1000 * 24 * 30), dateUtils.format(new Date())],
+                        date: dateUtils.getNearMonth(),
                     },
                 },
                 pagination: {
@@ -183,12 +181,14 @@
         methods: {
             search() {
                 reverseService.getList(this.params.oid, this.params.status, this.params.start_time, this.params.end_time,
-                    this.params.page, this.params.page_size, this.params.order_by).then((resp) => {
-                    this.datalist = resp.datalist;
+                    this.pagination.page, this.pagination.pageSize, this.params.order_by).then((resp) => {
                     this.loading = false;
+                    this.datalist = resp.datalist;
+                    this.pagination.total = resp.total;
                 }, (err) => {
                     this.loading = false;
                     this.datalist = [];
+                    this.pagination.total = 0;
                     this.$ltsMessage.show({type: 'error', message: '查询失败，请稍后重试:' + err.error_message})
                 });
             },
@@ -205,11 +205,11 @@
                 this.params.status = this.form.formInline.status;
             },
             handleSizeChange(val) {
-                this.pagination.pageSize = val
+                this.pagination.pageSize = val;
                 this.search()
             },
             handleCurrentChange(val) {
-                this.pagination.page = val
+                this.pagination.page = val;
                 this.search()
             },
         },

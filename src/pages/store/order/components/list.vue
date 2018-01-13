@@ -25,12 +25,12 @@
                         <el-table-column prop="status_title" label="状态" align="center" width="100"></el-table-column>
                         <el-table-column label="操作" align="center" width="80">
                             <template slot-scope="subscope">
-                                <el-dropdown>
+                                <el-dropdown @command="handleMenuItemClick">
                                     <span class="el-dropdown-link">
                                         操作<i class="el-icon-arrow-down el-icon--right"></i>
                                     </span>
                                     <el-dropdown-menu slot="dropdown">
-                                        <el-dropdown-item @click="handleMenuItemClick('refund', subscope.row)">退货退款</el-dropdown-item>
+                                        <el-dropdown-item command="refund" :data="subscope.row">退货退款</el-dropdown-item>
                                     </el-dropdown-menu>
                                 </el-dropdown>
                             </template>
@@ -57,7 +57,6 @@
                         </div>
                         <div>{{scope.row.fee_total | money2str}}</div>
                     </el-tooltip>
-
                 </template>
             </el-table-column>
             <el-table-column prop="pay_info.pay_type_title" label="付款类型" align="center" width="100"></el-table-column>
@@ -75,15 +74,14 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="80">
                 <template slot-scope="scope">
-                    <el-dropdown>
+                    <el-dropdown @command="handleMenuItemClick">
                         <span class="el-dropdown-link">
                             操作<i class="el-icon-arrow-down el-icon--right"></i>
                         </span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item><router-link :to="'/detail/' + scope.row.tid">详情</router-link></el-dropdown-item>
-                            <el-dropdown-item @click="handleMenuItemClick('reject', scope.row)">拒绝</el-dropdown-item>
-                            <el-dropdown-item v-if="scope.row.pay_type == 3 && scope.row.status == 0" @click="handleMenuItemClick('accept', scope.row)">受理</el-dropdown-item>
-                            <el-dropdown-item v-if="scope.row.pay_type == 3 && scope.row.status == 0" @click="handleMenuItemClick('reject', scope.row)">拒绝</el-dropdown-item>
+                            <el-dropdown-item command="accept" v-if="scope.row.pay_type == 3 && scope.row.status == 0">受理</el-dropdown-item>
+                            <el-dropdown-item command="reject" v-if="scope.row.pay_type == 3 && scope.row.status == 0">拒绝</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </template>
@@ -100,6 +98,64 @@
             :layout="pagination.layout"
             :total="pagination.total">
         </el-pagination>
+
+        <el-dialog
+            title="退款申请"
+            :visible.sync="dialogVisible"
+            width="800px">
+            <div style="margin-top: -20px">
+                <el-form label-position="left" size="small" label-width="100px" class="detail-info">
+                    <el-form-item label="主订单号">
+                        {{refundOrder.parent_id}}
+                    </el-form-item>
+                    <el-form-item label="子订单号">
+                        {{refundOrder.tid}}
+                    </el-form-item>
+                    <el-form-item label="工程商">
+                        {{refundOrder.customer.name}}
+                    </el-form-item>
+                    <el-form-item label="联系电话">
+                        {{refundOrder.customer.mobile}}
+                    </el-form-item>
+                    <el-form-item label="商品名称">
+                        {{refundOrder.wholesale_item_d_o.item_name}}
+                    </el-form-item>
+                    <el-form-item label="规格">
+                        {{refundOrder.wholesale_item_d_o.spec}}
+                    </el-form-item>
+                    <el-form-item label="单价">
+                        {{refundOrder.wholesale_item_d_o.price | money2str}}
+                    </el-form-item>
+                    <el-form-item label="数量">
+                        {{refundOrder.num}}{{refundOrder.wholesale_item_d_o.unit}}
+                    </el-form-item>
+                    <el-form-item label="小计">
+                        {{refundOrder.pay_real | money2str}}
+                    </el-form-item>
+                    <el-form-item label="退款原因">
+                        <el-select v-model="refundFrom.reason" placeholder="请选择退款原因">
+                            <el-option label="货有破损" value="111"></el-option>
+                            <el-option label="其他" value="222"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="退货退款数量">
+                        <el-input-number v-model="refundFrom.num" size="small" controls-position="right" :min="1" :max="refundFrom.num"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="退货退款金额">
+                        <el-input v-model="refundFrom.refund" style="width: 150px">
+                            <template slot="append">$</template>
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item label="备注">
+                        <el-input type="textarea" v-model="refundFrom.remark"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="onSubmitRefund">提交退货退款</el-button>
+                        <el-button @click="dialogVisible = false">取消</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -113,7 +169,12 @@
         data() {
             return {
                 loading: true,
+                dialogVisible: false,
                 datalist: [],
+                refundOrder: {
+                    customer:{},
+                    wholesale_item_d_o:{}
+                },
                 params: {
                     tid: '',
                     status: '',
@@ -156,8 +217,14 @@
                     formInline: {
                         tid: '',
                         status: '',
-                        date: [dateUtils.timeToStr(new Date().getTime() - 3600 * 1000 * 24 * 7), dateUtils.format(new Date())],
+                        date: dateUtils.getNearWeek(),
                     },
+                },
+                refundFrom:{
+                    reason: '',
+                    num: 1,
+                    refund: 0,
+                    remark: ''
                 },
                 pagination: {
                     page: 1,
@@ -169,12 +236,11 @@
             }
         },
         methods: {
-            handleMenuItemClick(command, order) {
-                alert(1)
-                debugger
-                console.log(command, order)
+            handleMenuItemClick(command, data) {
+                let order;
                 switch (command) {
                     case "accept":
+                        order = data.$vnode.data.attrs.data;
                         orderService.accept(order.tid).then((resp)=>{
                             this.$ltsMessage.show({type: 'success', message: "受理成功"});
                         }, (err)=>{
@@ -182,22 +248,33 @@
                         });
                         break;
                     case "reject":
+                        order = data.$vnode.data.attrs.data;
                         this.$ltsMessage.show({type: 'success', message: "拒绝" + order.tid});
                         break;
                     case "refund":
-                        this.$ltsMessage.show({type: 'success', message: "退款" + order.tid});
+                        const orderItem = data.$vnode.data.attrs.data;
+                        this.showRefundOrderItem(orderItem);
                         break;
                     default:
                         break;
                 }
             },
+            showRefundOrderItem(orderItem){
+                this.dialogVisible = true;
+                this.refundOrder = orderItem;
+            },
+            onSubmitRefund(){
+                this.$ltsMessage.show({type: 'success', message: "退货退款申请成功"});
+            },
             search() {
                 orderService.getList(this.params, this.pagination.page, this.pagination.page_size).then((resp) => {
                     this.loading = false;
                     this.datalist = resp.datalist;
+                    this.pagination.total = resp.total;
                 }, (err) => {
                     this.loading = false;
                     this.datalist = [];
+                    this.pagination.total = 0;
                     this.$ltsMessage.show({type: 'error', message: '查询失败，请稍后重试:' + err.error_message})
                 });
             },
@@ -214,11 +291,11 @@
                 this.params.status = this.form.formInline.status;
             },
             handleSizeChange(val) {
-                this.pagination.pageSize = val
+                this.pagination.pageSize = val;
                 this.search()
             },
             handleCurrentChange(val) {
-                this.pagination.page = val
+                this.pagination.page = val;
                 this.search()
             },
         },
@@ -242,5 +319,13 @@
     .el-dropdown-link {
         cursor: pointer;
         color: #409eff;
+    }
+    .detail-info {
+        label {
+            color: #99a9bf;
+        }
+        .el-form-item {
+            margin-bottom: 5px;
+        }
     }
 </style>

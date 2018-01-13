@@ -60,7 +60,7 @@
                     <el-form-item label="备货时间" v-if="detail.to_time">
                         <el-tag>{{detail.to_time | timestamp2str}}</el-tag>
                     </el-form-item>
-                    <el-form-item label="网点名称">
+                    <el-form-item label="工程商">
                         <span>{{detail.spot_name}}</span>
                     </el-form-item>
                     <el-form-item label="联系人">
@@ -132,7 +132,7 @@
                     orders: []
                 },
                 params: {
-                    stock_time: dateUtils.format(new Date(), 'yyyy-MM-dd'),
+                    stock_time: dateUtils.format(new Date(), dateUtils.FORMAT.CN.YMD),
                     status: 0
                 },
                 formFileds: [

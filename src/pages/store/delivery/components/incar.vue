@@ -29,7 +29,7 @@
             <el-table :data="batchLine.list" v-loading="loading" style="width: 100%" @selection-change="handleSelectionChange">
                 <el-table-column type="selection"/>
                 <el-table-column type="index" label="#"/>
-                <el-table-column prop="spot_name" label="网点名称" width="400" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="spot_name" label="工程商" width="400" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="spot_addr" label="地址" show-overflow-tooltip></el-table-column>
                 <el-table-column label="操作" width="160" align="center">
                     <template slot-scope="spot">
@@ -51,7 +51,7 @@
             width="1100px">
             <div style="margin-top: -20px">
                 <el-form label-position="left" inline class="detail-info">
-                    <el-form-item label="网点名称">
+                    <el-form-item label="工程商">
                         <span>{{detail.spot_name}}</span>
                     </el-form-item>
                     <el-form-item label="联系人">
@@ -112,6 +112,7 @@
     import {dateUtils} from 'ltsutil'
     import {ltsSearchForm} from 'ui'
     import deliveryService from '@/services/DeliveryService'
+    import DateUtils from "../../../../utils/DateUtils";
 
     export default {
         components: {
@@ -142,7 +143,7 @@
                 stockOutNum: 0,
                 showStockOutEdit: false,
                 params: {
-                    incar_time: dateUtils.format(new Date(), 'yyyy-MM-dd'),
+                    incar_time: dateUtils.format(new Date(), DateUtils.FORMAT.CN.YMD),
                     spot_code: '',
                     status: 0,
                     batch_no_arr: ''
@@ -308,14 +309,14 @@
     }
     .detail-info {
         font-size: 0;
-    }
-    .detail-info label {
-        width: 90px;
-        color: #99a9bf;
-    }
-    .detail-info .el-form-item {
-        margin-right: 0;
-        margin-bottom: 0;
-        width: 25%;
+        label {
+            width: 90px;
+            color: #99a9bf;
+        }
+        .el-form-item {
+            margin-right: 0;
+            margin-bottom: 0;
+            width: 25%;
+        }
     }
 </style>

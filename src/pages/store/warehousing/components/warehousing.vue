@@ -58,7 +58,7 @@
                     <el-form-item label="备货批次号" v-if="detail.stock_no">
                         <el-tag>{{detail.stock_no}}</el-tag>
                     </el-form-item>
-                    <el-form-item label="网点名称">
+                    <el-form-item label="工程商">
                         <span>{{detail.spot_name}}</span>
                     </el-form-item>
                     <el-form-item label="联系人">
@@ -148,7 +148,7 @@
                 stockOutNum: 0,
                 showStockOutEdit: false,
                 params: {
-                    warehouse_time: dateUtils.format(new Date(), 'yyyy-MM-dd'),
+                    warehouse_time: dateUtils.format(new Date(), dateUtils.FORMAT.CN.YMD),
                     status: 2
                 },
                 formFileds: [
