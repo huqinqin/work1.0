@@ -10,14 +10,7 @@
 
         <div style="margin: 10px 0">
             <el-button type="primary" @click="batchOpt">批量备货</el-button>
-            <el-select v-model="printer" placeholder="请选择打印机">
-                <el-option
-                    v-for="item in printerList"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                </el-option>
-            </el-select>
+            <lts-printer />
         </div>
         <el-table :data="datalist" v-loading="loading" style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="selection"/>
@@ -105,26 +98,15 @@
 </template>
 <script>
     import {dateUtils} from 'ltsutil'
-    import {ltsSearchForm} from 'ui'
+    import {ltsSearchForm, ltsPrinter} from 'ui'
     import deliveryService from '@/services/DeliveryService'
 
     export default {
         components: {
-            ltsSearchForm
+            ltsSearchForm, ltsPrinter
         },
         data() {
             return {
-                printer: 1,
-                printerList: [
-                    {
-                        value: 1,
-                        label: '打印机1'
-                    },
-                    {
-                        value: 2,
-                        label: '打印机2'
-                    }
-                ],
                 loading: true,
                 dialogVisible: false,
                 datalist: [],

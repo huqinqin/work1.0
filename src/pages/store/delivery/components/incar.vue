@@ -16,14 +16,7 @@
             </el-tab-pane>
         </el-tabs>
 
-        <el-select v-model="printer" placeholder="请选择打印机">
-            <el-option
-                v-for="item in printerList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-            </el-option>
-        </el-select>
+        <lts-printer />
         <div class="batch-info-list" v-for="(batchLine, index) in datalist" :key="index">
             <div class="batch-hd" v-if="batchLine.batch_no != 0"><i class="el-icon-document"></i> 发货单概览 批次号:{{batchLine.batch_no}}</div>
             <el-table :data="batchLine.list" v-loading="loading" style="width: 100%" @selection-change="handleSelectionChange">
@@ -110,27 +103,18 @@
 </template>
 <script>
     import {dateUtils} from 'ltsutil'
-    import {ltsSearchForm} from 'ui'
+    import {ltsSearchForm, ltsPrinter} from 'ui'
     import deliveryService from '@/services/DeliveryService'
     import DateUtils from "../../../../utils/DateUtils";
+    import LtsPrinter from "../../../../common/components/lts-printer";
 
     export default {
         components: {
+            LtsPrinter,
             ltsSearchForm
         },
         data() {
             return {
-                printer: 1,
-                printerList: [
-                    {
-                        value: 1,
-                        label: '打印机1'
-                    },
-                    {
-                        value: 2,
-                        label: '打印机2'
-                    }
-                ],
                 // 批次号
                 batchList: [],
                 selectedBatchList: [],

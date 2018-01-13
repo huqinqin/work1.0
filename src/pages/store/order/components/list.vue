@@ -6,7 +6,7 @@
                 <template slot-scope="scope">
                     <el-table :data="scope.row.wholesale_order_items" style="width: 100%">
                         <el-table-column type="index" label="#"/>
-                        <el-table-column prop="tid" label="订单号" align="center" width="120"/>
+                        <el-table-column prop="tid" label="子订单编号" align="center" width="120"/>
                         <el-table-column prop="wholesale_item_d_o.item_name" label="商品" header-align="center" align="left" :show-overflow-tooltip="true"></el-table-column>
                         <el-table-column prop="wholesale_item_d_o.spec" label="规格" align="center" width="100"></el-table-column>
                         <el-table-column prop="num" label="数量" align="center" width="80">
@@ -99,82 +99,26 @@
             :total="pagination.total">
         </el-pagination>
 
-        <el-dialog
-            title="退款申请"
-            :visible.sync="dialogVisible"
-            width="800px">
-            <div style="margin-top: -20px">
-                <el-form label-position="left" size="small" label-width="100px" class="detail-info">
-                    <el-form-item label="主订单号">
-                        {{refundOrder.parent_id}}
-                    </el-form-item>
-                    <el-form-item label="子订单号">
-                        {{refundOrder.tid}}
-                    </el-form-item>
-                    <el-form-item label="工程商">
-                        {{refundOrder.customer.name}}
-                    </el-form-item>
-                    <el-form-item label="联系电话">
-                        {{refundOrder.customer.mobile}}
-                    </el-form-item>
-                    <el-form-item label="商品名称">
-                        {{refundOrder.wholesale_item_d_o.item_name}}
-                    </el-form-item>
-                    <el-form-item label="规格">
-                        {{refundOrder.wholesale_item_d_o.spec}}
-                    </el-form-item>
-                    <el-form-item label="单价">
-                        {{refundOrder.wholesale_item_d_o.price | money2str}}
-                    </el-form-item>
-                    <el-form-item label="数量">
-                        {{refundOrder.num}}{{refundOrder.wholesale_item_d_o.unit}}
-                    </el-form-item>
-                    <el-form-item label="小计">
-                        {{refundOrder.pay_real | money2str}}
-                    </el-form-item>
-                    <el-form-item label="退款原因">
-                        <el-select v-model="refundFrom.reason" placeholder="请选择退款原因">
-                            <el-option label="货有破损" value="111"></el-option>
-                            <el-option label="其他" value="222"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="退货退款数量">
-                        <el-input-number v-model="refundFrom.num" size="small" controls-position="right" :min="1" :max="refundFrom.num"></el-input-number>
-                    </el-form-item>
-                    <el-form-item label="退货退款金额">
-                        <el-input v-model="refundFrom.refund" style="width: 150px">
-                            <template slot="append">$</template>
-                        </el-input>
-                    </el-form-item>
-                    <el-form-item label="备注">
-                        <el-input type="textarea" v-model="refundFrom.remark"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="onSubmitRefund">提交退货退款</el-button>
-                        <el-button @click="dialogVisible = false">取消</el-button>
-                    </el-form-item>
-                </el-form>
-            </div>
-        </el-dialog>
+        <reverse-apply :dialogVisible="dialogVisible" :order="refundOrder" :installer="refundInstaller" :item="refundItem"></reverse-apply>
     </div>
 </template>
 <script>
     import {dateUtils} from 'ltsutil'
     import {ltsSearchForm} from 'ui'
+    import reverseApply from './reverse-apply'
     import orderService from '@/services/OrderService'
     export default {
         components: {
-            ltsSearchForm
+            ltsSearchForm, reverseApply
         },
         data() {
             return {
                 loading: true,
                 dialogVisible: false,
                 datalist: [],
-                refundOrder: {
-                    customer:{},
-                    wholesale_item_d_o:{}
-                },
+                refundOrder: {},
+                refundInstaller:{},
+                refundItem:{},
                 params: {
                     tid: '',
                     status: '',
@@ -262,6 +206,8 @@
             showRefundOrderItem(orderItem){
                 this.dialogVisible = true;
                 this.refundOrder = orderItem;
+                this.refundInstaller = orderItem.customer;
+                this.refundItem = orderItem.wholesale_item_d_o;
             },
             onSubmitRefund(){
                 this.$ltsMessage.show({type: 'success', message: "退货退款申请成功"});
@@ -320,12 +266,12 @@
         cursor: pointer;
         color: #409eff;
     }
-    .detail-info {
-        label {
-            color: #99a9bf;
-        }
-        .el-form-item {
-            margin-bottom: 5px;
-        }
-    }
+    /*.detail-info {*/
+        /*label {*/
+            /*color: #99a9bf;*/
+        /*}*/
+        /*.el-form-item {*/
+            /*margin-bottom: 5px;*/
+        /*}*/
+    /*}*/
 </style>
