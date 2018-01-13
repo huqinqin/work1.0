@@ -226,7 +226,7 @@
             "domain":"http://work.lts.com",
             "edate":1493375344000,
             "id":229,
-            "name":"子市场管理",
+            "name":"门店管理",
             "pic":"order",
             "resourcesList":[],
             "sort":1010,
