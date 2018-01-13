@@ -1,14 +1,14 @@
 <template>
     <div>
-        <lts-search-form @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-form>
+        <lts-search-form @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline" />
         <el-table :data="datalist" v-loading="loading" default-expand-all style="width: 100%">
             <el-table-column type="expand">
                 <template slot-scope="scope">
                     <el-table :data="scope.row.wholesale_order_items" style="width: 100%">
                         <el-table-column type="index" label="#"/>
                         <el-table-column prop="tid" label="子订单编号" align="center" width="120"/>
-                        <el-table-column prop="wholesale_item_d_o.item_name" label="商品" header-align="center" align="left" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column prop="wholesale_item_d_o.spec" label="规格" align="center" width="100"></el-table-column>
+                        <el-table-column prop="wholesale_item_d_o.item_name" label="商品" header-align="center" align="left" :show-overflow-tooltip="true" />
+                        <el-table-column prop="wholesale_item_d_o.spec" label="规格" align="center" width="100" />
                         <el-table-column prop="num" label="数量" align="center" width="80">
                             <template slot-scope="subscope">{{subscope.row.num}}{{subscope.row.unit}}</template>
                         </el-table-column>
@@ -21,8 +21,8 @@
                         <el-table-column label="实付" align="center" width="80">
                             <template slot-scope="subscope">{{subscope.row.pay_real | money2str}}</template>
                         </el-table-column>
-                        <el-table-column prop="hd_status_title" label="配送状态" align="center" width="100"></el-table-column>
-                        <el-table-column prop="status_title" label="状态" align="center" width="100"></el-table-column>
+                        <el-table-column prop="hd_status_title" label="配送状态" align="center" width="100" />
+                        <el-table-column prop="status_title" label="状态" align="center" width="100" />
                         <el-table-column label="操作" align="center" width="80">
                             <template slot-scope="subscope">
                                 <el-dropdown @command="handleMenuItemClick">
@@ -39,10 +39,10 @@
                 </template>
             </el-table-column>
             <el-table-column type="index" label="#"/>
-            <el-table-column prop="tid" label="订单编号" align="center" width="120"></el-table-column>
-            <el-table-column prop="user_name" label="工程商" header-align="center" align="left" width="200" :show-overflow-tooltip="true"></el-table-column>
-            <el-table-column prop="receiver_mobile" label="手机" header-align="center" align="left" width="110"></el-table-column>
-            <el-table-column prop="user_addr" label="地址" header-align="center" align="left" :show-overflow-tooltip="true"></el-table-column>
+            <el-table-column prop="tid" label="订单编号" align="center" width="120" />
+            <el-table-column prop="user_name" label="工程商" header-align="center" align="left" width="200" :show-overflow-tooltip="true" />
+            <el-table-column prop="receiver_mobile" label="手机" header-align="center" align="left" width="110" />
+            <el-table-column prop="user_addr" label="地址" header-align="center" align="left" :show-overflow-tooltip="true" />
             <el-table-column label="应付" align="center" width="80">
                 <template slot-scope="scope">{{scope.row.pay | money2str}}</template>
             </el-table-column>
@@ -59,8 +59,8 @@
                     </el-tooltip>
                 </template>
             </el-table-column>
-            <el-table-column prop="pay_info.pay_type_title" label="付款类型" align="center" width="100"></el-table-column>
-            <el-table-column prop="pay_info.pay_status_title" label="付款状态" align="center" width="100"></el-table-column>
+            <el-table-column prop="pay_info.pay_type_title" label="付款类型" align="center" width="100" />
+            <el-table-column prop="pay_info.pay_status_title" label="付款状态" align="center" width="100" />
             <el-table-column prop="status_title" label="状态" align="center" width="100">
                 <template slot-scope="scope">
                     <el-tag type="success" v-if="scope.row.status == 7 || scope.row.status == 9">
@@ -99,7 +99,7 @@
             :total="pagination.total">
         </el-pagination>
 
-        <reverse-apply :dialogVisible="dialogVisible" :order="refundOrder" :installer="refundInstaller" :item="refundItem"></reverse-apply>
+        <reverse-apply :visible.sync="dialogVisible" v-bind:order-item="refundOrder" v-bind:installer="refundInstaller" v-bind:item="refundItem" />
     </div>
 </template>
 <script>
@@ -161,7 +161,7 @@
                     formInline: {
                         tid: '',
                         status: '',
-                        date: dateUtils.getNearWeek(),
+                        date: dateUtils.getNearMonth(),
                     },
                 },
                 refundFrom:{
@@ -243,7 +243,7 @@
             handleCurrentChange(val) {
                 this.pagination.page = val;
                 this.search()
-            },
+            }
         },
         mounted() {
             this.search();
@@ -266,12 +266,4 @@
         cursor: pointer;
         color: #409eff;
     }
-    /*.detail-info {*/
-        /*label {*/
-            /*color: #99a9bf;*/
-        /*}*/
-        /*.el-form-item {*/
-            /*margin-bottom: 5px;*/
-        /*}*/
-    /*}*/
 </style>

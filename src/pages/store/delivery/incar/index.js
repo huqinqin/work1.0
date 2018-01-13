@@ -5,7 +5,7 @@ import Router from 'vue-router'
 import incar from './components/incar'
 
 Vue.config.productionTip = false;
-Vue.use(Router)
+Vue.use(Router);
 Lib(App, new Router({
     routes: [
         {

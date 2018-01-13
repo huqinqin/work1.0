@@ -106,7 +106,7 @@
             "sort":0,
             "status":1,
             "type":2,
-            "url":"/store/stock"
+            "url":"/store/delivery/stock"
           },
           {
             "apptype":1,
@@ -124,7 +124,7 @@
             "sort":0,
             "status":1,
             "type":2,
-            "url":"/store/warehousing"
+            "url":"/store/delivery/warehousing"
           },
           {
             "apptype":1,
@@ -142,7 +142,7 @@
             "sort":0,
             "status":1,
             "type":2,
-            "url":"/store/delivery"
+            "url":"/store/delivery/incar"
           }
         ],
         "sort":1010,

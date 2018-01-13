@@ -1,14 +1,12 @@
 <template>
-    <div>
-        <el-select v-model="printer" placeholder="请选择打印机">
-            <el-option
-                v-for="item in printerList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-            </el-option>
-        </el-select>
-    </div>
+    <el-select v-model="printer" placeholder="请选择打印机">
+        <el-option
+            v-for="item in printerList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+        </el-option>
+    </el-select>
 </template>
 
 <script>

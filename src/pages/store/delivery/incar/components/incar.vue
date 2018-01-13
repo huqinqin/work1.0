@@ -1,29 +1,23 @@
 <template>
     <div>
-        <el-steps :active="2" simple style="margin-bottom: 20px">
-            <el-step title="仓库备货" icon="el-icon-tickets" ></el-step>
-            <el-step title="配送入库" icon="el-icon-menu" ></el-step>
-            <el-step title="配送发货" icon="el-icon-printer" ></el-step>
-        </el-steps>
-
+        <delivery-process :active="2" />
         <el-tabs v-model="params.status" type="card" @tab-click="tabHandleClick">
-            <el-tab-pane label="未发货配送单" name="0"></el-tab-pane>
+            <el-tab-pane label="未发货配送单" name="0" />
             <el-tab-pane label="历史发货批次" name="1">
-                <lts-search-form @get-from="getParameter" :form-fileds="formFileds" :form-inlines="params"></lts-search-form>
+                <lts-search-form @get-from="getParameter" :form-fileds="formFileds" :form-inlines="params" />
                 <el-checkbox-group v-model="selectedBatchList" size="mini" style="margin-bottom: 10px">
-                    <el-checkbox border v-for="batch in batchList" :key="batch" :label="'批次号' + batch"></el-checkbox>
+                    <el-checkbox border v-for="batch in batchList" :key="batch" :label="'批次号' + batch" />
                 </el-checkbox-group>
             </el-tab-pane>
         </el-tabs>
-
         <lts-printer />
         <div class="batch-info-list" v-for="(batchLine, index) in datalist" :key="index">
             <div class="batch-hd" v-if="batchLine.batch_no != 0"><i class="el-icon-document"></i> 发货单概览 批次号:{{batchLine.batch_no}}</div>
             <el-table :data="batchLine.list" v-loading="loading" style="width: 100%" @selection-change="handleSelectionChange">
                 <el-table-column type="selection"/>
                 <el-table-column type="index" label="#"/>
-                <el-table-column prop="spot_name" label="工程商" width="400" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="spot_addr" label="地址" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="spot_name" label="工程商" width="400" show-overflow-tooltip />
+                <el-table-column prop="spot_addr" label="地址" show-overflow-tooltip />
                 <el-table-column label="操作" width="160" align="center">
                     <template slot-scope="spot">
                         <el-button round size="mini" type="primary" @click="showDetail(spot.row)">查看</el-button>
@@ -33,9 +27,9 @@
             </el-table>
         </div>
         <el-alert v-if="datalist.length == 0" style="margin-top: 20px"
-             center
-            title="暂无数据"
-            type="info">
+                  center
+                  title="暂无数据"
+                  type="info">
         </el-alert>
 
         <el-dialog
@@ -45,13 +39,13 @@
             <div style="margin-top: -20px">
                 <el-form label-position="left" inline class="detail-info">
                     <el-form-item label="工程商">
-                        <span>{{detail.spot_name}}</span>
+                        {{detail.spot_name}}
                     </el-form-item>
                     <el-form-item label="联系人">
-                        <span>{{detail.owner_name}}</span>
+                        {{detail.owner_name}}
                     </el-form-item>
                     <el-form-item label="联系电话">
-                        <span>{{detail.owner_mobile}}</span>
+                        {{detail.owner_mobile}}
                     </el-form-item>
                 </el-form>
                 <el-table :data="detail.orders" size="small" show-summary :summary-method="getSummaries" style="width: 100%"
@@ -104,14 +98,12 @@
 <script>
     import {dateUtils} from 'ltsutil'
     import {ltsSearchForm, ltsPrinter} from 'ui'
+    import deliveryProcess from '../../components/delivery-process'
     import deliveryService from '@/services/DeliveryService'
-    import DateUtils from "../../../../utils/DateUtils";
-    import LtsPrinter from "../../../../common/components/lts-printer";
 
     export default {
         components: {
-            LtsPrinter,
-            ltsSearchForm
+            ltsSearchForm, ltsPrinter, deliveryProcess
         },
         data() {
             return {
@@ -127,7 +119,7 @@
                 stockOutNum: 0,
                 showStockOutEdit: false,
                 params: {
-                    incar_time: dateUtils.format(new Date(), DateUtils.FORMAT.CN.YMD),
+                    incar_time: dateUtils.format(new Date(), dateUtils.FORMAT.CN.YMD),
                     spot_code: '',
                     status: 0,
                     batch_no_arr: ''
@@ -271,7 +263,6 @@
                                 break;
                             }
                         }
-                        console.log(list)
                         this.datalist = list;
                     }
                 }, (err) => {

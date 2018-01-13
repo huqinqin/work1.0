@@ -2,7 +2,7 @@
     <div>
         <el-dialog
             title="退款申请"
-            :visible.sync="dialogVisible"
+            :visible.sync="show"
             width="800px">
             <div style="margin-top: -20px">
                 <el-form label-position="left" size="small" label-width="100px" class="detail-info">
@@ -35,8 +35,12 @@
                     </el-form-item>
                     <el-form-item label="退款原因">
                         <el-select v-model="refundFrom.reason" placeholder="请选择退款原因">
-                            <el-option label="货有破损" value="111"></el-option>
-                            <el-option label="其他" value="222"></el-option>
+                            <el-option
+                                v-for="item in reasonList"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="退货退款数量">
@@ -52,7 +56,7 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="onSubmitRefund">提交退货退款</el-button>
-                        <el-button @click="dialogVisible = false">取消</el-button>
+                        <el-button @click="show = false">取消</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -68,31 +72,54 @@
     import {dateUtils} from 'ltsutil'
     import reverseService from '@/services/ReverseService'
     export default {
-        props: ['dialogVisible', 'orderItem', 'installer', 'item'],
+        props: {
+            visible: Boolean,
+            orderItem: Object,
+            installer: Object,
+            item: Object,
+        },
         data() {
             return {
-                dialogVisible: false,
+                show: this.visible,
                 refundFrom:{
                     reason: '',
                     num: 1,
                     refund: 0,
                     remark: ''
                 },
+                reasonList: [
+                    {
+                        value: 1,
+                        label: '货有破损'
+                    },
+                    {
+                        value: 2,
+                        label: '其他'
+                    }
+                ]
             }
         },
         methods: {
-            showorderItemItem(orderItem){
-                this.dialogVisible = true;
-                this.orderItem = orderItem;
-            },
             onSubmitRefund(){
                 this.$ltsMessage.show({type: 'success', message: "退货退款申请成功"});
+            }
+        },
+        watch: {
+            visible: {
+                handler: function () {
+                    if (this.visible) {
+                        this.show = this.visible;
+                    }
+                }
             },
-        },
-        mounted() {
-        },
-        created() {
-        },
+            show: {
+                handler: function () {
+                    if (!this.show) {
+                        this.$emit('update:visible', this.show);
+                    }
+                }
+            }
+        }
     }
 </script>
 <style lang="less">
