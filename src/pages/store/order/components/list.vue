@@ -6,8 +6,12 @@
                 <template slot-scope="scope">
                     <el-table :data="scope.row.wholesale_order_items" style="width: 100%">
                         <el-table-column type="index" label="#"/>
-                        <el-table-column prop="tid" label="子订单编号" align="center" width="120"/>
-                        <el-table-column prop="wholesale_item_d_o.item_name" label="商品" header-align="center" align="left" :show-overflow-tooltip="true" />
+                        <el-table-column label="商品" header-align="center" align="left" :show-overflow-tooltip="true" >
+                            <template slot-scope="subscope">
+                                <img :src="subscope.row.wholesale_item_d_o.image_value + '@100w_2e'" class="item" />
+                                {{subscope.row.wholesale_item_d_o.item_name}}
+                            </template>
+                        </el-table-column>
                         <el-table-column prop="wholesale_item_d_o.spec" label="规格" align="center" width="100" />
                         <el-table-column prop="num" label="数量" align="center" width="80">
                             <template slot-scope="subscope">{{subscope.row.num}}{{subscope.row.unit}}</template>
@@ -30,7 +34,7 @@
                                         操作<i class="el-icon-arrow-down el-icon--right"></i>
                                     </span>
                                     <el-dropdown-menu slot="dropdown">
-                                        <el-dropdown-item command="refund" :data="subscope.row">退货退款</el-dropdown-item>
+                                        <el-dropdown-item command="refund" :data="subscope.row" v-if="isCanRefund(subscope.row)">退货退款</el-dropdown-item>
                                     </el-dropdown-menu>
                                 </el-dropdown>
                             </template>
@@ -80,8 +84,8 @@
                         </span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item><router-link :to="'/detail/' + scope.row.tid">详情</router-link></el-dropdown-item>
-                            <el-dropdown-item command="accept" v-if="scope.row.pay_type == 3 && scope.row.status == 0">受理</el-dropdown-item>
-                            <el-dropdown-item command="reject" v-if="scope.row.pay_type == 3 && scope.row.status == 0">拒绝</el-dropdown-item>
+                            <el-dropdown-item command="accept" v-if="isCanDeal(scope.row)">受理</el-dropdown-item>
+                            <el-dropdown-item command="reject" v-if="isCanDeal(scope.row)">拒绝</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </template>
@@ -164,12 +168,6 @@
                         date: dateUtils.getNearMonth(),
                     },
                 },
-                refundFrom:{
-                    reason: '',
-                    num: 1,
-                    refund: 0,
-                    remark: ''
-                },
                 pagination: {
                     page: 1,
                     pagesize: 10,
@@ -212,8 +210,16 @@
             onSubmitRefund(){
                 this.$ltsMessage.show({type: 'success', message: "退货退款申请成功"});
             },
+            isCanRefund(orderItem){
+                return (orderItem.status == 2 || orderItem.status == 7)
+                    && (orderItem.hd_status == 5 || orderItem.hd_status == 10)
+                    && ((orderItem.refund_status & 4) == 0 && (orderItem.refund_status & 256) == 0);
+            },
+            isCanDeal(order){
+                return order.pay_type == 3 && order.status == 0;
+            },
             search() {
-                orderService.getList(this.params, this.pagination.page, this.pagination.page_size).then((resp) => {
+                orderService.getList(this.params, this.pagination.page, this.pagination.page_size, 'cdate desc').then((resp) => {
                     this.loading = false;
                     this.datalist = resp.datalist;
                     this.pagination.total = resp.total;
@@ -262,6 +268,10 @@
     }
 </script>
 <style lang="less">
+    .item {
+        width: 50px;
+        height: 50px;
+    }
     .el-dropdown-link {
         cursor: pointer;
         color: #409eff;
