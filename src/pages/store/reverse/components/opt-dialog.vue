@@ -118,9 +118,9 @@
                     return;
                 }
                 reverseService.operate(this.reverse.id, this.reverse.user_id, optType, this.form.remark, this.form.deal_remark).then((resp)=>{
-                    this.$ltsMessage.show({type: 'success', message: this.optBtnName() + "操作成功"});
+                    this.$ltsMessage.show({type: 'success', message: this.optBtnName + "操作成功"});
                 },(error)=>{
-                    this.$ltsMessage.show({type: 'error', message: this.optBtnName() + '操作失败:' + error.error_message});
+                    this.$ltsMessage.show({type: 'error', message: this.optBtnName + '操作失败:' + error.error_message});
                 });
             }
         },
