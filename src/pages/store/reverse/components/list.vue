@@ -34,7 +34,7 @@
                 </template>
             </el-table-column>
             <el-table-column type="index" label="#"/>
-            <el-table-column prop="oid" label="订单编号" align="center" width="120"></el-table-column>
+            <el-table-column prop="tid" label="订单编号" align="center" width="120"></el-table-column>
             <el-table-column prop="item_remark.item_name" label="商品" header-align="center" align="left"
                              :show-overflow-tooltip="true"></el-table-column>
             <el-table-column prop="user_name" label="工程商" header-align="center" align="left" width="200"
@@ -116,7 +116,7 @@
                 loading: true,
                 datalist: [],
                 params: {
-                    oid: '',
+                    tid: '',
                     item_name: '',
                     status: '',
                     start_time: '',
@@ -129,7 +129,7 @@
                                 tid: {
                                     label: '订单号',
                                     type: 'input',
-                                    bindValue: 'oid',
+                                    bindValue: 'tid',
                                     bindPlaceholder: '订单号'
                                 },
                                 item_name: {
@@ -163,7 +163,7 @@
                     ],
                     // 若需要把form参数供其他组件使用。需要把这些参数传给使用的组件
                     formInline: {
-                        oid: '',
+                        tid: '',
                         item_name: '',
                         status: '',
                         date: dateUtils.getNearMonth(),
@@ -180,7 +180,7 @@
         },
         methods: {
             search() {
-                reverseService.getList(this.params.oid, this.params.status, this.params.start_time, this.params.end_time,
+                reverseService.getList(this.params.tid, this.params.status, this.params.start_time, this.params.end_time,
                     this.pagination.page, this.pagination.pageSize, this.params.order_by).then((resp) => {
                     this.loading = false;
                     this.datalist = resp.datalist;
@@ -200,7 +200,7 @@
                     this.params.start_time = this.form.formInline.date[0];
                     this.params.end_time = this.form.formInline.date[1];
                 }
-                this.params.oid = this.form.formInline.oid;
+                this.params.tid = this.form.formInline.tid;
                 this.params.item_name = this.form.formInline.item_name;
                 this.params.status = this.form.formInline.status;
             },

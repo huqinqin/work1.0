@@ -1,14 +1,18 @@
 <template>
     <div>
-        <lts-search-form @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-form>
+        <lts-search-form @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline" />
         <el-table :data="datalist" v-loading="loading" default-expand-all style="width: 100%">
             <el-table-column type="expand">
                 <template slot-scope="scope">
                     <el-table :data="scope.row.wholesale_order_items" style="width: 100%">
                         <el-table-column type="index" label="#"/>
-                        <el-table-column prop="tid" label="订单号" align="center" width="120"/>
-                        <el-table-column prop="wholesale_item_d_o.item_name" label="商品" header-align="center" align="left" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column prop="wholesale_item_d_o.spec" label="规格" align="center" width="100"></el-table-column>
+                        <el-table-column label="商品" header-align="center" align="left" :show-overflow-tooltip="true" >
+                            <template slot-scope="subscope">
+                                <img :src="subscope.row.wholesale_item_d_o.image_value + '@100w_2e'" class="item" />
+                                {{subscope.row.wholesale_item_d_o.item_name}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="wholesale_item_d_o.spec" label="规格" align="center" width="100" />
                         <el-table-column prop="num" label="数量" align="center" width="80">
                             <template slot-scope="subscope">{{subscope.row.num}}{{subscope.row.unit}}</template>
                         </el-table-column>
@@ -21,8 +25,8 @@
                         <el-table-column label="实付" align="center" width="80">
                             <template slot-scope="subscope">{{subscope.row.pay_real | money2str}}</template>
                         </el-table-column>
-                        <el-table-column prop="hd_status_title" label="配送状态" align="center" width="100"></el-table-column>
-                        <el-table-column prop="status_title" label="状态" align="center" width="100"></el-table-column>
+                        <el-table-column prop="hd_status_title" label="配送状态" align="center" width="100" />
+                        <el-table-column prop="status_title" label="状态" align="center" width="100" />
                         <el-table-column label="操作" align="center" width="80">
                             <template slot-scope="subscope">
                                 <el-dropdown @command="handleMenuItemClick">
@@ -30,7 +34,7 @@
                                         操作<i class="el-icon-arrow-down el-icon--right"></i>
                                     </span>
                                     <el-dropdown-menu slot="dropdown">
-                                        <el-dropdown-item command="refund" :data="subscope.row">退货退款</el-dropdown-item>
+                                        <el-dropdown-item command="refund" :data="subscope.row" v-if="isCanRefund(subscope.row)">退货退款</el-dropdown-item>
                                     </el-dropdown-menu>
                                 </el-dropdown>
                             </template>
@@ -39,10 +43,10 @@
                 </template>
             </el-table-column>
             <el-table-column type="index" label="#"/>
-            <el-table-column prop="tid" label="订单编号" align="center" width="120"></el-table-column>
-            <el-table-column prop="user_name" label="工程商" header-align="center" align="left" width="200" :show-overflow-tooltip="true"></el-table-column>
-            <el-table-column prop="receiver_mobile" label="手机" header-align="center" align="left" width="110"></el-table-column>
-            <el-table-column prop="user_addr" label="地址" header-align="center" align="left" :show-overflow-tooltip="true"></el-table-column>
+            <el-table-column prop="tid" label="订单编号" align="center" width="120" />
+            <el-table-column prop="user_name" label="工程商" header-align="center" align="left" width="200" :show-overflow-tooltip="true" />
+            <el-table-column prop="receiver_mobile" label="手机" header-align="center" align="left" width="110" />
+            <el-table-column prop="user_addr" label="地址" header-align="center" align="left" :show-overflow-tooltip="true" />
             <el-table-column label="应付" align="center" width="80">
                 <template slot-scope="scope">{{scope.row.pay | money2str}}</template>
             </el-table-column>
@@ -59,8 +63,8 @@
                     </el-tooltip>
                 </template>
             </el-table-column>
-            <el-table-column prop="pay_info.pay_type_title" label="付款类型" align="center" width="100"></el-table-column>
-            <el-table-column prop="pay_info.pay_status_title" label="付款状态" align="center" width="100"></el-table-column>
+            <el-table-column prop="pay_info.pay_type_title" label="付款类型" align="center" width="100" />
+            <el-table-column prop="pay_info.pay_status_title" label="付款状态" align="center" width="100" />
             <el-table-column prop="status_title" label="状态" align="center" width="100">
                 <template slot-scope="scope">
                     <el-tag type="success" v-if="scope.row.status == 7 || scope.row.status == 9">
@@ -80,8 +84,8 @@
                         </span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item><router-link :to="'/detail/' + scope.row.tid">详情</router-link></el-dropdown-item>
-                            <el-dropdown-item command="accept" v-if="scope.row.pay_type == 3 && scope.row.status == 0">受理</el-dropdown-item>
-                            <el-dropdown-item command="reject" v-if="scope.row.pay_type == 3 && scope.row.status == 0">拒绝</el-dropdown-item>
+                            <el-dropdown-item command="accept" v-if="isCanDeal(scope.row)">受理</el-dropdown-item>
+                            <el-dropdown-item command="reject" v-if="isCanDeal(scope.row)">拒绝</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </template>
@@ -99,82 +103,26 @@
             :total="pagination.total">
         </el-pagination>
 
-        <el-dialog
-            title="退款申请"
-            :visible.sync="dialogVisible"
-            width="800px">
-            <div style="margin-top: -20px">
-                <el-form label-position="left" size="small" label-width="100px" class="detail-info">
-                    <el-form-item label="主订单号">
-                        {{refundOrder.parent_id}}
-                    </el-form-item>
-                    <el-form-item label="子订单号">
-                        {{refundOrder.tid}}
-                    </el-form-item>
-                    <el-form-item label="工程商">
-                        {{refundOrder.customer.name}}
-                    </el-form-item>
-                    <el-form-item label="联系电话">
-                        {{refundOrder.customer.mobile}}
-                    </el-form-item>
-                    <el-form-item label="商品名称">
-                        {{refundOrder.wholesale_item_d_o.item_name}}
-                    </el-form-item>
-                    <el-form-item label="规格">
-                        {{refundOrder.wholesale_item_d_o.spec}}
-                    </el-form-item>
-                    <el-form-item label="单价">
-                        {{refundOrder.wholesale_item_d_o.price | money2str}}
-                    </el-form-item>
-                    <el-form-item label="数量">
-                        {{refundOrder.num}}{{refundOrder.wholesale_item_d_o.unit}}
-                    </el-form-item>
-                    <el-form-item label="小计">
-                        {{refundOrder.pay_real | money2str}}
-                    </el-form-item>
-                    <el-form-item label="退款原因">
-                        <el-select v-model="refundFrom.reason" placeholder="请选择退款原因">
-                            <el-option label="货有破损" value="111"></el-option>
-                            <el-option label="其他" value="222"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="退货退款数量">
-                        <el-input-number v-model="refundFrom.num" size="small" controls-position="right" :min="1" :max="refundFrom.num"></el-input-number>
-                    </el-form-item>
-                    <el-form-item label="退货退款金额">
-                        <el-input v-model="refundFrom.refund" style="width: 150px">
-                            <template slot="append">$</template>
-                        </el-input>
-                    </el-form-item>
-                    <el-form-item label="备注">
-                        <el-input type="textarea" v-model="refundFrom.remark"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="onSubmitRefund">提交退货退款</el-button>
-                        <el-button @click="dialogVisible = false">取消</el-button>
-                    </el-form-item>
-                </el-form>
-            </div>
-        </el-dialog>
+        <reverse-apply :visible.sync="dialogVisible" v-bind:order-item="refundOrder" v-bind:installer="refundInstaller" v-bind:item="refundItem" />
     </div>
 </template>
 <script>
     import {dateUtils} from 'ltsutil'
     import {ltsSearchForm} from 'ui'
+    import reverseApply from './reverse-apply'
     import orderService from '@/services/OrderService'
     export default {
         components: {
-            ltsSearchForm
+            ltsSearchForm, reverseApply
         },
         data() {
             return {
                 loading: true,
                 dialogVisible: false,
                 datalist: [],
-                refundOrder: {
-                    customer:{},
-                    wholesale_item_d_o:{}
-                },
+                refundOrder: {},
+                refundInstaller:{},
+                refundItem:{},
                 params: {
                     tid: '',
                     status: '',
@@ -217,14 +165,8 @@
                     formInline: {
                         tid: '',
                         status: '',
-                        date: dateUtils.getNearWeek(),
+                        date: dateUtils.getNearMonth(),
                     },
-                },
-                refundFrom:{
-                    reason: '',
-                    num: 1,
-                    refund: 0,
-                    remark: ''
                 },
                 pagination: {
                     page: 1,
@@ -262,12 +204,22 @@
             showRefundOrderItem(orderItem){
                 this.dialogVisible = true;
                 this.refundOrder = orderItem;
+                this.refundInstaller = orderItem.customer;
+                this.refundItem = orderItem.wholesale_item_d_o;
             },
             onSubmitRefund(){
                 this.$ltsMessage.show({type: 'success', message: "退货退款申请成功"});
             },
+            isCanRefund(orderItem){
+                return (orderItem.status == 2 || orderItem.status == 7)
+                    && (orderItem.hd_status == 5 || orderItem.hd_status == 10)
+                    && ((orderItem.refund_status & 4) == 0 && (orderItem.refund_status & 256) == 0);
+            },
+            isCanDeal(order){
+                return order.pay_type == 3 && order.status == 0;
+            },
             search() {
-                orderService.getList(this.params, this.pagination.page, this.pagination.page_size).then((resp) => {
+                orderService.getList(this.params, this.pagination.page, this.pagination.page_size, 'cdate desc').then((resp) => {
                     this.loading = false;
                     this.datalist = resp.datalist;
                     this.pagination.total = resp.total;
@@ -297,7 +249,7 @@
             handleCurrentChange(val) {
                 this.pagination.page = val;
                 this.search()
-            },
+            }
         },
         mounted() {
             this.search();
@@ -316,16 +268,12 @@
     }
 </script>
 <style lang="less">
+    .item {
+        width: 50px;
+        height: 50px;
+    }
     .el-dropdown-link {
         cursor: pointer;
         color: #409eff;
-    }
-    .detail-info {
-        label {
-            color: #99a9bf;
-        }
-        .el-form-item {
-            margin-bottom: 5px;
-        }
     }
 </style>

@@ -8,6 +8,11 @@ export default {
     mixParam(param = {}, isAddRandom = true) {
         return new Promise(resolve => {
                 if (isAddRandom) param.r = new Date().getTime();
+                for(let i in param) {
+                    if (param[i] === '') {
+                        delete param[i];
+                    }
+                }
                 resolve(param);
             }
         )
