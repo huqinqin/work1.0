@@ -97,7 +97,7 @@
           </div>
           <div class="cart-box">
             <lts-table
-                :t-api="cartItemTable.api"
+                :t-api="cardirectivesinsertedtItemTable.api"
                 :t-table="cartItemTable"
                 :t-pagination="cartItemTable.pagination"
                 :t-tabledata="cartItemList"
@@ -391,16 +391,20 @@
           checked_sku_prop[key] = prop.checked_prop;
           // 匹配库存
           prop_value[key] =  prop.checked_prop;
-          data.item_prop_value_maps.forEach((value,index,array)=>{
-              if(value.prop_name !== prop.prop_name){
-                  checked_sku_prop[value.prop_name] = value.checked_prop;
-                  this.equalsProp(checked_sku_prop,data.item_struct_props,'checkedSku');
-                  value.prop_values.forEach((val,key,array)=>{
-                      prop_value[value.prop_name] = val.value;
-                      val.can_checked = this.equalsProp(prop_value,data.item_struct_props);
-                  })
-              }
-          })
+          if(data.item_prop_value_maps.length > 1) {
+              data.item_prop_value_maps.forEach((value, index, array) => {
+                  if (value.prop_name !== prop.prop_name) {
+                      checked_sku_prop[value.prop_name] = value.checked_prop;
+                      this.equalsProp(checked_sku_prop, data.item_struct_props, 'checkedSku');
+                      value.prop_values.forEach((val, key, array) => {
+                          prop_value[value.prop_name] = val.value;
+                          val.can_checked = this.equalsProp(prop_value, data.item_struct_props);
+                      })
+                  }
+              })
+          }else{
+              this.equalsProp(prop_value, data.item_struct_props);
+          }
       },
       equalsProp(propObj,skuList,type){
           let Boolean = 0; // 0 false, 1 true;
