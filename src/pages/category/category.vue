@@ -170,14 +170,17 @@
               let parentId = this.editCategory && this.editCategory.id ? this.editCategory.id : 0;
               categoryService.addCategory(this.categoryName,parentId).then((data)=>{
                   this.showCategoryDialog = false;
+                  this.$ltsMessage.show({type:'success',message:"新增成功"});
                   this.getAllCategoryList();
+              },(msg)=>{
+                  this.$ltsMessage.show({type:'error',message:msg.error_message})
               });
           },
           // 获取类目列表
           getAllCategoryList(){
               let  category = categoryService.getAllCategoryList();
               category.then((data)=>{
-                  this.category = data.data
+                  this.category = data.datalist
               });
           },
 
@@ -185,9 +188,10 @@
           remove(event,node, data) {
               event.stopPropagation();
               categoryService.deleteCategory(data.id).then((data)=>{
-                  this.$ltsMessage.show({type:'success',mseeage:"删除成功"})
+                  this.$ltsMessage.show({type:'success',message:"删除成功"});
+                  this.getAllCategoryList();
               },(msg)=>{
-                  this.$ltsMessage.show({type:'error',mseeage:msg.error_message})
+                  this.$ltsMessage.show({type:'error',message:msg.error_message})
               })
           },
 
@@ -270,8 +274,10 @@
                 })
             });
             categoryService.addCategoryProps(this.editCategory.id, params).then((data)=>{
+                this.$ltsMessage.show({type:'success',message:"属性设置成功"});
                 this.getAllCategoryList();
-                this.centerDialogVisible = false;
+            },(msg)=>{
+                this.$ltsMessage.show({type:'error',message:msg.error_message})
             })
           },
 
@@ -302,7 +308,13 @@
           },
 
           updateCategoryName(){
-              categoryService.updateCategory(this.editCategory.id,this.categoryName);
+              categoryService.updateCategory(this.editCategory.id,this.categoryName).then((data)=>{
+                  this.$ltsMessage.show({type:'success',message:"修改成功"});
+                  this.getAllCategoryList();
+                  this.isShowUpdateCategory = false;
+              },(msg)=>{
+                  this.$ltsMessage.show({type:'error',message:msg.error_message})
+              });
           },
 
           renderContent(h, { node, data, store }) {
