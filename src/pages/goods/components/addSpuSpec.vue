@@ -167,7 +167,7 @@
 //        });
           },
 
-          chcekedProp(item, itemprop) {debugger;
+          chcekedProp(item, itemprop) {
               let count = 0
               let selectProps = []
               let subSelectProps = []

@@ -60,6 +60,7 @@
                                   <label class="el-upload-list__item-status-label removeprop" @click="removeProp(spuAttrList,index)" v-if="value.isDelete"><i class="el-icon-close"  ></i></label>
                               </el-form-item>
                               <el-form-item>
+
                                   <el-tag v-for="(val,key) in value.prop_values" :key="val.value" :closable="val.isCanEdit"  @close="deleteTag(value.prop_values,key)">
                                       <el-checkbox name="type" @change="chcekedProp(value,val)" v-model="val.isSelected">{{val.value}}</el-checkbox>
                                   </el-tag>
@@ -178,8 +179,7 @@
           },
           // 获取类目列表
           getAllCategoryList(){
-              let  category = categoryService.getAllCategoryList();
-              category.then((data)=>{
+              categoryService.getAllCategoryList().then((data)=>{
                   this.category = data.datalist
               });
           },
@@ -287,6 +287,7 @@
             this.checkedCategory = data;
             categoryService.getCategoryProps(this.editCategory.id,false).then((data)=>{
                 data.datalist.forEach(function(value,index,array){
+                    value.inputVisible = false;
                     value.prop_values.forEach(function(prop,key,array){
                         let Obj = {
                             isCanEdit : true,
