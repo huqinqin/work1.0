@@ -208,7 +208,7 @@
                         order = data.$vnode.data.attrs.data;
                         orderService.accept(order.tid).then((resp)=>{
                             this.$ltsMessage.show({type: 'success', message: "受理成功"});
-                        }, (err)=>{
+                        }, (err) => {
                             this.$ltsMessage.show({type: 'success', message: "受理失败：" + err.error_message});
                         });
                         break;

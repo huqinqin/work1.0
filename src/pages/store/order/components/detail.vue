@@ -134,7 +134,7 @@
             get () {
                 orderService.get(this.order.tid).then((resp) => {
                     this.order = resp.data;
-                }, (err) => {
+                },(err) => {
 
                 });
             }
