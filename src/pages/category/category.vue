@@ -183,14 +183,23 @@
 
           // 删除一条类目
           remove(event,node, data) {
-             event.stopPropagation();
+            event.stopPropagation();
             // const parent = node.parent;
             // const second_category = parent.data.second_category || parent.data;
             // const index = second_category.findIndex(d => d.id === data.id);
             // second_category.splice(index, 1);
-            this.$ltsMessageBox.show(this,'删除','提示');
+
+            this.$ltsMessageBox.show(this,{
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+                center: true,
+                action:'你确定要删除这一条吗',
+                title:'提示',
+                successMessage:'删除成功',
+                cancelMessage:'取消删除'});
             this.$on('confirm',function () {
-              categoryService.removeCategoryItem()
+                categoryService.removeCategoryItem()
             })
 
           },
