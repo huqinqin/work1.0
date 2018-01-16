@@ -107,7 +107,7 @@
     },
     created(){
       categoryService.getAllCategoryList().then((data) => {
-          data.data.forEach(function(value,index,array){
+          data.datalist.forEach(function(value,index,array){
               value.value = value.id;
               value.label = value.name;
               if(value.children.length > 0){
@@ -128,7 +128,7 @@
                   value.children = "";
               }
           });
-          this.searchform.cascader.options = data.data;
+          this.searchform.cascader.options = data.datalist;
       })
     },
 

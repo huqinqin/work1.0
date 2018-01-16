@@ -5,127 +5,140 @@
           <el-step title="步骤2" description="选择或添加商品模板"></el-step>
           <el-step title="步骤3" description="完善商品信息"></el-step>
       </el-steps>
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="商品类目" prop="goodsName">
-              <el-input v-model="ruleForm.goodsName"></el-input>
-          </el-form-item>
-          <el-form-item label="品牌" prop="goodsName">
-              <el-input v-model="spuDO.brand"></el-input>
-          </el-form-item>
-          <el-form-item label="产地" prop="goodsName">
-              <el-input v-model="ruleForm.goodsName"></el-input>
-          </el-form-item>
-          <el-form-item label="销售单位" prop="goodsName">
-              <el-input v-model="spuDO.unit"></el-input>
-          </el-form-item>
+      <el-collapse v-model="activeNames" @change="handleChange" accordion>
+          <el-collapse-item title="商品信息（不可更改）" name="1">
+              <el-form :inline="true"  label-width="100px" class="demo-ruleForm">
+                  <el-form-item label="商品类目" prop="goodsName">
+                      <el-input v-model="ruleForm.goodsName" disabled></el-input>
+                  </el-form-item>
+                  <el-form-item label="品牌" prop="goodsName">
+                      <el-input v-model="spuDO.brand" disabled></el-input>
+                  </el-form-item>
+                  <el-form-item label="产地" prop="goodsName">
+                      <el-input v-model="ruleForm.goodsName" disabled></el-input>
+                  </el-form-item>
+                  <el-form-item label="销售单位" prop="goodsName">
+                      <el-input v-model="spuDO.unit" disabled></el-input>
+                  </el-form-item>
+              </el-form>
+          </el-collapse-item>
+          <el-collapse-item title="商品信息（自定义）" name="2">
+              <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                  <el-form-item label="名称" prop="goodsName">
+                      <el-input v-model="ruleForm.goodsName"></el-input>
+                  </el-form-item>
+                  <el-form-item label="销售标题" prop="goodsName">
+                      <el-input v-model="ruleForm.goodsName"></el-input>
+                  </el-form-item>
+                  <el-form-item label="商品标签" prop="goodsName">
+                      <el-input v-model="ruleForm.goodsName"></el-input>
+                  </el-form-item>
+                  <el-form-item label="商品排序" prop="goodsName">
+                      <el-input v-model="ruleForm.goodsName"></el-input>
+                  </el-form-item>
+                  <el-form-item label="商品状态">
+                      <el-select v-model="ruleForm.region" placeholder="请选择商品状态">
+                          <el-option label="草稿" value="shanghai"></el-option>
+                          <el-option label="失效" value="beijing"></el-option>
+                      </el-select>
+                  </el-form-item>
+              </el-form>
+              <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                  <el-form-item label="商品主图" prop="goodsName">
+                      <el-upload
+                          class="upload-demo"
+                          drag
+                          action="/cgi/upload/file/image"
+                          :file-list="fileList"
+                          multiple>
+                          <i class="el-icon-upload"></i>
+                          <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
+                          <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb,上传1-5张</div>
+                      </el-upload>
+                  </el-form-item>
+              </el-form>
+          </el-collapse-item>
+          <el-collapse-item title="商品SKU设置" name="3">
+              <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
+                  <el-form-item >
+                      <el-table
+                          :data="spuDO.child_spu_d_t_o_list"
+                          style="width: 100%">
+                          <el-table-column
+                              prop="spu_name"
+                              label="SKU名称"
+                              width="180">
+                          </el-table-column>
+                          <el-table-column
+                              prop="sinr"
+                              label="SKU编码"
+                              width="180">
+                          </el-table-column>
+                          <el-table-column
+                              label="SKU属性"
+                              width="380">
+                              <template slot-scope="scope">
+                                <span class="spec" v-for="(value,index) in scope.row.spu_prop_d_o_list" :key="value.id">
+                                    <el-tag type="success">{{value.name}}:</el-tag>{{value.prop_value}}
+                                </span>
+                              </template>
+                          </el-table-column>
+                          <el-table-column
+                              label="SKU成本价">
+                              <template slot-scope="scope">
+                                  <el-input
+                                      placeholder="请输入库存数量"
+                                      v-model="scope.row.storage"
+                                      clearable>
+                                  </el-input>
+                              </template>
+                          </el-table-column>
+                          <el-table-column
+                              label="SKU销售价">
+                              <template slot-scope="scope">
+                                  <el-input
+                                      placeholder="请输入价格"
+                                      v-model="scope.row.price"
+                                      clearable>
+                                  </el-input>
+                              </template>
+                          </el-table-column>
+                      </el-table>
+                  </el-form-item>
+              </el-form>
+          </el-collapse-item>
+          <el-collapse-item title="商品详情设置" name="4">
+              <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
+                  <lts-editor></lts-editor>
+              </el-form>
+          </el-collapse-item>
+      </el-collapse>
+      <el-button type="primary" @click="submitForm('ruleForm')">创建</el-button>
+      <!--<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">-->
 
-
-          <el-form-item label="名称" prop="goodsName">
-            <el-input v-model="ruleForm.goodsName"></el-input>
-          </el-form-item>
-          <el-form-item label="销售标题" prop="goodsName">
-              <el-input v-model="ruleForm.goodsName"></el-input>
-          </el-form-item>
-          <el-form-item label="商品标签" prop="goodsName">
-              <el-input v-model="ruleForm.goodsName"></el-input>
-          </el-form-item>
-          <el-form-item label="商品排序" prop="goodsName">
-              <el-input v-model="ruleForm.goodsName"></el-input>
-          </el-form-item>
-          <el-form-item label="商品主图" prop="goodsName">
-              <el-upload
-                  class="upload-demo"
-                  drag
-                  action="https://jsonplaceholder.typicode.com/posts/"
-                  multiple>
-                  <i class="el-icon-upload"></i>
-                  <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
-                  <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb,上传1-5张</div>
-              </el-upload>
-          </el-form-item>
-          <el-form-item >
-        <el-table
-          :data="spuDO.child_spu_d_t_o_list"
-          style="width: 100%">
-          <el-table-column
-            prop="spu_name"
-            label="SKU名称"
-            width="180">
-          </el-table-column>
-          <el-table-column
-            prop="sinr"
-            label="SKU编码"
-            width="180">
-          </el-table-column>
-          <el-table-column
-            label="SKU属性"
-            width="380">
-            <template slot-scope="scope">
-                <span class="spec" v-for="(value,index) in scope.row.spu_prop_d_o_list" :key="value.id">
-                    <el-tag type="success">{{value.name}}:</el-tag>{{value.prop_value}}
-                </span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="SKU成本价">
-            <template slot-scope="scope">
-              <el-input
-                placeholder="请输入库存数量"
-                v-model="scope.row.storage"
-                clearable>
-              </el-input>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="SKU销售价">
-            <template slot-scope="scope">
-              <el-input
-                placeholder="请输入价格"
-                v-model="scope.row.price"
-                clearable>
-              </el-input>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-form-item>
-          <el-form-item >
-          <el-form  label-width="12%" :inline="true" class="propsBox">
-            <el-form-item style="width:31%"  v-for="(value,index) in spuDO.spuPropDOList" :key="value.id" :label="value.name" >
-                <el-select
-                    v-model="value.checkedProp"
-                    multiple
-                    filterable
-                    allow-create
-                    default-first-option
-                    placeholder="请选择属性值">
-                    <el-option
-                        v-for="item in value.propValues"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-          </el-form>
-          <el-form-item label="商品详情" prop="goodsName">
-              <el-input v-model="ruleForm.goodsName"></el-input>
-          </el-form-item>
-          </el-form-item>
-               <el-form-item>
-           <el-button type="primary" @click="submitForm('ruleForm')">创建</el-button>
-      </el-form-item>
-    </el-form>
+          <!--</el-form-item>-->
+          <!--<el-form-item label="商品详情" prop="goodsName">-->
+              <!--<el-input v-model="ruleForm.goodsName"></el-input>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item>-->
+           <!--<el-button type="primary" @click="submitForm('ruleForm')">创建</el-button>-->
+          <!--</el-form-item>-->
+    <!--</el-form>-->
   </div>
 </template>
 <script>
   import spuService from '@/services/SpuService.js'
   import goodsService from '@/services/GoodsService.js'
+  import {ltsEditor} from 'ui'
   import ElForm from '../../../../node_modules/element-ui/packages/form/src/form.vue'
   export default {
-      components: {ElForm},
+      components: {
+          ElForm,ltsEditor
+      },
       name : 'addGoods',
       data () {
           return {
+              activeNames: ['1'],
               stepActive: 3,
               spuDO: {},
               ruleForm: {
@@ -144,9 +157,14 @@
                   ]
               },
               inputValue: '',
+              // 上传商品图片列表
+              fileList : [],
           }
       },
       methods:{
+          handleChange(){
+
+          },
           getSpudtoist () {
               spuService.getSpudtoist(this.$route.query.id).then((resp) => {
                   console.log(resp.data.spu_prop_d_o_list)
@@ -293,6 +311,5 @@
           width: 100%;
       }
   }
-
 
 </style>

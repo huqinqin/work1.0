@@ -298,6 +298,9 @@
                     })
                 })
                 this.spuAttrList = data.datalist;
+            },(msg)=>{
+                this.spuAttrList = [];
+                this.$ltsMessage.show({type:'error',message:msg.error_message})
             });
           },
 
