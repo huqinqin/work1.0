@@ -1,5 +1,6 @@
 <template>
     <div>
+        <el-button type="primary"><router-link to="/add">新增门店</router-link></el-button>
         <lts-table :t-api="api" :t-table="table" :t-pagination="pagination" @menuClick="handleMenuItemClick"></lts-table>
     </div>
 </template>
@@ -12,7 +13,7 @@
         data () {
             return {
                 api: {
-                    method: '/market/getChildrenByOpenCode',
+                    method: '/hq/store/get_store_list',
                     bizparams:{}
                 },
                 pagination: {
@@ -26,9 +27,12 @@
                     datalist: [],
                     tableDataForm: 'api', // json
                     tableField: {
-                        '门店名称': {'value': 'biz_name', 'type': 'text'},
-                        '联系人': {'value': 'contact', 'type': 'text'},
-                        '状态': {'value': 'status_cname', 'type': 'text'},
+                        '门店名称': {'value': 'shop_d_o.shop_name', 'type': 'text'},
+                        '地址': {'value': 'shop_d_o.address', 'type': 'text'},
+                        '联系人': {'value': 'shop_d_o.contact', 'type': 'text'},
+                        '联系号码': {'value': 'shop_d_o.contact_phone', 'type': 'text'},
+                        '手机': {'value': 'shop_d_o.contact_mobile', 'type': 'text'},
+                        '状态': {'value': 'biz_d_o.status_title', 'type': 'text'},
                         '操作': {
                             'value': '',
                             'type': 'menu',
