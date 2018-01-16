@@ -60,7 +60,7 @@
                                   <label class="el-upload-list__item-status-label removeprop" @click="removeProp(spuAttrList,index)" v-if="value.isDelete"><i class="el-icon-close"  ></i></label>
                               </el-form-item>
                               <el-form-item>
-                                  <el-tag v-for="(val,key) in value.propValues" :key="val.value" :closable="val.isCanEdit"  @close="deleteTag(value.propValues,key)">
+                                  <el-tag v-for="(val,key) in value.prop_values" :key="val.value" :closable="val.isCanEdit"  @close="deleteTag(value.prop_values,key)">
                                       <el-checkbox name="type" @change="chcekedProp(value,val)" v-model="val.isSelected">{{val.value}}</el-checkbox>
                                   </el-tag>
                                   <el-input
@@ -68,7 +68,7 @@
                                       v-if="value.inputVisible"
                                       v-model="inputValue"
                                       size="small"
-                                      @blur="handleInputConfirm(value,value.propValues)"
+                                      @blur="handleInputConfirm(value,value.prop_values)"
                                   >
                                   </el-input>
                                   <el-button  class="button-new-tag" v-else size="small" @click="showInput(value,'attr')">+ 添加</el-button>
@@ -153,7 +153,7 @@
                 "search" : false,// 自己加的
                 "name":this.specName,
                 "propValue":"",
-                "propValues":[],
+                "prop_values":[],
               }
             )
             this.specName = "";
@@ -183,6 +183,7 @@
 
           // 删除一条类目
           remove(event,node, data) {
+<<<<<<< HEAD
             event.stopPropagation();
             // const parent = node.parent;
             // const second_category = parent.data.second_category || parent.data;
@@ -202,7 +203,23 @@
                 categoryService.removeCategoryItem()
             })
 
+=======
+              event.stopPropagation();
+              categoryService.deleteCategory(data.id).then((data)=>{
+                  this.$ltsMessage.show({type:'success',mseeage:"删除成功"})
+              },(msg)=>{
+                  this.$ltsMessage.show({type:'error',mseeage:msg.error_message})
+              })
+>>>>>>> 3c4008b03e59061cfeab8ec134fe454700c4d904
           },
+
+//          deleteCategory(id){debugger;
+//              categoryService.deleteCategory(data.id).then((data)=>{
+//                  this.$ltsMessage.show({type:'success',mseeage:"删除成功"})
+//              },(msg)=>{
+//                  this.$ltsMessage.show({type:'error',mseeage:msg.error_message})
+//              })
+//          },
 
           deleteTag(proplist,key){
             proplist.splice(key,1);
@@ -256,8 +273,8 @@
             let self = this, params = [];
             this.spuAttrList.forEach(function(value,index,array){
                 value.propValue = "";
-                if(value && value.propValues){
-                    value.propValues.forEach(function(prop,key){
+                if(value && value.prop_values){
+                    value.prop_values.forEach(function(prop,key){
                         if(key == 0){
                             value.propValue = prop.value
                         }else{
@@ -267,7 +284,7 @@
                 }
                 params.push({
                     name : value.name,
-                    values : value.propValue,
+                    propValue : value.propValue,
                     type : 0,
                     sku : value.sku,
                     show : value.show,
@@ -284,9 +301,9 @@
             console.log(data);
             this.editCategory = data;
             this.checkedCategory = data;
-            categoryService.getCategoryProps(this.editCategory.id).then((data)=>{
+            categoryService.getCategoryProps(this.editCategory.id,false).then((data)=>{
                 data.datalist.forEach(function(value,index,array){
-                    value.propValues.forEach(function(prop,key,array){
+                    value.prop_values.forEach(function(prop,key,array){
                         let Obj = {
                             isCanEdit : true,
                             isSelected : true,

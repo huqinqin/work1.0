@@ -102,9 +102,9 @@
       cascAderHandleChange(){
 
       },
-      addSpuSpec(formName){debugger;
+      addSpuSpec(formName){
         this.$refs[formName].validate((valid) => {
-            if(valid){debugger;
+            if(valid){
                 let index = this.ruleForm.spuCategory.length - 1;
                 let category_id = this.ruleForm.spuCategory[index];
                 this.ruleForm.categoryId = category_id;

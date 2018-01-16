@@ -6,6 +6,12 @@ export default class OrderService extends BaseService{
         };
         return super.getRequest('/store/order/detail', param);
     }
+    static getList(param = {}, page = 1, page_size = 10, order_by = 'cdate desc'){
+        param.page = page;
+        param.page_size = page_size;
+        param.order_by = order_by;
+        return super.getRequest('/store/order/list', param);
+    }
     static accept(tid){
         let param = {
             tid : tid,
@@ -21,7 +27,7 @@ export default class OrderService extends BaseService{
     static createTrade(param){
       let params = {
         wholesale_trade_request : JSON.stringify(param)
-      }
+      };
       return super.getRequest('/wholesale/trade/create_trade',params)
     }
 }

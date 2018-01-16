@@ -1,4 +1,20 @@
 export default {
+    FORMAT:{
+        CN: {
+            YMDHMS :'yyyy-MM-dd hh:mm:ss',
+            YMD :'yyyy-MM-dd hh:mm:ss'
+        },
+        EN: {
+            YMDHMS : 'MM-dd-yyyy hh:mm:ss',
+            YMD : 'MM-dd-yyyy'
+        },
+    },
+    getNearWeek : function(){
+        return [this.timeToStr(new Date().getTime() - 3600 * 1000 * 24 * 7, this.FORMAT.CN.YMDHMS), this.format(new Date(), this.FORMAT.CN.YMDHMS)];
+    },
+    getNearMonth : function(){
+        return [this.timeToStr(new Date().getTime() - 3600 * 1000 * 24 * 30, this.FORMAT.CN.YMDHMS), this.format(new Date(), this.FORMAT.CN.YMDHMS)];
+    },
     getDateStr : function(date){
         let y = date.getFullYear();
         let m = date.getMonth() + 1;
@@ -31,7 +47,7 @@ export default {
      */
     format : function (date, fmt) {
         if (fmt == null || fmt === undefined || fmt.length === 0) {
-            fmt = "yyyy-MM-dd hh:mm:ss";
+            fmt = this.FORMAT.EN.YMDHMS;
         }
         let o = {
             "M+": date.getMonth() + 1, //月份
@@ -47,8 +63,8 @@ export default {
             if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         return fmt;
     },
-    timeToStr : function (timestamp) {
-        return this.format(new Date(timestamp), "yyyy-MM-dd hh:mm:ss");
+    timeToStr : function (timestamp, fmt) {
+        return this.format(new Date(timestamp), fmt);
     },
     addYear : function (date){
         let d2=new Date(date);

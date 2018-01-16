@@ -29,15 +29,19 @@ const i18n = new VueI18n({
     cn: require('@/lang/cn').default,
     en: require('@/lang/en').default
   }
-})
+});
 Vue.filter('timestamp2str', function (timestamp) {
-    if (!timestamp) return ''
-    return dateUtils.format(new Date(timestamp))
-})
+    if (!timestamp) return '';
+    return dateUtils.format(new Date(timestamp));
+});
+Vue.filter('strtime2str', function (strtime) {
+    if (!strtime) return '';
+    return dateUtils.timeToStr(dateUtils.getUnixTime(strtime));
+});
 Vue.filter('money2str', function (money) {
-    if (!money) return ''
+    if (money == null || money === '') return '';
     return (money / 100).toFixed(2)
-})
+});
 export default function (App, router = new Router()) {
   Layout.components = {'lts-content': App,'left-menu': leftMenu}
   new Vue({

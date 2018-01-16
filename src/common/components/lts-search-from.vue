@@ -11,6 +11,7 @@
                                 range-separator="至"
                                 start-placeholder="开始日期"
                                 end-placeholder="结束日期"
+                                format="MM-dd-yyyy HH:mm:ss"
                                 value-format="yyyy-MM-dd HH:mm:ss"
                                 :picker-options="datePickerOptions"
                                 align="right">
@@ -20,7 +21,7 @@
                           <el-date-picker
                             v-model="formInline[val.bindValue]"
                             type="datetime"
-                            value-format="yyyy-MM-dd HH:mm:ss"
+                            value-format="MM-dd-yyyy HH:mm:ss"
                             placeholder="选择日期时间">
                           </el-date-picker>
                         </div>
@@ -28,14 +29,14 @@
                           <el-date-picker
                             v-model="formInline[val.bindValue]"
                             type="date"
+                            format="MM-dd-yyyy"
                             value-format="yyyy-MM-dd"
                             placeholder="选择日期"
                             style="width: 150px">
                           </el-date-picker>
                         </div>
                         <div v-else-if="val.type == 'input'">
-                            <el-input v-model="formInline[val.bindValue]" :placeholder="val.bindPlaceholder"
-                                      :style="{width:val.width}"></el-input>
+                            <el-input v-model="formInline[val.bindValue]" :placeholder="val.bindPlaceholder" :style="{width:val.width}"></el-input>
                         </div>
                         <div v-else-if="val.type == 'autocomplete'">
                             <el-autocomplete

@@ -14,7 +14,7 @@
                     <lts-search-form @get-from="getProductParameter" :form-fileds="productsearch.formFileds" :form-inlines="productsearch.formInline" ></lts-search-form>
                 </div>
             </div>
-                    <lts-table :t-table="table" :t-pagination="table.pagination" :t-tabledata="productList"  @menuClick="handleMenuItemClick" @currentRowHandleCurrentChange="currentRowHandleCurrentChange" id="spuTable"></lts-table>
+                    <lts-table :t-table="table" :t-pagination="table.pagination" :t-tabledata="productList" ref="productTable"  @menuClick="handleMenuItemClick" @currentRowHandleCurrentChange="currentRowHandleCurrentChange" id="spuTable"></lts-table>
             <div @click="addSpuInfo">
                 <el-alert
                     title="没有我要的模板"
@@ -79,7 +79,7 @@
           isHighlightCurrentRow : true,
           tableField : {
             "产品ID":{"value":"id","type":"text"},
-            "产品名称":{"value":"spuName","type":"text"},
+            "产品名称":{"value":"spu_name","type":"text"},
             "产品品牌":{"value":"brand","type":"text"},
             "功能": {
               "value": "", "type": "menu", "width": "200", "menulist": [
@@ -121,11 +121,11 @@
                               threeval.children = ""; // 到三级类目不在展开
                           })
                       }else{
-                          val.children = [];
+                          val.children = "";
                       }
                   })
               }else{
-                  value.children = [];
+                  value.children = "";
               }
           });
           this.searchform.cascader.options = data.data;
@@ -162,7 +162,7 @@
         }
       },
       next(item){
-        location.href = "http://work.local.lts.com:8085/goods#/addGoods?id=" + item.id;
+        location.href = "http://work.lts.com:8085/goods#/addGoods?id=" + item.id;
       },
       getProductParameter(val){
         if(this.selectCategory.length === 0 && val.keywords === ''){

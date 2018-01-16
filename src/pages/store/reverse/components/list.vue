@@ -1,47 +1,48 @@
 <template>
     <div>
-        <lts-search-form @get-from="getParameter" :form-fileds="form.formFileds"
-                         :form-inlines="form.formInline"></lts-search-form>
+        <lts-search-form @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-form>
         <el-table :data="datalist" v-loading="loading" default-expand-all style="width: 100%">
             <el-table-column type="expand">
                 <template slot-scope="scope">
                     <el-form label-position="left" inline class="detail-table-expand">
                         <el-form-item label="条码">
-                            <span>{{scope.row.item_remark.sinr}}</span>
+                            {{scope.row.item_remark.sinr}}
                         </el-form-item>
+
                         <el-form-item label="规格">
-                            <span>{{scope.row.item_remark.spec}}</span>
+                            {{scope.row.item_remark.spec}}
                         </el-form-item>
                         <el-form-item label="原订单数量">
-                            <span>{{scope.row.item_remark.num}}</span>
+                            {{scope.row.item_remark.num}}
                         </el-form-item>
                         <el-form-item label="原订单单价">
-                            <span>{{scope.row.item_remark.price | money2str}}</span>
+                            {{scope.row.item_remark.price | money2str}}
+                        </el-form-item>
+                        <el-form-item label="退款类型">
+                            {{scope.row.refund_type_title}}
                         </el-form-item>
                         <el-form-item label="下单时间">
-                            <span>{{scope.row.item_remark.order_cdate}}</span>
+                            {{scope.row.item_remark.order_cdate | strtime2str}}
                         </el-form-item>
                         <el-form-item label="付款时间">
-                            <span>{{scope.row.item_remark.pay_time}}</span>
+                            {{scope.row.item_remark.pay_time | strtime2str}}
                         </el-form-item>
                         <el-form-item label="出库时间">
-                            <span>{{scope.row.item_remark.out_time}}</span>
+                            {{scope.row.item_remark.out_time | strtime2str}}
                         </el-form-item>
                     </el-form>
                 </template>
             </el-table-column>
             <el-table-column type="index" label="#"/>
-            <el-table-column prop="oid" label="订单编号" align="center" width="120"></el-table-column>
-            <el-table-column prop="item_remark.item_name" label="商品" header-align="center" align="left"
-                             :show-overflow-tooltip="true"></el-table-column>
-            <el-table-column prop="user_name" label="工程商" header-align="center" align="left" width="200"
-                             :show-overflow-tooltip="true"></el-table-column>
-            <el-table-column prop="total_num" label="退货数量" align="center" width="80">
+            <el-table-column prop="tid" label="订单编号" align="center" width="120"/>
+            <el-table-column prop="item_remark.item_name" label="商品" header-align="center" align="left" :show-overflow-tooltip="true"/>
+            <el-table-column prop="user_name" label="工程商" header-align="center" align="left" width="200" :show-overflow-tooltip="true"/>
+            <el-table-column label="退货数量" align="center" width="80">
                 <template slot-scope="scope">
                     <el-tooltip placement="top">
                         <div slot="content">
                             <p v-if="scope.row.reverse_remark.stockout_item">
-                                缺货:{{scope.row.reverse_remark.stockout_item.num}}{scope.row.reverse_remark.stockout_item.unit}}</p>
+                                缺货:{{scope.row.reverse_remark.stockout_item.num}}{{scope.row.reverse_remark.stockout_item.unit}}</p>
                             <p v-if="scope.row.reverse_remark.return_item">
                                 退货:{{scope.row.reverse_remark.return_item.num}}{{scope.row.reverse_remark.return_item.unit}}</p>
                         </div>
@@ -49,8 +50,7 @@
                     </el-tooltip>
                 </template>
             </el-table-column>
-            <el-table-column prop="reverse_reason" label="退货原因" header-align="center" align="left"
-                             width="200"></el-table-column>
+            <el-table-column prop="reverse_reason_title" label="退货原因" header-align="center" align="left" width="200"/>
             <el-table-column label="退货金额" align="center" width="80">
                 <template slot-scope="scope">{{scope.row.refund_real | money2str}}</template>
             </el-table-column>
@@ -67,19 +67,18 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="80">
                 <template slot-scope="scope">
-                    <el-dropdown>
+                    <el-dropdown @command="handleMenuItemClick">
                         <span class="el-dropdown-link">
                             操作<i class="el-icon-arrow-down el-icon--right"></i>
                         </span>
                         <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item><router-link :to="'/detail/' + scope.row.id">详情</router-link></el-dropdown-item>
-                            <el-dropdown-item v-if="scope.row.status == 4">修改</el-dropdown-item>
-                            <el-dropdown-item v-if="scope.row.real_num > 0 && (scope.row.status == 1 || scope.row.status == 2) && scope.row.hd_status == 0">退货取货</el-dropdown-item>
-                            <el-dropdown-item v-if="scope.row.real_num > 0 && (scope.row.status == 1 || scope.row.status == 2) && (scope.row.status == 0 || scope.row.hd_status == 2)">退货入库</el-dropdown-item>
-                            <el-dropdown-item v-if="scope.row.real_num > 0 && (scope.row.status == 1 || scope.row.status == 2 || scope.row.status == 4) && scope.row.hd_status == 3">退货出库</el-dropdown-item>
-                            <el-dropdown-item v-if="scope.row.real_num == 0 && (scope.row.status == 1 || scope.row.status == 2)">驳回</el-dropdown-item>
-                            <el-dropdown-item v-if="scope.row.real_num == 0 && (scope.row.status == 1 || scope.row.status == 2)">关闭</el-dropdown-item>
-                            <el-dropdown-item>备注</el-dropdown-item>
+                            <el-dropdown-item command=""><router-link :to="'/detail/' + scope.row.id">详情</router-link></el-dropdown-item>
+                            <el-dropdown-item :data="scope.row" command="edit" v-if="scope.row.status == 4">修改</el-dropdown-item>
+                            <el-dropdown-item :data="scope.row" command="in_warehouse" v-if="scope.row.real_num > 0 && (scope.row.status == 1 || scope.row.status == 2) && (scope.row.status == 0 || scope.row.hd_status == 2)">退货入库</el-dropdown-item>
+                            <el-dropdown-item :data="scope.row" command="out_warehouse" v-if="scope.row.real_num > 0 && (scope.row.status == 1 || scope.row.status == 2 || scope.row.status == 4) && scope.row.hd_status == 3">退货出库</el-dropdown-item>
+                            <el-dropdown-item :data="scope.row" command="reject" v-if="scope.row.status == 1 || scope.row.status == 2">驳回</el-dropdown-item>
+                            <el-dropdown-item :data="scope.row" command="close" v-if="scope.row.status == 1 || scope.row.status == 2">关闭</el-dropdown-item>
+                            <el-dropdown-item :data="scope.row" command="remark">备注</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </template>
@@ -97,28 +96,39 @@
             :layout="pagination.layout"
             :total="pagination.total">
         </el-pagination>
+
+        <opt-dialog :visible.sync="dialogVisible" :opt-type="optType" v-bind:reverse="reverse" />
     </div>
 </template>
 <script>
-    import {request, dateUtils} from 'ltsutil'
+    import {dateUtils} from 'ltsutil'
     import {ltsSearchForm} from 'ui'
+    import optDialog from './opt-dialog'
     import reverseService from '@/services/ReverseService'
 
     export default {
-        props: {},
         components: {
-            ltsSearchForm
+            ltsSearchForm, optDialog
         },
         data() {
             return {
+                dialogVisible: false,
                 loading: true,
                 datalist: [],
+                reverse: {
+                    item_remark: {item_name:'',spec:'',price:'',num:0},
+                    reverse_remark:{
+                        stockout_item: {},
+                        return_item: {},
+                    }
+                },
+                optType: '',
                 params: {
-                    start_time: '',
-                    end_time: '',
-                    oid: '',
+                    tid: '',
                     item_name: '',
                     status: '',
+                    start_time: '',
+                    end_time: '',
                 },
                 form: {
                     formFileds: [
@@ -127,7 +137,7 @@
                                 tid: {
                                     label: '订单号',
                                     type: 'input',
-                                    bindValue: 'oid',
+                                    bindValue: 'tid',
                                     bindPlaceholder: '订单号'
                                 },
                                 item_name: {
@@ -161,10 +171,10 @@
                     ],
                     // 若需要把form参数供其他组件使用。需要把这些参数传给使用的组件
                     formInline: {
-                        oid: '',
+                        tid: '',
                         item_name: '',
                         status: '',
-                        date: [dateUtils.timeToStr(new Date().getTime() - 3600 * 1000 * 24 * 30), dateUtils.format(new Date())],
+                        date: dateUtils.getNearMonth(),
                     },
                 },
                 pagination: {
@@ -173,69 +183,47 @@
                     total: 0,
                     sizes: [10, 20, 30],
                     layout: "total, sizes, prev, pager, next, jumper" // total 总条目数  prev 上一页 next 下一页 sizes 支持分组
-                },
+                }
             }
         },
         methods: {
-            handleMenuItemClick(command, order) {
-                switch (command) {
-                    case "accept":
-                        if (order.pay_type !== 3) {
-                            this.$ltsMessage.show({type: 'error', message: "不支持非货到付款订单"})
-                        } else if (order.status !== 0) {
-                            this.$ltsMessage.show({type: 'error', message: "不支持的订单状态"})
-                        } else {
-                            orderService.accept(order.tid).then((resp) => {
-                                this.$ltsMessage.show({type: 'success', message: "通过成功"});
-                            }, (err) => {
-                                this.$ltsMessage.show({type: 'success', message: "通过失败：" + err.error_message});
-                            });
-                        }
-
-                        break;
-                    case "reject":
-                        if (order.pay_type !== 3) {
-                            this.$ltsMessage.show({type: 'error', message: "不支持非货到付款订单"})
-                        } else if (order.status !== 0) {
-                            this.$ltsMessage.show({type: 'error', message: "不支持的订单状态"})
-                        } else {
-                            this.$ltsMessage.show({type: 'success', message: "拒绝" + order.tid});
-                        }
-                        break;
-                    case "remark":
-                        this.$ltsMessage.show({type: 'success', message: "备注:" + order.tid});
-                        break;
-                }
-            },
-            getParameter(val) {
-                this.search()
+            handleMenuItemClick(command, data) {
+                if (!command) return;
+                this.reverse = data.$vnode.data.attrs.data;
+                this.optType = command;
+                this.dialogVisible = true;
             },
             search() {
-                reverseService.getList(this.params.oid, this.params.status, this.params.start_time, this.params.end_time,
-                    this.params.page, this.params.page_size, this.params.order_by).then((resp) => {
-                    this.datalist = resp.datalist;
+                reverseService.getList(this.params.tid, this.params.status, this.params.start_time, this.params.end_time,
+                    this.pagination.page, this.pagination.pageSize, this.params.order_by).then((resp) => {
                     this.loading = false;
+                    this.datalist = resp.datalist;
+                    this.pagination.total = resp.total;
                 }, (err) => {
                     this.loading = false;
                     this.datalist = [];
+                    this.pagination.total = 0;
                     this.$ltsMessage.show({type: 'error', message: '查询失败，请稍后重试:' + err.error_message})
                 });
+            },
+            getParameter(val) {
+                this.search()
             },
             syncFormParam() {
                 if (this.form.formInline.date.length > 0) {
                     this.params.start_time = this.form.formInline.date[0];
                     this.params.end_time = this.form.formInline.date[1];
                 }
-                this.params.oid = this.form.formInline.oid;
+                this.params.tid = this.form.formInline.tid;
                 this.params.item_name = this.form.formInline.item_name;
                 this.params.status = this.form.formInline.status;
             },
             handleSizeChange(val) {
-                this.pagination.pageSize = val
+                this.pagination.pageSize = val;
                 this.search()
             },
             handleCurrentChange(val) {
-                this.pagination.page = val
+                this.pagination.page = val;
                 this.search()
             },
         },
@@ -258,17 +246,15 @@
 <style lang="less">
     .detail-table-expand {
         font-size: 0;
-    }
-
-    .detail-table-expand label {
-        width: 90px;
-        color: #99a9bf;
-    }
-
-    .detail-table-expand .el-form-item {
-        margin-right: 0;
-        margin-bottom: 0;
-        width: 20%;
+        label {
+            width: 90px;
+            color: #99a9bf;
+        }
+        .el-form-item {
+            margin-right: 0;
+            margin-bottom: 0;
+            width: 20%;
+        }
     }
     .el-dropdown-link {
         cursor: pointer;
