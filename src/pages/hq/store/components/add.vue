@@ -106,7 +106,7 @@
 </template>
 <script>
     import {request} from 'ltsutil'
-    import segmentsService from '@/services/SegmentsService'
+    import storeService from '@/services/StoreService'
     export default {
         data() {
             let validatePass = (rule, value, callback) => {
@@ -268,7 +268,7 @@
             // check openCode
             checkCode(value){
                 console.log(value.target.value)
-                let checkCode = segmentsService.checkCode(value.target.value)
+                let checkCode = storeService.checkCode(value.target.value)
                 checkCode.then((data) => {
                     console.log(data)
                     this.checkCodeResult = false
@@ -281,7 +281,7 @@
                 let formData = Object.assign({},this.form)
                 delete formData.aaattribute
                 delete formData.select
-                let addSegments = segmentsService.addSegmentsItem(formData)
+                let addSegments = storeService.add(formData)
                 addSegments.then((data) => {
                     console.log('success')
                 }, (msg) => {
@@ -291,8 +291,7 @@
             }
         },
         mounted(){
-          let getItemId = segmentsService.getItemId()
-          getItemId.then((data) => {
+          storeService.getItemId().then((data) => {
             console.log(data)
             this.form.parentBizId = data.data.id
           }, (msg) => {

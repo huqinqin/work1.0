@@ -1,5 +1,5 @@
 import BaseService from "./abstract/BaseService";
-export default class SegmentsService extends BaseService{
+export default class StoreService extends BaseService{
 
   /**
    * return datalist
@@ -9,7 +9,7 @@ export default class SegmentsService extends BaseService{
    * @auth taohua
    * @remark 获取子市场列表
    */
-  static getSegmentsList(pagination,bizparams){
+  static getStoreList(pagination, bizparams){
     let params = {
       page:pagination.page,
       page_size:pagination.pagesize,
@@ -23,7 +23,7 @@ export default class SegmentsService extends BaseService{
    * @auth taohua
    * @remark 新增子市场
    */
-  static addSegmentsItem(formData){
+  static add(formData){
     let params = {
       add_child_market_request:JSON.stringify(formData)
     }
@@ -37,11 +37,10 @@ export default class SegmentsService extends BaseService{
    * @auth taohua
    * @remark 编辑子市场
    */
-  static editSegmentsItem(formData){
+  static edit(formData){
     let params = {
       bizDO:JSON.stringify(formData)
-    }
-    console.log(params)
+    };
     return super.getRequest('/market/update',params)
   }
 

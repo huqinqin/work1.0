@@ -49,7 +49,7 @@
 
 <script>
     import {request} from 'ltsutil'
-    import segmentsService from '@/services/SegmentsService.js'
+    import storeService from '@/services/StoreService.js'
   export default {
       data(){
         return {
@@ -89,9 +89,7 @@
               delete formData.state
               delete formData.limit
             console.log(formData)
-            let editSegmentsItem = segmentsService.editSegmentsItem(formData)
-
-            editSegmentsItem.then((data) => {
+            storeService.edit(formData).then((data) => {
                   console.log('success')
               }, (msg) => {
                   this.$ltsMessage.show({type: 'error', message: msg.error_message})
