@@ -34,7 +34,7 @@
                               <transition-group name="cell" tag="div">
                                 <div :key="index"  class="container">
                                   <div v-for="value in item.propsList" :key="item.values"  class="cell">
-                                    <div class="specValue">{{ value.values }} </div>
+                                    <div class="specValue">{{ value.propValue }} </div>
                                   </div>
                                   <div class="specInput">
                                     <el-input
@@ -64,7 +64,7 @@
                       <label class="el-upload-list__item-status-label removeprop" @click="removeProp(spuSpecList,index)" v-if="value.isDelete"><i class="el-icon-close"  ></i></label>
                     </el-form-item>
                     <el-form-item>
-                      <el-tag v-for="(val,key) in value.propValues" :key="val.value" :closable="val.isCanEdit"  @close="deleteTag(value.propValues,key)">
+                      <el-tag v-for="(val,key) in value.prop_values" :key="val.value" :closable="val.isCanEdit"  @close="deleteTag(value.propValues,key)">
                         <el-checkbox name="type" @change="chcekedProp(value,val)" v-model="val.isSelected">{{val.value}}</el-checkbox>
                       </el-tag>
                       <el-input
@@ -101,6 +101,26 @@
             </el-card>
         </div>
       </transition>
+        <div class="spuOtherSpu">
+            <el-form  label-width="12%" :inline="true" class="propsBox">
+                <el-form-item style="width:31%"  v-for="(value,index) in otherSpuList" :key="value.id" :label="value.name" >
+                    <el-select
+                        v-model="value.checkedProp"
+                        multiple
+                        filterable
+                        allow-create
+                        default-first-option
+                        placeholder="请选择属性值">
+                        <el-option
+                            v-for="item in value.prop_values"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+        </div>
       <el-button type="primary" @click="addSpu()" class="addSpu">添加产品</el-button>
     </div>
   </div>
@@ -122,20 +142,21 @@
               spuAttrList: [],
               saleSpec: '',
               spuSpecList: [],
+              otherSpuList : [],
               selectedSpecList: [],
               postSelectedSpecList: [],
               showPreview: true,
           }
       },
       mounted() {
-          categoryService.getCateProps(this.$route.params.spuInfo.categoryId).then((data) => {
-              data.datalist.forEach(function (value, index, array) {
+          categoryService.getCateProps(this.$route.params.spuInfo.categoryId,true).then((resp) => {
+              resp.data.sku_props.forEach(function (value, index, array) {
                   value.inputVisible = false // 自己加的 是否显示添加input
                   value.isDelete = false //自己加的 单条是否可删除
                   value.isSelect = false //自己加的 单条是否被选中
                   value.isSearch = false //自己加的 可搜索
                   value.isShow = false //自己加的 可展示
-                  value.propValues.forEach(function (prop, key, array) {
+                  value.prop_values.forEach(function (prop, key, array) {
                       let Obj = {
                           isCanEdit: false,
                           isSelected: false,
@@ -144,7 +165,18 @@
                       array[key] = Obj
                   })
               })
-              this.spuSpecList = data.datalist
+              resp.data.other_props.forEach(function (value, index, array) {
+                  value.checkedProp = [];
+                  value.prop_values.forEach(function(val,key,array){
+                      let Obj = {
+                          value: false,
+                          label: val
+                      }
+                      array[key] = Obj
+                  })
+              })
+              this.spuSpecList = resp.data.sku_props;
+              this.otherSpuList = resp.data.other_props;
           })
       },
       methods:{
@@ -169,7 +201,7 @@
               let count = 0
               let selectProps = []
               let subSelectProps = []
-              item.propValues.forEach(function (value, index) {
+              item.prop_values.forEach(function (value, index) {
                   if (value.isSelected) {
                       count++
                       selectProps.push(value)
@@ -199,7 +231,7 @@
               } else {
                   let selectCount = 0
                   this.selectedSpecList.forEach(function (value, index, array) {
-                      if (value.name === cloneItem.name || value.id === cloneItem.id) {
+                      if (value.name === cloneItem.name) {
                           if (cloneItem.isSelect) {
                               array[index] = cloneItem
                           } else {
@@ -250,8 +282,8 @@
                   'search': spuSpec.isSearch,
                   'sku': true,
                   'name': spuSpec.name,
-                  'type': 0,
-                  'values': prop.value,
+                  'valueType': 0,
+                  'propValue': prop.value,
               }
           },
           makeSpecList(spuSpec, prop) {
@@ -291,7 +323,7 @@
                       'isSelect': false,// 自己加的
                       'name': this.specName,
                       'propValue': '',
-                      'propValues': [],
+                      'prop_values': [],
                   }
               )
               this.specName = ''
@@ -306,7 +338,7 @@
                       'isSelect': false,// 自己加的
                       'name': this.specName,
                       'propValue': '',
-                      'propValues': [],
+                      'prop_values': [],
                   }
               )
               this.specName = ''
@@ -325,6 +357,8 @@
                   if (data.success) {
                       location.href = 'http://work.lts.com:8085/goods#/addGoods?id=' + data.data
                   }
+              },(msg)=>{
+                  this.$ltsMessage.show({type:'error',message:msg.error_message})
               })
           },
     },

@@ -33,10 +33,10 @@ export default class CategoryService extends BaseService {
         let params = {
             category: JSON.stringify({
                 id: id,
-                categoryName: categoryName,
+                name: categoryName,
             })
         };
-        super.getRequest('/category/update',params);
+        return super.getRequest('/category/update',params);
     }
     /**
      * return LONG 类目id
@@ -47,9 +47,9 @@ export default class CategoryService extends BaseService {
      */
     static deleteCategory(id){
         let params = {
-            id : id
+            category_id : id
         }
-        super.getRequest('/category/delete',params);
+        return super.getRequest('/category/delete',params);
     }
     /**
      * return
@@ -68,10 +68,11 @@ export default class CategoryService extends BaseService {
      * @auth taohua
      * @remark 获取类目属性
      */
-    static getCategoryProps(id){
+    static getCategoryProps(id, grouping){
       let params = {
           category_id : id,
-          order_by: 'id'
+          order_by: 'id',
+          grouping : grouping,
       };
       return super.getRequest('/category/getCateProps',params)
     }
@@ -98,7 +99,7 @@ export default class CategoryService extends BaseService {
     static getCateProps(id){
         let params = {
             category_id : id,
-            sku : true,
+            sku : false,
             order_by : "id",
         };
         return super.getRequest('/category/getCateProps',params)
