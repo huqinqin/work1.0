@@ -1,19 +1,16 @@
 <template>
     <div>
-        <lts-search-from @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-from>
+        <lts-search-form @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"></lts-search-form>
         <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination" @menuClick="handleMenuItemClick"></lts-table>
     </div>
 </template>
 
 <script>
-    import {request} from 'ltsutil'
-    import ltsTable from '@/common/components/lts-table.vue'
-    import ltsSearchFrom from '@/common/components/lts-search-from.vue'
+    import {ltsSearchForm, ltsTable} from 'ui'
     import segmentsService from '@/services/SegmentsService.js'
     export default {
-        name: "segmentsList",
         components: {
-            ltsTable, ltsSearchFrom
+            ltsTable, ltsSearchForm
         },
         data () {
             return {
@@ -22,7 +19,6 @@
                     bizparams: {
                       order_by:'id',
                       open_code:'666666'
-
                     }
                 },
                 form: {

@@ -51,7 +51,6 @@
     import {request} from 'ltsutil'
     import segmentsService from '@/services/SegmentsService.js'
   export default {
-    name: "editSegments",
       data(){
         return {
             openCode: 'LTS AAA',
