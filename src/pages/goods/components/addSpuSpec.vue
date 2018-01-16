@@ -34,7 +34,7 @@
                               <transition-group name="cell" tag="div">
                                 <div :key="index"  class="container">
                                   <div v-for="value in item.propsList" :key="item.values"  class="cell">
-                                    <div class="specValue">{{ value.values }} </div>
+                                    <div class="specValue">{{ value.propValue }} </div>
                                   </div>
                                   <div class="specInput">
                                     <el-input
@@ -293,7 +293,7 @@
                   'sku': true,
                   'name': spuSpec.name,
                   'type': 0,
-                  'values': prop.value,
+                  'propValue': prop.value,
               }
           },
           makeSpecList(spuSpec, prop) {
@@ -358,14 +358,27 @@
               this.showPreview = !this.showPreview
           },
           addSpu () {
+              let props = [];
+              this.otherSpecList.forEach(function(value,index,array){
+                  let Obj = {};
+                  if(value.checkedProp.length > 0){
+                      Obj = Object.assign({},Object,value);
+                      Obj.propValue =  value.checkedProp.join(",");
+                      Obj.valueType =  value.value_type;
+                      Obj.multiSelect =  value.multi_select;
+                      props.push(Obj);
+                  }
+              })
+              console.log(props);
               let params = {
                   spu_request: this.$route.params.spuInfo,
                   spec: this.$route.params.spuInfo.saleSpec,
                   child_spu_request_list: this.postSelectedSpecList,
+                  props : props,
               }
               spuService.addSpu(params).then((data) => {
                   if (data.success) {
-                      location.href = 'http://work.lts.com:8085/goods#/addGoods?id=' + data.data
+                      location.href = '/goods#/addGoods?id=' + data.data
                   }
               })
           },
@@ -373,47 +386,46 @@
   }
 </script>
 <style lang="less">
+    .shuffBox{
+        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .container{
+            min-width: 200px;
+            display: flex;
+        }
+        .specInput{
+            width:150px;
+            padding: 0 10px;
+        }
+        .cell {
+            display: inline-block;
+            margin-right: -1px;
+            margin-bottom: -1px;
+            font-size: 13px;
+            .specValue{
+                width:100px;
+                height:35px;
+                line-height: 35px;
+            }
+
+        }
+        .cell-move {
+            transition: transform 1s;
+        }
+    }
+    .spuSpecBox{
+        position: relative;
+        z-index: 1111;
+    }
+    .shuffBox:last-child{
+    }
     .addSpuSpec{
-        .spuSpecBox{
-            position: relative;
-            z-index: 1111;
-        }
-        .shuffBox:last-child{
-        }
+
         .shuffParentBox {
             .preview{
                 border:solid 1px #409EFF;
-            }
-        }
-
-
-        .shuffBox{
-            text-align: center;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            .container{
-                min-width: 200px;
-                display: flex;
-            }
-            .specInput{
-                width:150px;
-                padding: 0 10px;
-            }
-            .cell {
-                display: inline-block;
-                margin-right: -1px;
-                margin-bottom: -1px;
-                font-size: 13px;
-                .specValue{
-                    width:100px;
-                    height:35px;
-                    line-height: 35px;
-                }
-
-            }
-            .cell-move {
-                transition: transform 1s;
             }
         }
         .slide-fade-enter-active {
@@ -513,16 +525,17 @@
             .el-upload-list__item-status-label{
                 display: none;
             }
-            .el-form--inline .el-form-item{
+        }
+        .propsBox{
+            .el-form-item{
                 margin-right: 0px;
             }
-            .el-form--inline .el-form-item__content{
+            .el-form-item__content{
                 width: 77%;
                 .el-select{
                     width:100%;
                 }
             }
-
         }
         .addSpu{
             margin-top: 20px;

@@ -12,11 +12,11 @@
          <el-form-item label="产品名称" prop="spuName">
            <el-input v-model="ruleForm.spuName"></el-input>
          </el-form-item>
-         <el-form-item label="产品品牌" prop="spuBrand">
-           <el-input v-model="ruleForm.spuBrand"></el-input>
+         <el-form-item label="产品品牌" prop="brand">
+           <el-input v-model="ruleForm.brand"></el-input>
          </el-form-item>
-         <el-form-item label="产品产地" prop="spuArea">
-           <el-input v-model="ruleForm.spuArea"></el-input>
+         <el-form-item label="产品产地" prop="orign">
+           <el-input v-model="ruleForm.orign"></el-input>
          </el-form-item>
          <el-form-item label="产品类目" prop="spuCategory">
              <el-cascader
@@ -58,8 +58,8 @@
         categoryList : [],
         ruleForm:{
           spuName : '',
-          spuBrand : '',
-          spuArea : '',
+          brand : '',
+          orign : '',
           spuCategory : [],
           categoryId : "",
           spuImg : '',
@@ -69,10 +69,10 @@
           spuName: [
             { required: true, message: '请输入产品名称', trigger: 'blur' }
           ],
-          spuBrand: [
+          brand: [
             { required: true, message: '请输入产品品牌', trigger: 'blur' }
           ],
-          spuArea: [
+          orign: [
             { required: true, message: '请输入产品产地', trigger: 'blur' }
           ],
           spuCategory: [
