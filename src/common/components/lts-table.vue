@@ -32,7 +32,7 @@
                                     </el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
-                            <el-button v-else type="primary" size="medium" :background-color="menu.backgroundColor"
+                            <el-button v-else :type="menu.type != null ? menu.type : 'primary'" :size="menu.size != null ? menu.size : 'small'" :background-color="menu.backgroundColor"
                                        @click="menuClick(menu.command, scope.row)">
                                 {{menu.value}}
                             </el-button>
