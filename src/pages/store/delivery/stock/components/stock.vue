@@ -1,36 +1,24 @@
 <template>
     <div>
-        <el-steps :active="0" simple style="margin-bottom: 20px">
-            <el-step title="仓库备货" icon="el-icon-tickets" ></el-step>
-            <el-step title="配送入库" icon="el-icon-menu" ></el-step>
-            <el-step title="配送发货" icon="el-icon-printer" ></el-step>
-        </el-steps>
-
-        <lts-search-form @get-from="getParameter" :form-fileds="formFileds" :form-inlines="params"></lts-search-form>
+        <delivery-process :active="0" />
+        <lts-search-form @get-from="getParameter" :form-fileds="formFileds" :form-inlines="params" />
 
         <div style="margin: 10px 0">
             <el-button type="primary" @click="batchOpt">批量备货</el-button>
-            <el-select v-model="printer" placeholder="请选择打印机">
-                <el-option
-                    v-for="item in printerList"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                </el-option>
-            </el-select>
+            <lts-printer />
         </div>
         <el-table :data="datalist" v-loading="loading" style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="selection"/>
             <el-table-column type="index" label="#"/>
-            <el-table-column prop="spot_name" label="网点" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="spot_addr" label="地址" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="spot_name" label="网点" show-overflow-tooltip />
+            <el-table-column prop="spot_addr" label="地址" show-overflow-tooltip />
             <el-table-column label="预期到达时间">
                 <template slot-scope="scope">{{scope.row.to_time | timestamp2str}}</template>
             </el-table-column>
             <el-table-column label="备货时间">
                 <template slot-scope="scope">{{scope.row.stockup_etime | timestamp2str}}</template>
             </el-table-column>
-            <el-table-column prop="real_num" label="商品总数"></el-table-column>
+            <el-table-column prop="real_num" label="商品总数" />
             <el-table-column label="支付方式">
                 <template slot-scope="scope">
                     <span v-for="(type) in scope.row.pay_type_arr">
@@ -42,7 +30,7 @@
             <el-table-column label="订单总额">
                 <template slot-scope="scope">{{scope.row.real_pay | money2str}}</template>
             </el-table-column>
-            <el-table-column prop="status_title" label="状态"></el-table-column>
+            <el-table-column prop="status_title" label="状态" />
             <el-table-column label="操作">
                 <template slot-scope="scope">
                     <el-button round size="mini" @click="showDetail(scope.row)">查看</el-button>
@@ -61,13 +49,13 @@
                         <el-tag>{{detail.to_time | timestamp2str}}</el-tag>
                     </el-form-item>
                     <el-form-item label="工程商">
-                        <span>{{detail.spot_name}}</span>
+                        {{detail.spot_name}}
                     </el-form-item>
                     <el-form-item label="联系人">
-                        <span>{{detail.owner_name}}</span>
+                        {{detail.owner_name}}
                     </el-form-item>
                     <el-form-item label="联系电话">
-                        <span>{{detail.owner_mobile}}</span>
+                        {{detail.owner_mobile}}
                     </el-form-item>
                     <el-form-item label="备注" style="width: 100%">
                         <span v-if="detail.remark">{{detail.remark}}</span>
@@ -93,7 +81,7 @@
                     <el-table-column label="优惠" width="60px">
                         <template slot-scope="scope">{{scope.row.item_remark_object.discount | money2str}}</template>
                     </el-table-column>
-                    <el-table-column prop="status_title" label="状态" width="65px"></el-table-column>
+                    <el-table-column prop="status_title" label="状态" width="65px" />
                 </el-table>
             </div>
             <span slot="footer" class="dialog-footer">
@@ -105,26 +93,16 @@
 </template>
 <script>
     import {dateUtils} from 'ltsutil'
-    import {ltsSearchForm} from 'ui'
+    import {ltsSearchForm, ltsPrinter} from 'ui'
+    import deliveryProcess from '../../components/delivery-process'
     import deliveryService from '@/services/DeliveryService'
 
     export default {
         components: {
-            ltsSearchForm
+            ltsSearchForm, ltsPrinter, deliveryProcess
         },
         data() {
             return {
-                printer: 1,
-                printerList: [
-                    {
-                        value: 1,
-                        label: '打印机1'
-                    },
-                    {
-                        value: 2,
-                        label: '打印机2'
-                    }
-                ],
                 loading: true,
                 dialogVisible: false,
                 datalist: [],

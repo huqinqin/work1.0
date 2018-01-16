@@ -50,7 +50,13 @@
           tableDataForm: 'api',
           tableField: {
             "": {value: "", type: "selection"},
-            "产品名称": {value: "item_name", type: "text"},
+            "商品名称": {value: "item_name", type: "text"},
+            "商品品牌": {value: "item_name", type: "text"},
+            "商品图片": {value: "item_name", type: "text"},
+            "商品状态": {value: "item_name", type: "text"},
+            "商品创建时间": {value: "item_name", type: "text"},
+            "商品销售标题": {value: "item_name", type: "text"},
+            "商品销量": {value: "item_name", type: "text"},
             "操作": {
               value: "x",
               type: "menu",

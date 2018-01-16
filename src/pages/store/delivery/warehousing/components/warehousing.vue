@@ -1,23 +1,11 @@
 <template>
     <div>
-        <el-steps :active="1" simple style="margin-bottom: 20px">
-            <el-step title="仓库备货" icon="el-icon-tickets" ></el-step>
-            <el-step title="配送入库" icon="el-icon-menu" ></el-step>
-            <el-step title="配送发货" icon="el-icon-printer" ></el-step>
-        </el-steps>
-
-        <lts-search-form @get-from="getParameter" :form-fileds="formFileds" :form-inlines="params"></lts-search-form>
+        <delivery-process :active="1" />
+        <lts-search-form @get-from="getParameter" :form-fileds="formFileds" :form-inlines="params" />
 
         <div style="margin: 10px 0">
             <el-button type="primary" @click="batchOpt">批量入库</el-button>
-            <el-select v-model="printer" placeholder="请选择打印机">
-                <el-option
-                    v-for="item in printerList"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                </el-option>
-            </el-select>
+            <lts-printer />
         </div>
         <el-table :data="datalist" v-loading="loading" style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="selection"/>
@@ -119,26 +107,16 @@
 </template>
 <script>
     import {dateUtils} from 'ltsutil'
-    import {ltsSearchForm} from 'ui'
+    import {ltsSearchForm, ltsPrinter} from 'ui'
+    import deliveryProcess from '../../components/delivery-process'
     import deliveryService from '@/services/DeliveryService'
 
     export default {
         components: {
-            ltsSearchForm
+            ltsSearchForm, ltsPrinter, deliveryProcess
         },
         data() {
             return {
-                printer: 1,
-                printerList: [
-                    {
-                        value: 1,
-                        label: '打印机1'
-                    },
-                    {
-                        value: 2,
-                        label: '打印机2'
-                    }
-                ],
                 loading: true,
                 dialogVisible: false,
                 datalist: [],

@@ -16,6 +16,7 @@ export default class CartService extends BaseService{
           user_id: uid,
           num: param.num,
           carrier_uid: 158635,
+          order_type : 'valet_order',
           item_props: JSON.stringify([
               checkedSpu
           ]),
