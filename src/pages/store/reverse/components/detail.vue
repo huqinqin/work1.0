@@ -1,13 +1,6 @@
 <template>
     <div>
-        <el-alert
-            :title="detail.status_title"
-            type="success" class="status-info" show-icon :closable="false" v-if="detail.status == 7 || detail.status == 9">
-        </el-alert>
-        <el-alert
-            :title="detail.status_title"
-            type="info" class="status-info" show-icon :closable="false" v-else>
-        </el-alert>
+        <el-alert :title="detail.status_title" :type="alertType" class="status-info" show-icon :closable="false" />
 
         <el-card class="box-card base-info">
             <div slot="header" class="clearfix">
@@ -75,13 +68,13 @@
                 <el-form-item label="留言记录">
                     <div v-for="(remark, index) in detail.remark" :key="index">
                         <span v-if="remark.uid == detail.user_id">工程商<i class="el-icon-caret-left" style="color: #909399"></i><el-tag type="info">{{remark.remark}} {{remark.date}}</el-tag></span>
-                        <span v-if="remark.uid == detail.to_uid"><el-tag>{{remark.remark}} {{remark.date}}</el-tag><i class="el-icon-caret-right" style="color: #409EFF"></i>门店</span>
+                        <span v-if="remark.uid == detail.carrier_uid"><el-tag>{{remark.remark}} {{remark.date}}</el-tag><i class="el-icon-caret-right" style="color: #409EFF"></i>门店</span>
                     </div>
                 </el-form-item>
                 <el-form-item label="操作记录">
                     <div v-for="(remark, index) in detail.deal_remark" :key="index">
                         <span v-if="remark.uid == detail.user_id">工程商<i class="el-icon-caret-left" style="color: #909399"></i><el-tag type="info">{{remark.remark}} {{remark.date}}</el-tag></span>
-                        <span v-if="remark.uid == detail.to_uid"><el-tag>{{remark.remark}} {{remark.date}}</el-tag><i class="el-icon-caret-right" style="color: #409EFF"></i>门店</span>
+                        <span v-if="remark.uid == detail.carrier_uid"><el-tag>{{remark.remark}} {{remark.date}}</el-tag><i class="el-icon-caret-right" style="color: #409EFF"></i>门店</span>
                     </div>
                 </el-form-item>
             </el-form>
@@ -96,6 +89,7 @@
         },
         data() {
             return {
+                alertType: 'info',
                 detail: {
                     id: '',
                     item_remark: {
@@ -112,6 +106,11 @@
             get () {
                 revereService.get(this.detail.id).then((resp) => {
                     this.detail = resp.data;
+                    if (this.detail.status == 7 || this.detail.status == 9) {
+                        this.alertType = 'success';
+                    } else if (this.detail.status == 0) {
+                        this.alertType = 'warning';
+                    }
                 }, (err) => {
 
                 });

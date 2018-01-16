@@ -69,6 +69,7 @@
     import {dateUtils} from 'ltsutil'
     import reverseService from '@/services/ReverseService'
     export default {
+        name: 'reverse-apply',
         props: {
             visible: Boolean,
             orderItem: Object,
@@ -142,12 +143,12 @@
                             return_item = {
                                 num : this.form.num,
                                 unit : this.item.unit,
-                                refund : this.form.refund,
+                                refund : this.form.refund * 100,
                             },
                             bad_item = {
-                                num : 0,
-                                unit : this.item.unit,
-                                refund : 0,
+                                // num : 0,
+                                // unit : this.item.unit,
+                                // refund : 0,
                             };
 
                         reverseService.apply(this.orderItem.tid, this.orderItem.customer.id, this.form.reason, stock_item, return_item, bad_item, this.form.remark).then((resp)=>{
@@ -164,28 +165,22 @@
             }
         },
         watch: {
-            visible: {
-                handler: function () {
-                    if (this.visible) {
-                        this.show = this.visible;
-                    }
+            visible() {
+                if (this.visible) {
+                    this.show = this.visible;
                 }
             },
-            show: {
-                handler: function () {
-                    if (!this.show) {
-                        this.form.reason = '';
-                        this.form.num = 1;
-                        this.form.refund = 0;
-                        this.form.remark = '';
-                        this.$emit('update:visible', this.show);
-                    }
+            show() {
+                if (!this.show) {
+                    this.form.reason = '';
+                    this.form.num = 1;
+                    this.form.refund = 0;
+                    this.form.remark = '';
+                    this.$emit('update:visible', this.show);
                 }
             },
-            orderItem: {
-                handler: function () {
-                    this.form.refund = this.orderItem.price_real_value * this.form.num;
-                }
+            orderItem() {
+                this.form.refund = this.orderItem.price_real_value * this.form.num;
             }
         }
     }

@@ -34,11 +34,9 @@
                 </template>
             </el-table-column>
             <el-table-column type="index" label="#"/>
-            <el-table-column prop="tid" label="订单编号" align="center" width="120"></el-table-column>
-            <el-table-column prop="item_remark.item_name" label="商品" header-align="center" align="left"
-                             :show-overflow-tooltip="true"></el-table-column>
-            <el-table-column prop="user_name" label="工程商" header-align="center" align="left" width="200"
-                             :show-overflow-tooltip="true"></el-table-column>
+            <el-table-column prop="tid" label="订单编号" align="center" width="120"/>
+            <el-table-column prop="item_remark.item_name" label="商品" header-align="center" align="left" :show-overflow-tooltip="true"/>
+            <el-table-column prop="user_name" label="工程商" header-align="center" align="left" width="200" :show-overflow-tooltip="true"/>
             <el-table-column label="退货数量" align="center" width="80">
                 <template slot-scope="scope">
                     <el-tooltip placement="top">
@@ -52,8 +50,7 @@
                     </el-tooltip>
                 </template>
             </el-table-column>
-            <el-table-column prop="reverse_reason_title" label="退货原因" header-align="center" align="left"
-                             width="200"></el-table-column>
+            <el-table-column prop="reverse_reason_title" label="退货原因" header-align="center" align="left" width="200"/>
             <el-table-column label="退货金额" align="center" width="80">
                 <template slot-scope="scope">{{scope.row.refund_real | money2str}}</template>
             </el-table-column>
@@ -70,19 +67,18 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="80">
                 <template slot-scope="scope">
-                    <el-dropdown>
+                    <el-dropdown @command="handleMenuItemClick">
                         <span class="el-dropdown-link">
                             操作<i class="el-icon-arrow-down el-icon--right"></i>
                         </span>
                         <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item><router-link :to="'/detail/' + scope.row.id">详情</router-link></el-dropdown-item>
-                            <el-dropdown-item v-if="scope.row.status == 4">修改</el-dropdown-item>
-                            <el-dropdown-item v-if="scope.row.real_num > 0 && (scope.row.status == 1 || scope.row.status == 2) && scope.row.hd_status == 0">退货取货</el-dropdown-item>
-                            <el-dropdown-item v-if="scope.row.real_num > 0 && (scope.row.status == 1 || scope.row.status == 2) && (scope.row.status == 0 || scope.row.hd_status == 2)">退货入库</el-dropdown-item>
-                            <el-dropdown-item v-if="scope.row.real_num > 0 && (scope.row.status == 1 || scope.row.status == 2 || scope.row.status == 4) && scope.row.hd_status == 3">退货出库</el-dropdown-item>
-                            <el-dropdown-item v-if="scope.row.real_num == 0 && (scope.row.status == 1 || scope.row.status == 2)">驳回</el-dropdown-item>
-                            <el-dropdown-item v-if="scope.row.real_num == 0 && (scope.row.status == 1 || scope.row.status == 2)">关闭</el-dropdown-item>
-                            <el-dropdown-item>备注</el-dropdown-item>
+                            <el-dropdown-item command=""><router-link :to="'/detail/' + scope.row.id">详情</router-link></el-dropdown-item>
+                            <el-dropdown-item :data="scope.row" command="edit" v-if="scope.row.status == 4">修改</el-dropdown-item>
+                            <el-dropdown-item :data="scope.row" command="in_warehouse" v-if="scope.row.real_num > 0 && (scope.row.status == 1 || scope.row.status == 2) && (scope.row.status == 0 || scope.row.hd_status == 2)">退货入库</el-dropdown-item>
+                            <el-dropdown-item :data="scope.row" command="out_warehouse" v-if="scope.row.real_num > 0 && (scope.row.status == 1 || scope.row.status == 2 || scope.row.status == 4) && scope.row.hd_status == 3">退货出库</el-dropdown-item>
+                            <el-dropdown-item :data="scope.row" command="reject" v-if="scope.row.status == 1 || scope.row.status == 2">驳回</el-dropdown-item>
+                            <el-dropdown-item :data="scope.row" command="close" v-if="scope.row.status == 1 || scope.row.status == 2">关闭</el-dropdown-item>
+                            <el-dropdown-item :data="scope.row" command="remark">备注</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </template>
@@ -100,21 +96,33 @@
             :layout="pagination.layout"
             :total="pagination.total">
         </el-pagination>
+
+        <opt-dialog :visible.sync="dialogVisible" :opt-type="optType" v-bind:reverse="reverse" />
     </div>
 </template>
 <script>
     import {dateUtils} from 'ltsutil'
     import {ltsSearchForm} from 'ui'
+    import optDialog from './opt-dialog'
     import reverseService from '@/services/ReverseService'
 
     export default {
         components: {
-            ltsSearchForm
+            ltsSearchForm, optDialog
         },
         data() {
             return {
+                dialogVisible: false,
                 loading: true,
                 datalist: [],
+                reverse: {
+                    item_remark: {item_name:'',spec:'',price:'',num:0},
+                    reverse_remark:{
+                        stockout_item: {},
+                        return_item: {},
+                    }
+                },
+                optType: '',
                 params: {
                     tid: '',
                     item_name: '',
@@ -175,10 +183,16 @@
                     total: 0,
                     sizes: [10, 20, 30],
                     layout: "total, sizes, prev, pager, next, jumper" // total 总条目数  prev 上一页 next 下一页 sizes 支持分组
-                },
+                }
             }
         },
         methods: {
+            handleMenuItemClick(command, data) {
+                if (!command) return;
+                this.reverse = data.$vnode.data.attrs.data;
+                this.optType = command;
+                this.dialogVisible = true;
+            },
             search() {
                 reverseService.getList(this.params.tid, this.params.status, this.params.start_time, this.params.end_time,
                     this.pagination.page, this.pagination.pageSize, this.params.order_by).then((resp) => {

@@ -5,7 +5,7 @@
             <el-table-column type="expand">
                 <template slot-scope="scope">
                     <el-table :data="scope.row.wholesale_order_items" style="width: 100%">
-                        <el-table-column type="index" label="#"/>
+                        <el-table-column type="index" label="#" width="30"/>
                         <el-table-column label="商品" header-align="center" align="left" :show-overflow-tooltip="true" >
                             <template slot-scope="subscope">
                                 <img :src="subscope.row.wholesale_item_d_o.image_value + '@100w_2e'" class="item" />
@@ -26,7 +26,30 @@
                             <template slot-scope="subscope">{{subscope.row.pay_real | money2str}}</template>
                         </el-table-column>
                         <el-table-column prop="hd_status_title" label="配送状态" align="center" width="100" />
-                        <el-table-column prop="status_title" label="状态" align="center" width="100" />
+                        <el-table-column prop="status_title" label="状态" align="center" width="100" >
+                            <template slot-scope="subscope">
+                                <span v-if="subscope.row.status == 9">
+                                    {{subscope.row.closed_reason_title}}
+                                </span>
+                                <span v-else>
+                                    <span v-if="subscope.row.last_refund_status == 1">
+                                        退款申请中
+                                    </span>
+                                    <span v-else-if="subscope.row.last_refund_status == 3">
+                                        退款已驳回
+                                    </span>
+                                    <span v-else-if="subscope.row.last_refund_status == 7">
+                                        已退{{subscope.row.refund_num}}{{subscope.row.wholesale_item_d_o.unit}}{{subscope.row.refund_real | money2str}}元
+                                    </span>
+                                    <span v-else-if="subscope.row.last_refund_status == 9">
+                                        退款已关闭
+                                    </span>
+                                    <span v-else>
+                                        {{subscope.row.status_title}}
+                                    </span>
+                                </span>
+                            </template>
+                        </el-table-column>
                         <el-table-column label="操作" align="center" width="80">
                             <template slot-scope="subscope">
                                 <el-dropdown @command="handleMenuItemClick">
