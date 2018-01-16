@@ -8,16 +8,16 @@
       <el-collapse v-model="activeNames" @change="handleChange" accordion>
           <el-collapse-item title="商品信息（不可更改）" name="1">
               <el-form :inline="true"  label-width="100px" class="demo-ruleForm">
-                  <el-form-item label="商品类目" prop="goodsName">
-                      <el-input v-model="ruleForm.goodsName" disabled></el-input>
+                  <el-form-item label="商品类目">
+                      <el-input v-model="spuDO.category_id" disabled></el-input>
                   </el-form-item>
-                  <el-form-item label="品牌" prop="goodsName">
+                  <el-form-item label="品牌">
                       <el-input v-model="spuDO.brand" disabled></el-input>
                   </el-form-item>
-                  <el-form-item label="产地" prop="goodsName">
-                      <el-input v-model="ruleForm.goodsName" disabled></el-input>
+                  <el-form-item label="产地">
+                      <el-input v-model="spuDO.orign" disabled></el-input>
                   </el-form-item>
-                  <el-form-item label="销售单位" prop="goodsName">
+                  <el-form-item label="销售单位">
                       <el-input v-model="spuDO.unit" disabled></el-input>
                   </el-form-item>
               </el-form>
@@ -171,7 +171,7 @@
                   if (resp.data.spu_prop_d_o_list && resp.data.spu_prop_d_o_list.length > 0) {
                       resp.data.spu_prop_d_o_list.forEach(function (value, index, array) {
                           value.inputVisible = false // 自己加的 是否显示添加input
-                          value.propValues = value.propValue.split(',')
+                          value.propValues = value.prop_value.split(',')
                           value.checkedProp = []
                           value.propValues.forEach(function (prop, key, array) {
                               let Obj = {
