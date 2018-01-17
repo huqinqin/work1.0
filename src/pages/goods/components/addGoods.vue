@@ -46,15 +46,16 @@
               <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                   <el-form-item label="商品主图" prop="goodsName">
                       <el-upload
-                          class="upload-demo"
-                          drag
-                          action="/cgi/upload/file/image"
-                          :file-list="fileList"
-                          multiple>
-                          <i class="el-icon-upload"></i>
-                          <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
-                          <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb,上传1-5张</div>
+                          action="/cgi/upload/file/item/image"
+                          list-type="picture-card"
+                          :on-preview="handlePictureCardPreview"
+                          :on-change="handleUrlChange"
+                          :on-remove="handleRemove">
+                          <i class="el-icon-plus"></i>
                       </el-upload>
+                      <el-dialog :visible.sync="dialogVisible" size="tiny">
+                          <img width="100%" :src="dialogImageUrl" alt="">
+                      </el-dialog>
                   </el-form-item>
               </el-form>
           </el-collapse-item>
@@ -138,6 +139,8 @@
       name : 'addGoods',
       data () {
           return {
+              dialogImageUrl: '',
+              dialogVisible: false,
               activeNames: ['1'],
               stepActive: 3,
               spuDO: {},
@@ -164,7 +167,7 @@
               },
               inputValue: '',
               // 上传商品图片列表
-              fileList : [],
+              fileList : []
           }
       },
       methods:{
@@ -173,26 +176,26 @@
           },
           getSpudtoist () {
               spuService.getSpudtoist(this.$route.query.id).then((resp) => {
-                  console.log(resp.data.spu_prop_d_o_list)
+                  console.log(resp.data.spu_prop_d_o_list);
                   if (resp.data.spu_prop_d_o_list && resp.data.spu_prop_d_o_list.length > 0) {
                       resp.data.spu_prop_d_o_list.forEach(function (value, index, array) {
                           value.inputVisible = false // 自己加的 是否显示添加input
-                          value.propValues = value.prop_value.split(',')
-                          value.checkedProp = []
+                          value.propValues = value.prop_value.split(',');
+                          value.checkedProp = [];
                           value.propValues.forEach(function (prop, key, array) {
                               let Obj = {
                                   isCanEdit: false,
                                   isSelected: false,
                                   value: prop
-                              }
+                              };
                               array[key] = Obj
                           })
                       })
                   }
                   resp.data.child_spu_d_t_o_list.forEach(function (value, index, array) {
-                      value.storage = ''
+                      value.storage = '';
                       value.price = ''
-                  })
+                  });
                   this.spuDO = resp.data
               }, (msg) => {
                   console.log(msg)
@@ -201,9 +204,8 @@
           showInput (item) {
               item.inputVisible = true
           },
-
           handleInputConfirm (item) {
-              let inputValue = this.inputValue
+              let inputValue = this.inputValue;
               if (inputValue) {
                   item.propValues.push({
                       value: inputValue,
@@ -211,13 +213,17 @@
                       isSelected: false,
                   })
               }
-              item.inputVisible = false
-              this.inputValue = ''
+              item.inputVisible = false;
+              this.inputValue = '';
           },
           deleteTag (proplist, key) {
               proplist.splice(key, 1)
           },
-          submitForm () {
+          submitForm() {
+              let imagesUrl = '';
+              this.fileList.forEach(function (value, index, array) {
+                  imagesUrl = (imagesUrl == "") ? value.response.data.value : imagesUrl + "," + value.response.data.value;
+              });
               let wholesale_item = {
                   'itemName': this.ruleForm.itemName,
                   'promotionTitle': this.ruleForm.promotionTitle,
@@ -232,15 +238,16 @@
                   'unit': this.spuDO.unit,
                   'spec': '无描述',
                   'categoryId': this.spuDO.categoryId,
-              }
-              let props = []
+                  'url': imagesUrl
+              };
+              let props = [];
               this.spuDO.child_spu_d_t_o_list.forEach(function (value, index, array) {
-                  let propValue = {}
-                  let spu_id = 0
+                  let propValue = {};
+                  let spu_id = 0;
                   value.spu_prop_d_o_list.forEach(function (val, key, array) {
-                      let objKey = val.name
-                      propValue[objKey] = val.prop_value
-                      spu_id = val.spu_id
+                      let objKey = val.name;
+                      propValue[objKey] = val.prop_value;
+                      spu_id = val.spu_id;
                       props.push(
                           {
                               'price': value.price * 100,
@@ -256,13 +263,13 @@
                       )
                   })
 
-              })
+              });
               this.spuDO.spu_prop_d_o_list.forEach(function (value, index, array) {
-                  let propValue = {}
-                  let objKey = value.name
-                  let porpslist = []
+                  let propValue = {};
+                  let objKey = value.name;
+                  let porpslist = [];
                   value.checkedProp.forEach(function (val, key, array) {
-                      propValue[objKey] = val.value
+                      propValue[objKey] = val.value;
                       props.push(
                           {
                               'attribute': 0,
@@ -279,17 +286,28 @@
                           }
                       )
                   })
-              })
+              });
               let params = {
                   item_props: JSON.stringify(props),
                   wholesale_item: JSON.stringify(wholesale_item),
-              }
+              };
               goodsService.addWithProps(params).then((data) => {
-                  this.$ltsMessage.show({type: 'success', message:"新增成功"})
+                  this.$ltsMessage.show({type: 'success', message: "新增成功"})
               }, (msg) => {
                   this.$ltsMessage.show({type: 'error', message: msg.error_message})
-              })
+              });
           },
+          handleRemove(file, fileList) {
+              console.log(file, fileList);
+          },
+          handlePictureCardPreview(file) {
+              this.dialogImageUrl = file.url;
+              this.dialogVisible = true;
+          },
+          handleUrlChange(file, fileList){
+              this.fileList = fileList;
+              console.log(file);
+          }
       },
       mounted () {
           this.getSpudtoist()
@@ -320,5 +338,4 @@
           width: 100%;
       }
   }
-
 </style>
