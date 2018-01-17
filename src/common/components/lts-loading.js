@@ -1,14 +1,14 @@
 import {Loading} from 'element-ui'
-let loadingInstance = ''
+let loadingInstance;
 export default {
-  show (Object) {
-    const opotion = Object ? {
+  show (object = {}) {
+    const option = Object.assign({
       lock: true,
       text: '正在加载中',
-      spinner: 'el-icon-loading',
-      background: 'rgba(0, 0, 0, 0.7)'
-    } : ''
-    loadingInstance = Loading.service(opotion)
+      spinner: '',
+      background: 'hsla(0,0%,100%,.7)'
+    }, object);
+    loadingInstance = Loading.service(option)
   },
   close () {
     loadingInstance.close()

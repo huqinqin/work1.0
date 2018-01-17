@@ -54,3 +54,15 @@ server {
     }
 }
 ```
+
+### 定制组件
+- lts-dropdown 下拉菜单
+- lts-editor 编辑器
+- lts-loading 全局loading
+- lts-location 行政区划联动选择器
+- lts-message
+- lts-messageBox
+- lts-printer 打印机选择器 【未完全实现】
+- lts-search-form 列表页头部筛选表单
+- lts-table 列表
+- lts-toast 提示器
