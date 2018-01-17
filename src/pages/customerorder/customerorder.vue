@@ -66,7 +66,7 @@
                              placement="left"
                              width="400"
                              trigger="click">
-                             <el-form  label-width="50px" class="demo-ruleForm">
+                             <el-form  label-width="70px" class="demo-ruleForm">
                                  <el-form-item  prop="name" v-for="prop in scope.row.item_prop_value_maps" :label="prop.prop_name" :key="prop.prop_name">
                                      <el-radio-group v-model="prop.checked_prop" >
                                          <el-radio-button  v-for="propvalue in prop.prop_values" :label="propvalue.value" :disabled="!propvalue.can_checked" :key="propvalue.value" :click="checkedProp(prop,scope.row)"></el-radio-button>

@@ -1,6 +1,6 @@
 <!--suppress ALL -->
 <template>
-  <div>
+  <div class="addSpuSpec">
     <el-steps :active="stepActive" align-center style="padding-bottom:12px;margin-bottom:12px;">
       <el-step title="步骤1" description="选择并确定类目"></el-step>
       <el-step title="步骤2.1" description="完善产品基本信息"></el-step>
@@ -64,7 +64,7 @@
                       <label class="el-upload-list__item-status-label removeprop" @click="removeProp(spuSpecList,index)" v-if="value.isDelete"><i class="el-icon-close"  ></i></label>
                     </el-form-item>
                     <el-form-item>
-                      <el-tag v-for="(val,key) in value.prop_values" :key="val.value" :closable="val.isCanEdit"  @close="deleteTag(value.propValues,key)">
+                      <el-tag v-for="(val,key) in value.prop_values" :key="val.value" :closable="val.isCanEdit"  @close="deleteTag(value.prop_values,key)">
                         <el-checkbox name="type" @change="chcekedProp(value,val)" v-model="val.isSelected">{{val.value}}</el-checkbox>
                       </el-tag>
                       <el-input
@@ -72,7 +72,7 @@
                         v-if="value.inputVisible"
                         v-model="inputValue"
                         size="small"
-                        @blur="handleInputConfirm(value,value.propValues,'spec')"
+                        @blur="handleInputConfirm(value,value.prop_values,'spec')"
                       >
                       </el-input>
                       <el-button  class="button-new-tag" v-else size="small" @click="showInput(value,'spec')">+ 添加</el-button>
@@ -99,28 +99,33 @@
                 </div>
               </div>
             </el-card>
+            <el-card class="box-card" v-show="settingSwitch == 'info'" style="margin-top: 20px">
+                <div slot="header" class="clearfix">
+                    <span>其他属性设置</span>
+                </div>
+                <div class="specbox">
+                    <el-form  label-width="23%" :inline="true" class="propsBox">
+                        <el-form-item  style="width:50%"  v-for="(value,index) in otherSpecList" :key="value.id" :label="value.name" >
+                            <el-select
+                                v-model="value.checkedProp"
+                                multiple
+                                filterable
+                                allow-create
+                                default-first-option
+                                placeholder="请选择属性值">
+                                <el-option
+                                    v-for="item in value.prop_values"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-form>
+                </div>
+            </el-card>
         </div>
       </transition>
-        <div class="spuOtherSpu">
-            <el-form  label-width="12%" :inline="true" class="propsBox">
-                <el-form-item style="width:31%"  v-for="(value,index) in otherSpuList" :key="value.id" :label="value.name" >
-                    <el-select
-                        v-model="value.checkedProp"
-                        multiple
-                        filterable
-                        allow-create
-                        default-first-option
-                        placeholder="请选择属性值">
-                        <el-option
-                            v-for="item in value.prop_values"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-            </el-form>
-        </div>
       <el-button type="primary" @click="addSpu()" class="addSpu">添加产品</el-button>
     </div>
   </div>
@@ -142,41 +147,46 @@
               spuAttrList: [],
               saleSpec: '',
               spuSpecList: [],
-              otherSpuList : [],
+              otherSpecList : [],
               selectedSpecList: [],
               postSelectedSpecList: [],
               showPreview: true,
           }
       },
       mounted() {
-          categoryService.getCateProps(this.$route.params.spuInfo.categoryId,true).then((resp) => {
-              resp.data.sku_props.forEach(function (value, index, array) {
-                  value.inputVisible = false // 自己加的 是否显示添加input
-                  value.isDelete = false //自己加的 单条是否可删除
-                  value.isSelect = false //自己加的 单条是否被选中
-                  value.isSearch = false //自己加的 可搜索
-                  value.isShow = false //自己加的 可展示
-                  value.prop_values.forEach(function (prop, key, array) {
-                      let Obj = {
-                          isCanEdit: false,
-                          isSelected: false,
-                          value: prop
-                      }
-                      array[key] = Obj
+          categoryService.getCategoryProps(this.$route.params.spuInfo.categoryId,true).then((resp) => {
+              if(resp.data.sku_props.length > 0){
+                  resp.data.sku_props.forEach(function (value, index, array) {
+                      value.inputVisible = false // 自己加的 是否显示添加input
+                      value.isDelete = false //自己加的 单条是否可删除
+                      value.isSelect = false //自己加的 单条是否被选中
+                      value.isSearch = false //自己加的 可搜索
+                      value.isShow = false //自己加的 可展示
+                      value.prop_values.forEach(function (prop, key, array) {
+                          let Obj = {
+                              isCanEdit: false,
+                              isSelected: false,
+                              value: prop
+                          }
+                          array[key] = Obj
+                      })
                   })
-              })
-              resp.data.other_props.forEach(function (value, index, array) {
-                  value.checkedProp = [];
-                  value.prop_values.forEach(function(val,key,array){
-                      let Obj = {
-                          value: false,
-                          label: val
-                      }
-                      array[key] = Obj
+              }
+              this.spuSpecList = resp.data.sku_props
+              if(resp.data.other_props.length > 0){
+                  resp.data.other_props.forEach(function (value, index, array) {
+                      value.checkedProp = [];
+                      value.prop_values.forEach(function (spec, key, array) {
+                          let Obj = {
+                              value:spec,
+                              label: spec,
+                          }
+                          array[key] = Obj
+                      })
                   })
-              })
-              this.spuSpecList = resp.data.sku_props;
-              this.otherSpuList = resp.data.other_props;
+              }
+              this.otherSpecList = resp.data.other_props;
+
           })
       },
       methods:{
@@ -282,7 +292,7 @@
                   'search': spuSpec.isSearch,
                   'sku': true,
                   'name': spuSpec.name,
-                  'valueType': 0,
+                  'type': 0,
                   'propValue': prop.value,
               }
           },
@@ -323,7 +333,7 @@
                       'isSelect': false,// 自己加的
                       'name': this.specName,
                       'propValue': '',
-                      'prop_values': [],
+                      'propValues': [],
                   }
               )
               this.specName = ''
@@ -338,7 +348,7 @@
                       'isSelect': false,// 自己加的
                       'name': this.specName,
                       'propValue': '',
-                      'prop_values': [],
+                      'propValues': [],
                   }
               )
               this.specName = ''
@@ -348,165 +358,189 @@
               this.showPreview = !this.showPreview
           },
           addSpu () {
+              let props = [];
+              this.otherSpecList.forEach(function(value,index,array){
+                  let Obj = {};
+                  if(value.checkedProp.length > 0){
+                      Obj = Object.assign({},Object,value);
+                      Obj.propValue =  value.checkedProp.join(",");
+                      Obj.valueType =  value.value_type;
+                      Obj.multiSelect =  value.multi_select;
+                      props.push(Obj);
+                  }
+              })
+              console.log(props);
               let params = {
                   spu_request: this.$route.params.spuInfo,
                   spec: this.$route.params.spuInfo.saleSpec,
                   child_spu_request_list: this.postSelectedSpecList,
+                  props : props,
               }
               spuService.addSpu(params).then((data) => {
                   if (data.success) {
-                      location.href = 'http://work.lts.com:8085/goods#/addGoods?id=' + data.data
+                      location.href = '/goods#/addGoods?id=' + data.data
                   }
-              },(msg)=>{
-                  this.$ltsMessage.show({type:'error',message:msg.error_message})
               })
           },
     },
   }
 </script>
 <style lang="less">
-  .spuSpecBox{
-    position: relative;
-    z-index: 1111;
-  }
-  .shuffBox:last-child{
-  }
-  .shuffParentBox {
-    .preview{
-      border:solid 1px #409EFF;
-    }
-  }
+    .shuffBox{
+        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .container{
+            min-width: 200px;
+            display: flex;
+        }
+        .specInput{
+            width:150px;
+            padding: 0 10px;
+        }
+        .cell {
+            display: inline-block;
+            margin-right: -1px;
+            margin-bottom: -1px;
+            font-size: 13px;
+            .specValue{
+                width:100px;
+                height:35px;
+                line-height: 35px;
+            }
 
+        }
+        .cell-move {
+            transition: transform 1s;
+        }
+    }
+    .spuSpecBox{
+        position: relative;
+        z-index: 1111;
+    }
+    .shuffBox:last-child{
+    }
+    .addSpuSpec{
 
-  .shuffBox{
-    text-align: center;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .container{
-      min-width: 200px;
-      display: flex;
-    }
-    .specInput{
-      width:150px;
-      padding: 0 10px;
-    }
-    .cell {
-      display: inline-block;
-      margin-right: -1px;
-      margin-bottom: -1px;
-      font-size: 13px;
-      .specValue{
-        width:100px;
-        height:35px;
-        line-height: 35px;
-      }
+        .shuffParentBox {
+            .preview{
+                border:solid 1px #409EFF;
+            }
+        }
+        .slide-fade-enter-active {
+            transition: all .3s ease;
+        }
+        .slide-fade-leave-active {
+            transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        }
+        .slide-fade-enter, .slide-fade-leave-to
+            /* .slide-fade-leave-active for below version 2.1.8 */ {
+            transform: translateX(10px);
+            opacity: 0;
+        }
+        .cart-box{
+            position: relative;
+        }
+        .cartbottom{
+            position: absolute;
+            right:3px;
+            bottom:0;
+            color: #000;
+            .el-tag{
+                color: #333;
+            }
+            .num{
+                color: #409EFF;
+            }
+        }
+        .specbox .el-tag{
+            margin-top: 4px;
+        }
 
-    }
-    .cell-move {
-      transition: transform 1s;
-    }
-  }
-  .slide-fade-enter-active {
-    transition: all .3s ease;
-  }
-  .slide-fade-leave-active {
-    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-  }
-  .slide-fade-enter, .slide-fade-leave-to
-    /* .slide-fade-leave-active for below version 2.1.8 */ {
-    transform: translateX(10px);
-    opacity: 0;
-  }
-  .cart-box{
-    position: relative;
-  }
-  .cartbottom{
-    position: absolute;
-    right:3px;
-    bottom:0;
-    color: #000;
-    .el-tag{
-      color: #333;
-    }
-    .num{
-      color: #409EFF;
-    }
-  }
-  .specbox .el-tag{
-    margin-top: 4px;
-  }
+        .el-tag + .el-tag {
+            margin-left: 10px;
+        }
+        .button-new-tag {
+            margin-left: 10px;
+            height: 32px;
+            line-height: 30px;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        .input-new-tag {
+            width: 90px;
+            margin-left: 10px;
+            vertical-align: bottom;
+        }
+        .addSpec{
+            margin-left: 80px;
+        }
+        .specitem .el-form{
+            background-color: rgba(249,252,255,1);
 
-  .el-tag + .el-tag {
-    margin-left: 10px;
-  }
-  .button-new-tag {
-    margin-left: 10px;
-    height: 32px;
-    line-height: 30px;
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-  .input-new-tag {
-    width: 90px;
-    margin-left: 10px;
-    vertical-align: bottom;
-  }
-  .addSpec{
-    margin-left: 80px;
-  }
-  .specitem .el-form{
-    background-color: rgba(249,252,255,1);
+            border-radius: 6px;
+            margin-bottom: 10px;
+            padding: 10px 0px;
+            transition: all ease .2s;
+            overflow: hidden;
+        }
+        .el-upload-list__item-status-label {
+            position: absolute;
+            left: -186px;
+            top: -17px;
+            width: 146px;
+            height: 46px;
+            background: #13ce66;
+            text-align: center;
+            transform: rotate(-45deg);
+            box-shadow: 0 1px 1px #ccc;
+            display: block;
+        }
+        .el-upload-list__item-status-label i{
+            font-size: 24px;
+            margin-top: 16px;
+            transform: rotate(44deg);
+            color: #fff;
+            font-weight: bold;
 
-    border-radius: 6px;
-    margin-bottom: 10px;
-    padding: 10px 0px;
-    transition: all ease .2s;
-    overflow: hidden;
-  }
-  .el-upload-list__item-status-label {
-    position: absolute;
-    left: -186px;
-    top: -17px;
-    width: 146px;
-    height: 46px;
-    background: #13ce66;
-    text-align: center;
-    transform: rotate(-45deg);
-    box-shadow: 0 1px 1px #ccc;
-    display: block;
-  }
-  .el-upload-list__item-status-label i{
-    font-size: 24px;
-    margin-top: 16px;
-    transform: rotate(44deg);
-    color: #fff;
-    font-weight: bold;
+        }
+        .removeprop{
+            background-color: #ff4040;
+            display: none;
+            .el-icon-close {
+                display: inline-block;
+                position: absolute;
+                top: 0px;
+                left: 60px;
+                cursor: pointer;
+                opacity: 0.75;
+                color: white
+            }
+        }
+        .el-form:hover{
+            .removeprop{
+                display: block !important;
+            }
+            .el-upload-list__item-status-label{
+                display: none;
+            }
+        }
+        .propsBox{
+            .el-form-item{
+                margin-right: 0px;
+            }
+            .el-form-item__content{
+                width: 77%;
+                .el-select{
+                    width:100%;
+                }
+            }
+        }
+        .addSpu{
+            margin-top: 20px;
+            text-align: center;
+        }
+    }
 
-  }
-  .removeprop{
-    background-color: #ff4040;
-    display: none;
-    .el-icon-close {
-      display: inline-block;
-      position: absolute;
-      top: 0px;
-      left: 60px;
-      cursor: pointer;
-      opacity: 0.75;
-      color: white
-    }
-  }
-  .el-form:hover{
-    .removeprop{
-      display: block !important;
-    }
-    .el-upload-list__item-status-label{
-      display: none;
-    }
-  }
-  .addSpu{
-      margin-top: 20px;
-      text-align: center;
-  }
 </style>
