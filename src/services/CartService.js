@@ -11,8 +11,8 @@ export default class CartService extends BaseService{
    * remark 添加购物车
    */
   static putCartPlus(uid,param,checkedSpu){
-      let params
-      params = {
+      checkedSpu.spuId = checkedSpu.spu_id;
+      let params = {
           user_id: uid,
           num: param.num,
           carrier_uid: 158635,
@@ -28,7 +28,7 @@ export default class CartService extends BaseService{
               }
           ),
       };
-      return super.getRequest('//wholesale/cart/putCartPlus',params);
+      return super.getRequest('/store/cart/putCartPlus',params);
   }
 
   /**
@@ -45,6 +45,6 @@ export default class CartService extends BaseService{
           user_id: userId,
           order_type : 'valet_order',
       };
-      return super.getRequest('/wholesale/cart/queryCartList',params)
+      return super.getRequest('/store/cart/queryCartList',params)
   }
 }

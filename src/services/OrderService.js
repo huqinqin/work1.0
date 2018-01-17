@@ -28,6 +28,6 @@ export default class OrderService extends BaseService{
       let params = {
         wholesale_trade_request : JSON.stringify(param)
       };
-      return super.getRequest('/wholesale/trade/create_trade',params)
+      return super.getRequest('/store/trade/create_trade',params)
     }
 }
