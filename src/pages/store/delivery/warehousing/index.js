@@ -1,5 +1,5 @@
 import Lib from '@/common/js/'
-import App from './warehousing.vue'
+import App from './index.vue'
 import Vue from 'vue'
 import Router from 'vue-router'
 import warehousing from './components/warehousing'
