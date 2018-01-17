@@ -263,7 +263,7 @@
                 },
                 itemTable: {
                     api: {
-                        method: '/wholesale/item/getList',
+                        method: '/store/item/getList',
                         bizparams: {
                             user_id: '',
                         },
@@ -296,7 +296,7 @@
                         '价格': {'value': 'price', 'type': 'text'},
                         '类型': {'value': 'discount_type', 'type': 'text'},
                         '订单数量': {'value': 'num', 'type': 'text'},
-                        'ID': {'value': 'id', 'type': 'text'},
+                        '属性': {'value': 'prop_value', 'type': 'text'},
                         '输入数量': {'value': 'num', 'type': 'inputNumber', 'width': '200px'},
                     },
                     pagination: {
