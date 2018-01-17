@@ -20,6 +20,7 @@
         components: {ltsLocation},
         data() {
             return {
+                isSubmiting: false,
             }
         },
         methods: {

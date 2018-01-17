@@ -31,6 +31,7 @@
         components: {ltsLocation},
         data() {
             return {
+                isSubmiting: false,
                 openCode: 'LTS AAA',
                 form: {
                     bizName: '',

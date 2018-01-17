@@ -21,11 +21,9 @@
             <el-form-item label="工程商名称" prop="shopName">
                 <el-input v-model="form.shopName" style="width: 500px" />
             </el-form-item>
-
             <el-form-item label="所在地区" prop="location">
                 <lts-location v-model="form.location" :labels.sync="locationLabel"/>
             </el-form-item>
-
             <el-form-item label="详细地址" class="address" prop="address">
                 <el-input v-model="form.address" style="width: 700px" />
             </el-form-item>
@@ -39,7 +37,8 @@
                 <el-input type="textarea" v-model="form.remark" :autosize="{minRows:4}" style="width: 700px" />
             </el-form-item>
             <el-form-item label="">
-                <el-button type="primary" @click="submit">提交</el-button>
+                <el-button type="primary" @click="submit" v-if="!isSubmiting" >提交</el-button>
+                <el-button type="primary" :loading="true" v-else>提交中</el-button>
                 <el-button type="error" @click="resetForm('form')">清空</el-button>
             </el-form-item>
         </el-form>
@@ -61,6 +60,7 @@
                 }
             };
             return {
+                isSubmiting: false,
                 locationLabel: [],
                 form: {
                     account: '',
