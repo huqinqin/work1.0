@@ -48,12 +48,9 @@
         methods: {
             handleMenuItemClick (command, item) {
                 switch (command) {
-                    case 'detail':
-                        alert('详情：' + item.shop_name)
-                        break
                     case 'edit':
-                        this.$router.push({path: `/edit/${item.biz.id}`})
-                        break
+                        this.$router.push({path: `/edit/${item.biz.id}`});
+                        break;
                     case 'delete':
                         this.$ltsMessage.show('info','删除：' + item.shop.shop_name);
                         break

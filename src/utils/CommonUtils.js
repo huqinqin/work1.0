@@ -13,18 +13,21 @@ export default {
      */
     getCascaderFullLabelByValue(options = [], value = []){
         if (!options || options.length === 0 || !value || value.length === 0) {
-            return '';
+            return [];
         }
         options = Object.assign([], options);
         value = Object.assign([], value);
-        let fullLable = '';
+        let lableArray = [];
+        this._getCascaderFullLabelByValue(lableArray, options, value);
+        return lableArray;
+    },
+    _getCascaderFullLabelByValue(lableArray = [], options = [], value = []){
         options.forEach((option) => {
             if (option.value == value[0]) {
-                fullLable += option.label;
+                lableArray.push(option.label);
                 value.shift();
-                fullLable += this.getCascaderFullLabelByValue(option.children, value);
+                this._getCascaderFullLabelByValue(lableArray, option.children, value);
             }
         });
-        return fullLable;
     }
 }

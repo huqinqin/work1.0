@@ -1,6 +1,6 @@
 import Lib from '@/common/js/'
-import App from '@/pages/merchants/merchants.vue'
-import RouterView from './router'
+import App from './index.vue'
+import RouterView from './router/index'
 import Vue from 'vue'
 
 Vue.config.productionTip = false

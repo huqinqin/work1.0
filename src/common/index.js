@@ -3,6 +3,7 @@ import ltsSearchForm from './components/lts-search-from.vue'
 import ltsDropdown from './components/lts-dropdown.vue'
 import ltsPrinter from './components/lts-printer.vue'
 import ltsEditor from './components/lts-editor.vue'
+import ltsLocation from './components/lts-location'
 
 // UI入口，调用：import {ltsDropdown,ltsSearchForm,ltsTable...} from 'ui'
 export {
@@ -10,5 +11,6 @@ export {
     ltsSearchForm,
     ltsTable,
     ltsEditor,
-    ltsPrinter
+    ltsPrinter,
+    ltsLocation
 }
