@@ -42,7 +42,8 @@ export default class CartService extends BaseService{
   static queryCartList(userId){
       let params
       params = {
-          user_id: userId
+          user_id: userId,
+          order_type : 'valet_order',
       };
       return super.getRequest('/wholesale/cart/queryCartList',params)
   }

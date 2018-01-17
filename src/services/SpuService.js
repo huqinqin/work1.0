@@ -45,7 +45,7 @@ export  default class SpuService extends BaseService{
             spec : JSON.stringify({unit : param.spec}),
             child_spu_request_list : JSON.stringify(param.child_spu_request_list),
         };
-        return super.getRequest("/spu/add",params);
+        return super.postRequest("/spu/add",params);
     }
     /**
      * return datalist
