@@ -7,7 +7,7 @@
 
 <script>
     import {ltsTable} from 'ui'
-    import storeService from '@/services/StoreService.js'
+    import storeService from '@/services/StoreService'
     export default {
         components: {ltsTable},
         data () {
@@ -27,17 +27,16 @@
                     datalist: [],
                     tableDataForm: 'api', // json
                     tableField: {
-                        '门店名称': {'value': 'shop_d_o.shop_name', 'type': 'text'},
-                        '地址': {'value': 'shop_d_o.address', 'type': 'text'},
-                        '联系人': {'value': 'shop_d_o.contact', 'type': 'text'},
-                        '联系号码': {'value': 'shop_d_o.contact_phone', 'type': 'text'},
-                        '手机': {'value': 'shop_d_o.contact_mobile', 'type': 'text'},
-                        '状态': {'value': 'biz_d_o.status_title', 'type': 'text'},
+                        '门店名称': {value: 'shop.shop_name', type: 'text'},
+                        '地址': {value: 'shop.address', type: 'text'},
+                        '联系人': {value: 'shop.contact', type: 'text', width: '150px'},
+                        '联系号码': {value: 'shop.contact_phone', type: 'text', width: '120px'},
+                        '状态': {value: 'biz.status_title', type: 'text', width: '80px'},
                         '操作': {
-                            'value': '',
-                            'type': 'menu',
-                            'width': '200',
-                            'menulist': [
+                            value: '',
+                            type: 'menu',
+                            width: '160',
+                            menulist: [
                                 {value: '编辑', command: 'edit' },
                                 {value: '删除', command: 'delete', type:'' },
                             ]
@@ -49,15 +48,11 @@
         methods: {
             handleMenuItemClick (command, item) {
                 switch (command) {
-                    case 'detail':
-                        alert('详情：' + item.shop_name)
-                        break
                     case 'edit':
-                      const id = item.id
-                      this.$router.push({path: `/edit/${id}`})
-                        break
+                        this.$router.push({path: `/edit/${item.biz.id}`});
+                        break;
                     case 'delete':
-                        alert('删除：' + item.shop_name)
+                        this.$ltsMessage.show('info','删除：' + item.shop.shop_name);
                         break
                 }
             },

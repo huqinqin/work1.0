@@ -1,5 +1,5 @@
 import BaseService from "./abstract/BaseService";
-
+import md5 from 'md5'
 export default class StoreService extends BaseService {
 
     /**
@@ -25,10 +25,17 @@ export default class StoreService extends BaseService {
      * @auth taohua
      * @remark 新增子市场
      */
-    static add(formData) {
-        let params = {
-            add_child_market_request: JSON.stringify(formData)
-        }
+    static add(params = {
+        account : null,
+        password : null,
+        store_name : null,
+        address : null,
+        lc_code : null,
+        contact : null,
+        contact_phone : null,
+        contact_mobile : null,
+    }) {
+        params.password = md5(params.password)
         return super.postRequest('/hq/store/add', params)
     }
 

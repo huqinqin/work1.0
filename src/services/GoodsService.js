@@ -1,19 +1,19 @@
 import BaseService from "./abstract/BaseService";
 export default class GoodsService extends BaseService{
   /**
-   * wholesale_item
+   * store_item
    * item_props
    * @param params
    */
   static addWithProps(params){
-    return super.getRequest('/wholesale/item/add_with_props',params);
+    return super.getRequest('/store/item/add_with_props',params);
   }
   /**
-   * wholesale_item_query
+   * store_item_query
    */
   static getManageList(){
     let params = {};
-    return super.getRequest('/wholesale/item/get_manage_list',params)
+    return super.getRequest('/store/item/get_manage_list',params)
   }
   /**
    * itemId
@@ -22,14 +22,14 @@ export default class GoodsService extends BaseService{
     let params = {
       item_id : id
     };
-    return super.getRequest('/wholesale/item/get_with_props',params)
+    return super.getRequest('/store/item/get_with_props',params)
   }
   /**
-   * wholesale_item
+   * store_item
    * item_props_list
    */
   static modifyWithProps(params){
-    return super.getRequest('/wholesale/item/modify_with_props',params)
+    return super.getRequest('/store/item/modify_with_props',params)
   }
   /**
   * @returns {*}
@@ -37,8 +37,9 @@ export default class GoodsService extends BaseService{
   */
   static getList(userId){
       let params = {
-          user_id : userId
+          user_id : userId,
+          order_type : 'valet_order'
       };
-      return super.getRequest('/wholesale/item/getList',params);
+      return super.getRequest('/store/item/getList',params);
   }
 }
