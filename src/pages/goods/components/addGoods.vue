@@ -24,22 +24,22 @@
           </el-collapse-item>
           <el-collapse-item title="商品信息（自定义）" name="2">
               <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                  <el-form-item label="名称" prop="goodsName">
-                      <el-input v-model="ruleForm.goodsName"></el-input>
+                  <el-form-item label="名称" prop="itemName">
+                      <el-input v-model="ruleForm.itemName"></el-input>
                   </el-form-item>
-                  <el-form-item label="销售标题" prop="goodsName">
-                      <el-input v-model="ruleForm.goodsName"></el-input>
+                  <el-form-item label="销售标题" prop="promotionTitle">
+                      <el-input v-model="ruleForm.promotionTitle"></el-input>
                   </el-form-item>
-                  <el-form-item label="商品标签" prop="goodsName">
-                      <el-input v-model="ruleForm.goodsName"></el-input>
+                  <el-form-item label="商品标签" prop="tag">
+                      <el-input v-model="ruleForm.tag"></el-input>
                   </el-form-item>
-                  <el-form-item label="商品排序" prop="goodsName">
-                      <el-input v-model="ruleForm.goodsName"></el-input>
+                  <el-form-item label="商品排序" prop="rank">
+                      <el-input v-model="ruleForm.rank"></el-input>
                   </el-form-item>
-                  <el-form-item label="商品状态">
-                      <el-select v-model="ruleForm.region" placeholder="请选择商品状态">
-                          <el-option label="草稿" value="shanghai"></el-option>
-                          <el-option label="失效" value="beijing"></el-option>
+                  <el-form-item label="商品状态" prop="status">
+                      <el-select v-model="ruleForm.status" placeholder="请选择商品状态">
+                          <el-option label="草稿" value="0"></el-option>
+                          <el-option label="上架" value="1"></el-option>
                       </el-select>
                   </el-form-item>
               </el-form>
@@ -142,18 +142,24 @@
               stepActive: 3,
               spuDO: {},
               ruleForm: {
-                  goodsName: '',
-                  goodsBrand : "",
-                  goodsArea : "",
-                  goodsSpec : "",
-                  goodsPromotionTitle : "",
-                  goodsStatus : "", // 0,删除 -1 失效 1 上架 9 冻结
-                  goodsDetail : "",
+                  itemName: '',
+                  promotionTitle : "",
+                  tag : "",
+                  rank : 0,
+                  status : "", // 0,删除 -1 失效 1 上架 9 冻结
               },
               rules: {
-                  goodsName: [
-                      {required: true, message: '请输入商品名称', trigger: 'blur'},
-                      {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+                  itemName: [
+                      {required: true, message: '请输入商品名称', trigger: 'blur'}
+                  ],
+                  promotionTitle: [
+                      {required: true, message: '请输入销售标题', trigger: 'blur'}
+                  ],
+                  tag: [
+                      {required: true, message: '请输入商品标签', trigger: 'blur'}
+                  ],
+                  status: [
+                      {required: true, message: '请选择商品状态', trigger: 'blur'}
                   ]
               },
               inputValue: '',
@@ -212,6 +218,21 @@
               proplist.splice(key, 1)
           },
           submitForm () {
+              let wholesale_item = {
+                  'itemName': this.ruleForm.itemName,
+                  'promotionTitle': this.ruleForm.promotionTitle,
+                  'rank': this.ruleForm.rank,
+                  'tag': this.ruleForm.tag,
+                  'status': this.ruleForm.status,
+                  'spuId': this.spuDO.id,
+                  'sin': this.spuDO.sin,
+                  'sinr': this.spuDO.sinr,
+                  'price': 100,
+                  'storage': 0,
+                  'unit': this.spuDO.unit,
+                  'spec': '无描述',
+                  'categoryId': this.spuDO.categoryId,
+              }
               let props = []
               this.spuDO.child_spu_d_t_o_list.forEach(function (value, index, array) {
                   let propValue = {}
@@ -259,24 +280,12 @@
                       )
                   })
               })
-              let wholesale_item = {
-                  'itemName': this.ruleForm.goodsName,
-                  'spuId': this.spuDO.id,
-                  'sin': this.spuDO.sin,
-                  'sinr': this.spuDO.sinr,
-                  'price': 100,
-                  'storage': 0,
-                  'unit': this.spuDO.unit,
-                  'spec': '无描述',
-                  'status': 1,
-                  'categoryId': this.spuDO.categoryId,
-              }
               let params = {
                   item_props: JSON.stringify(props),
                   wholesale_item: JSON.stringify(wholesale_item),
               }
               goodsService.addWithProps(params).then((data) => {
-                  console.log(data)
+                  this.$ltsMessage.show({type: 'success', message:"新增成功"})
               }, (msg) => {
                   this.$ltsMessage.show({type: 'error', message: msg.error_message})
               })
