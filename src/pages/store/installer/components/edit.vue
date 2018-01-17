@@ -14,7 +14,7 @@
 <script>
     import {request} from 'ltsutil'
     import {ltsLocation} from 'ui'
-    import installerService from '@/services/InstallerService.js'
+    import installerService from '@/services/InstallerService'
 
     export default {
         components: {ltsLocation},

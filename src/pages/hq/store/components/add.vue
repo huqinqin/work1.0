@@ -47,17 +47,11 @@
 <script>
     import {request, commonUtils} from 'ltsutil'
     import {ltsLocation} from 'ui'
+    import ValidatorConfig from 'config/ValidatorConfig'
     import storeService from '@/services/StoreService'
     export default {
         components: {ltsLocation},
         data() {
-            let validatePass = (rule, value, callback) => {
-               if (value !== this.form.password) {
-                    callback(new Error('两次输入密码不一致!'))
-                } else {
-                    callback()
-                }
-            };
             return {
                 isSubmiting: false,
                 locationLabel: [],
@@ -73,42 +67,17 @@
                     contactPhone: '',
                 },
                 rules:{
-                    account: [
-                        { required: true, message: '请输入登录账号', trigger: 'blur' },
-                        { min: 8, max: 30, message: '长度在 8 到 30 个字符', trigger: 'blur' }
-                    ],
-                    password: [
-                        { required: true, message: '请输入密码', trigger: 'blur' },
-                        { min: 8, max: 30, message: '密码长度在 8 到 30 个字符', trigger: 'blur' }
-                    ],
-                    checkPass: [
-                        { required: true, message: '请输入重复密码', trigger: 'blur' },
-                        { min: 8, max: 30, message: '密码长度在 8 到 30 个字符', trigger: 'blur' },
-                        { validator: validatePass, trigger: 'blur'}
-                    ],
-                    location: [
-                        { required: true, message: '请选择区域', trigger: 'change' }
-                    ],
-                    storeName: [
-                        { required: true, message: '请输入门店名称', trigger: 'blur' },
-                        { min: 4, max: 200, message: '长度在 4 到 200 个字符', trigger: 'blur' }
-                    ],
-                    address: [
-                        { required: true, message: '请输入详细地址', trigger: 'blur' },
-                        { min: 4, max: 200, message: '长度在 4 到 200 个字符', trigger: 'blur' }
-                    ],
-                    contact: [
-                        { required: true, message: '请输入联系人', trigger: 'blur' },
-                        { min: 2, max: 800, message: '长度在 2 到 800 个字符', trigger: 'blur' }
-                    ],
-                    contactMobile: [
-                        { required: true, message: '请输入手机', trigger: 'blur' },
-                        { min: 11, max: 11, message: '长度在11个字符', trigger: 'blur' }
-                    ],
-                    contactPhone: [
-                        { required: true, message: '请输入联系号码', trigger: 'blur' },
-                        { min: 11, max: 16, message: '长度在 11-16 个字符', trigger: 'blur' }
-                    ],
+                    account: ValidatorConfig.account,
+                    password: ValidatorConfig.password,
+                    checkPass: ValidatorConfig.passwordRepeat((rule, value, callback)=>{
+                        ValidatorConfig.checkPasswordRepeat(this.form.password, value, callback)
+                    }),
+                    location: ValidatorConfig.location,
+                    storeName: ValidatorConfig.storeName,
+                    address: ValidatorConfig.address,
+                    contact: ValidatorConfig.contact,
+                    contactMobile: ValidatorConfig.mobile,
+                    contactPhone: ValidatorConfig.phone,
                 },
             }
         },

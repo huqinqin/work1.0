@@ -7,7 +7,7 @@
 
 <script>
     import {ltsTable} from 'ui'
-    import storeService from '@/services/StoreService.js'
+    import storeService from '@/services/StoreService'
     export default {
         components: {ltsTable},
         data () {

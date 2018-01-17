@@ -11,7 +11,7 @@
 <script>
     import {request} from 'ltsutil'
     import {ltsTable, ltsSearchForm} from 'ui'
-    import installerService from '@/services/InstallerService.js'
+    import installerService from '@/services/InstallerService'
 
     export default {
         components: {

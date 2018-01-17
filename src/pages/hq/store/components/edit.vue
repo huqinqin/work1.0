@@ -25,7 +25,7 @@
 <script>
     import {request, commonUtils} from 'ltsutil'
     import {ltsLocation} from 'ui'
-    import storeService from '@/services/StoreService.js'
+    import storeService from '@/services/StoreService'
 
     export default {
         components: {ltsLocation},
