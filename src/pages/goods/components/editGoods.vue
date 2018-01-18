@@ -110,7 +110,7 @@
             </el-collapse-item>
             <el-collapse-item title="商品详情设置" name="4">
                 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
-                    <lts-editor></lts-editor>
+                    <lts-editor ref="Editor"></lts-editor>
                 </el-form>
             </el-collapse-item>
         </el-collapse>
@@ -174,29 +174,28 @@
             handleChange(){
 
             },
-            getSpudtoist () {
-                spuService.getSpudtoist(this.$route.query.id).then((resp) => {
-                    console.log(resp.data.spu_prop_d_o_list);
-                    if (resp.data.spu_prop_d_o_list && resp.data.spu_prop_d_o_list.length > 0) {
-                        resp.data.spu_prop_d_o_list.forEach(function (value, index, array) {
-                            value.inputVisible = false // 自己加的 是否显示添加input
-                            value.propValues = value.prop_value.split(',');
-                            value.checkedProp = [];
-                            value.propValues.forEach(function (prop, key, array) {
-                                let Obj = {
-                                    isCanEdit: false,
-                                    isSelected: false,
-                                    value: prop
-                                };
-                                array[key] = Obj
-                            })
-                        })
-                    }
-                    resp.data.child_spu_d_t_o_list.forEach(function (value, index, array) {
-                        value.storage = '';
-                        value.price = ''
-                    });
-                    this.spuDO = resp.data
+            getWithProps () {
+                goodsService.getWithProps(this.$route.params.id).then((resp) => {
+                    // if (resp.data.spu_prop_d_o_list && resp.data.spu_prop_d_o_list.length > 0) {
+                    //     resp.data.spu_prop_d_o_list.forEach(function (value, index, array) {
+                    //         value.inputVisible = false // 自己加的 是否显示添加input
+                    //         value.propValues = value.prop_value.split(',');
+                    //         value.checkedProp = [];
+                    //         value.propValues.forEach(function (prop, key, array) {
+                    //             let Obj = {
+                    //                 isCanEdit: false,
+                    //                 isSelected: false,
+                    //                 value: prop
+                    //             };
+                    //             array[key] = Obj
+                    //         })
+                    //     })
+                    // }
+                    // resp.data.child_spu_d_t_o_list.forEach(function (value, index, array) {
+                    //     value.storage = '';
+                    //     value.price = ''
+                    // });
+                    this.spuDO = resp.data;console.log(this.spuDO);
                 }, (msg) => {
                     console.log(msg)
                 })
@@ -220,6 +219,7 @@
                 proplist.splice(key, 1)
             },
             submitForm() {
+                let descriptionContent = this.$refs.Editor._data.content;
                 let imagesUrl = '';
                 this.fileList.forEach(function (value, index, array) {
                     imagesUrl = (imagesUrl == "") ? value.response.data.value : imagesUrl + "," + value.response.data.value;
@@ -238,7 +238,8 @@
                     'unit': this.spuDO.unit,
                     'spec': '无描述',
                     'categoryId': this.spuDO.categoryId,
-                    'url': imagesUrl
+                    'urls': imagesUrl,
+                    'description': descriptionContent
                 };
                 let props = [];
                 this.spuDO.child_spu_d_t_o_list.forEach(function (value, index, array) {
@@ -306,12 +307,11 @@
             },
             handleUrlChange(file, fileList){
                 this.fileList = fileList;
-                console.log(file);
             }
         },
         mounted () {
-            this.getSpudtoist()
-        },
+            this.getWithProps()
+        }
     }
 </script>
 <style lang="less" scoped>

@@ -110,7 +110,7 @@
           </el-collapse-item>
           <el-collapse-item title="商品详情设置" name="4">
               <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
-                  <lts-editor></lts-editor>
+                  <lts-editor ref="Editor"></lts-editor>
               </el-form>
           </el-collapse-item>
       </el-collapse>
@@ -220,6 +220,7 @@
               proplist.splice(key, 1)
           },
           submitForm() {
+              let descriptionContent = this.$refs.Editor._data.content;
               let imagesUrl = '';
               this.fileList.forEach(function (value, index, array) {
                   imagesUrl = (imagesUrl == "") ? value.response.data.value : imagesUrl + "," + value.response.data.value;
@@ -238,7 +239,8 @@
                   'unit': this.spuDO.unit,
                   'spec': '无描述',
                   'categoryId': this.spuDO.categoryId,
-                  'url': imagesUrl
+                  'urls': imagesUrl,
+                  'description': descriptionContent
               };
               let props = [];
               this.spuDO.child_spu_d_t_o_list.forEach(function (value, index, array) {

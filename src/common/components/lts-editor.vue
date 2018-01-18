@@ -1,6 +1,6 @@
 <template>
     <div>
-        <vue-html5-editor :content="content" :height="500"></vue-html5-editor>
+        <vue-html5-editor :content="content" @change="updateData" :height="500"></vue-html5-editor>
     </div>
 </template>
 <script>
@@ -30,7 +30,7 @@
             // 上传参数,默认把图片转为base64而不上传
             // upload config,default null and convert image to base64
             upload: {
-                url: '/cgi/upload/file/image',
+                url: '/cgi/upload/file/item/image',
                 headers: {},
                 params: {},
                 fieldName: 'file'
@@ -47,11 +47,11 @@
             // handle response data，return image url
             uploadHandler(responseText){
                 //default accept json data like  {ok:false,msg:"unexpected"} or {ok:true,data:"image url"}
-                var json = JSON.parse(responseText)
-                if (!json.ok) {
+                var json = JSON.parse(responseText);
+                if (!json.success) {
                     this.$ltsMessage.show({type:'error',message:json.msg})
                 } else {
-                    return json.data
+                    return json.data.url;
                 }
             }
         },
@@ -108,6 +108,11 @@
         data(){
             return{
                 content: "",
+            }
+        },
+        methods:{
+            updateData(data){
+                this.content = data;
             }
         }
     }

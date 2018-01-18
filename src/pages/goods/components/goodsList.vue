@@ -85,7 +85,6 @@
     methods:{
       handleMenuItemClick(val,item){
         if(val == 'edit'){
-          console.log(item);
           this.$router.push({name:"editGoods",params : {
             id : item.id,
           }})
