@@ -89,7 +89,6 @@
     }
 
 
-
     .content-container {
         background-color: #eeeeee;
         padding: 20px 0 0 20px;
@@ -153,5 +152,36 @@
             background-color: white;
             color: #999;
         }
+    }
+    .text-main {
+        color: #409EFF;
+    }
+    .text-success {
+        color: #67C23A;
+    }
+    .text-warning {
+        color: #E6A23C;
+    }
+    .text-danger {
+        color: #F56C6C;
+    }
+    .text-info {
+        color: #909399;
+    }
+    .text-primary {
+        color: #303133;
+    }
+    .text-regular {
+        color: #606266;
+    }
+    .text-secondary {
+        color: #909399;
+    }
+    .text-placeholder {
+        color: #C0C4CC;
+    }
+    .help-info {
+        color: #909399;
+        font-size: 12px;
     }
 </style>
