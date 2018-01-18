@@ -15,13 +15,13 @@
             <div slot="header" class="clearfix">
                 <span>基本信息</span>
             </div>
-            <div class="text item">
+            <div class="text">
                 订单号: {{order.tid}}
             </div>
-            <div class="text item">
+            <div class="text">
                 创建时间: {{order.cdate | timestamp2str}}
             </div>
-            <div class="text item">
+            <div class="text">
                 订单状态: {{order.status_title}}
             </div>
         </el-card>
@@ -30,16 +30,16 @@
             <div slot="header" class="clearfix">
                 <span>收货信息</span>
             </div>
-            <div class="text item">
+            <div class="text">
                 预计收货时间: {{order.book_time | timestamp2str}}
             </div>
-            <div class="text item">
+            <div class="text">
                 收货人: {{order.user_name}}
             </div>
-            <div class="text item">
+            <div class="text">
                 电话: {{order.receiver_mobile}}
             </div>
-            <div class="text item">
+            <div class="text">
                 地址: {{order.user_addr}}
             </div>
         </el-card>
@@ -48,22 +48,22 @@
             <div slot="header" class="clearfix">
                 <span>支付信息</span>
             </div>
-            <div class="text item">
+            <div class="text">
                 支付类型: {{order.pay_info.pay_type_title}}
             </div>
-            <div class="text item">
+            <div class="text">
                 应付: {{order.pay | money2str}}
             </div>
-            <div class="text item">
+            <div class="text">
                 运费: {{order.fee_hd_all | money2str}}
             </div>
-            <div class="text item">
+            <div class="text">
                 实付: {{order.fee_total | money2str}}
             </div>
-            <div class="text item">
+            <div class="text">
                 支付状态: {{order.pay_info.pay_status_title}}
             </div>
-            <div class="text item" v-if="order.pay_time">
+            <div class="text" v-if="order.pay_time">
                 支付时间: {{order.pay_time|timestamp2str}}
             </div>
         </el-card>
@@ -73,40 +73,32 @@
                 <span>订单商品</span>
             </div>
             <el-table :data="order.wholesale_order_items" style="width: 100%">
-                <el-table-column
-                    prop="wholesale_item_d_o.item_name"
-                    label="商品"
-                    >
+                <el-table-column label="商品">
+                    <template slot-scope="scope">
+                        <img :src="scope.row.wholesale_item_d_o.image_value + '@100w_2e'" class="item" />
+                        {{scope.row.wholesale_item_d_o.item_name}}
+                    </template>
                 </el-table-column>
-                <el-table-column
-                    label="单价"
-                    width="80">
-                    <template slot-scope="scope">{{scope.row.wholesale_item_d_o.price | money2str}}</template>
+                <el-table-column label="单价" width="80">
+                    <template slot-scope="scope">
+                        <del class="text-secondary" v-if="scope.row.price > scope.row.price_real">{{scope.row.price | money2str}}</del>
+                        <div>{{scope.row.price_real | money2str}}</div>
+                    </template>
                 </el-table-column>
-                <el-table-column
-                    prop="num"
-                    label="数量"
-                    width="80">
+                <el-table-column prop="num" label="数量" width="80">
+                    <template slot-scope="scope">
+                        {{scope.row.num}}{{scope.row.wholesale_item_d_o.unit}}
+                    </template>
                 </el-table-column>
-                <el-table-column
-                    label="应付"
-                    width="80">
-                    <template slot-scope="scope">{{scope.row.pay | money2str}}</template>
+                <el-table-column label="实付" width="80">
+                    <template slot-scope="scope">
+                        <del class="text-secondary" v-if="scope.row.pay > scope.row.pay_real">{{scope.row.pay | money2str}}</del>
+                        <div>{{scope.row.pay_real | money2str}}</div>
+                    </template>
                 </el-table-column>
-                <el-table-column
-                    label="实付"
-                    width="80">
-                    <template slot-scope="scope">{{scope.row.pay_real | money2str}}</template>
+                <el-table-column prop="hd_status_title" label="物流状态" width="100">
                 </el-table-column>
-                <el-table-column
-                    prop="hd_status_title"
-                    label="物流状态"
-                    width="100">
-                </el-table-column>
-                <el-table-column
-                    prop="status_title"
-                    label="订单状态"
-                    width="80">
+                <el-table-column prop="status_title" label="订单状态" width="80">
                 </el-table-column>
             </el-table>
         </el-card>
@@ -155,8 +147,6 @@
 .text {
     font-size: 14px;
     color: #666;
-}
-.item {
     margin-bottom: 18px;
 }
 </style>
