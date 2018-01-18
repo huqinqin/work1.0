@@ -13,7 +13,7 @@
                              :label="index">
             </el-table-column>
             <el-table-column v-for="(field, index) in table.tableField"
-                             v-if="field.type === 'menu' || field.type === 'inputNumber'"
+                             v-if="field.type === 'menu' || field.type === 'inputNumber' || field.type === 'img'"
                              :key="field.value"
                              :label="index"
                              :width="field.width">
@@ -41,6 +41,9 @@
                     <div v-else-if="field.type === 'inputNumber'">
                         <el-input-number v-model="scope.row[field.value]" :data="scope.row" size="small"
                                          @change="inputNumberhandleChange(scope.row)"  :min="0"></el-input-number>
+                    </div>
+                    <div v-else-if="field.type === 'img'">
+                        <img :src="scope.row[field.value]" alt="" style="width: 40px;height: 40px;">
                     </div>
                 </template>
             </el-table-column>
