@@ -5,7 +5,6 @@
             <el-table-column type="expand">
                 <template slot-scope="scope">
                     <el-table :data="scope.row.wholesale_order_items" style="width: 100%">
-                        <el-table-column type="index" label="#" width="30"/>
                         <el-table-column label="商品" header-align="center" align="left" :show-overflow-tooltip="true" >
                             <template slot-scope="subscope">
                                 <img :src="subscope.row.wholesale_item_d_o.image_value + '@100w_2e'" class="item" />
@@ -52,7 +51,7 @@
                         </el-table-column>
                         <el-table-column label="操作" align="center" width="80">
                             <template slot-scope="subscope">
-                                <el-dropdown @command="handleMenuItemClick">
+                                <el-dropdown @command="handleMenuItemClick" v-if="isCanRefund(subscope.row)">
                                     <span class="el-dropdown-link">
                                         操作<i class="el-icon-arrow-down el-icon--right"></i>
                                     </span>
