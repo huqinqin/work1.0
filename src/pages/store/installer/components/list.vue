@@ -84,7 +84,7 @@
             },
             getParameter(val) {
                 this.form.formInline = val
-                this.api.bizparams.shop = JSON.stringify(val)
+                this.api.bizparams = JSON.stringify(val)
                 this.getList()
             },
             getList() {

@@ -1,5 +1,5 @@
 import BaseService from "./abstract/BaseService";
-
+import md5 from 'md5'
 export default class InstallerService extends BaseService {
     /**
      * return  datalist 工程商列表
@@ -17,7 +17,7 @@ export default class InstallerService extends BaseService {
             page: pagination.page,
             page_size: pagination.pagesize
         }
-        return super.getRequest('/installer/get_list', params)
+        return super.getRequest('/store/installer/get_list', params)
     }
 
     /**
@@ -39,7 +39,7 @@ export default class InstallerService extends BaseService {
         contact_mobile : null,
     }) {
         params.password = md5(params.password);
-        return super.postRequest('/installer/add', params)
+        return super.postRequest('/store/installer/add', params)
     }
 
     /**
@@ -54,6 +54,6 @@ export default class InstallerService extends BaseService {
         let params = {
             store_request: JSON.stringify(formData)
         };
-        return super.postRequest('/installer/update', params)
+        return super.postRequest('/store/installer/update', params)
     }
 }
