@@ -71,7 +71,7 @@
                               width="180">
                           </el-table-column>
                           <el-table-column
-                              prop="sinr"
+                              prop="sin"
                               label="SKU编码"
                               width="180">
                           </el-table-column>
@@ -253,7 +253,7 @@
                           {
                               'price': value.price * 100,
                               'storage': value.storage,
-                              'priceAction': 0,
+                              'priceAction': 1,
                               'required': false,
                               'valueType': 0,
                               'spuId': val.spuId,
