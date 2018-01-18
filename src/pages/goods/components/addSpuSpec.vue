@@ -72,7 +72,7 @@
                         v-if="value.inputVisible"
                         v-model="inputValue"
                         size="small"
-                        @blur="handleInputConfirm(value,value.prop_values,'spec')"
+                        @blur="handleInputConfirm(value,value.propValues,'spec')"
                       >
                       </el-input>
                       <el-button  class="button-new-tag" v-else size="small" @click="showInput(value,'spec')">+ 添加</el-button>
@@ -304,7 +304,7 @@
                   sinr: '',
               }
           },
-          handleInputConfirm(value, val, type) {
+          handleInputConfirm(value, val, type) {debugger;
               let inputValue = this.inputValue
               if (inputValue) {
                   val.push(
