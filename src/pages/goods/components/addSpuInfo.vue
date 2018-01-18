@@ -30,17 +30,17 @@
          <el-form-item label="销售单位" prop="saleSpec">
              <el-input v-model="ruleForm.saleSpec"></el-input>
          </el-form-item>
-         <el-form-item label="产品主图" prop="name">
-           <el-upload
-             class="upload-demo"
-             drag
-             action="https://jsonplaceholder.typicode.com/posts/"
-             multiple>
-             <i class="el-icon-upload"></i>
-             <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
-             <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-           </el-upload>
-         </el-form-item>
+         <!--<el-form-item label="产品主图" prop="name">-->
+           <!--<el-upload-->
+             <!--class="upload-demo"-->
+             <!--drag-->
+             <!--action="https://jsonplaceholder.typicode.com/posts/"-->
+             <!--multiple>-->
+             <!--<i class="el-icon-upload"></i>-->
+             <!--<div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>-->
+             <!--<div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>-->
+           <!--</el-upload>-->
+         <!--</el-form-item>-->
          <el-form-item>
            <el-button type="primary" @click="addSpuSpec('ruleForm')">下一步</el-button>
            <el-button @click="resetForm('ruleForm')">重置</el-button>
