@@ -27,6 +27,8 @@ export default class GoodsService extends BaseService{
   /**
    * store_item
    * item_props_list
+   * @remark 编辑商品
+   * @auth xiaozhu
    */
   static modifyWithProps(params){
     return super.getRequest('/store/item/modify_with_props',params)

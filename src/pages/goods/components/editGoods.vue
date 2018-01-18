@@ -50,7 +50,8 @@
                             list-type="picture-card"
                             :on-preview="handlePictureCardPreview"
                             :on-change="handleUrlChange"
-                            :on-remove="handleRemove">
+                            :on-remove="handleRemove"
+                            :file-list="fileList">
                             <i class="el-icon-plus"></i>
                         </el-upload>
                         <el-dialog :visible.sync="dialogVisible" size="tiny">
@@ -66,12 +67,7 @@
                             :data="spuDO.child_spu_d_t_o_list"
                             style="width: 100%">
                             <el-table-column
-                                prop="spu_name"
-                                label="SKU名称"
-                                width="180">
-                            </el-table-column>
-                            <el-table-column
-                                prop="sinr"
+                                prop="sin"
                                 label="SKU编码"
                                 width="180">
                             </el-table-column>
@@ -79,21 +75,21 @@
                                 label="SKU属性"
                                 width="380">
                                 <template slot-scope="scope">
-                                <span class="spec" v-for="(value,index) in scope.row.spu_prop_d_o_list" :key="value.id">
-                                    <el-tag type="success">{{value.name}}:</el-tag>{{value.prop_value}}
+                                <span class="spec" v-for="(value,key) in scope.row.propValues" :key="value.id">
+                                    <el-tag type="success">{{key}}:</el-tag>{{value}}
                                 </span>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                label="SKU成本价">
-                                <template slot-scope="scope">
-                                    <el-input
-                                        placeholder="请输入库存数量"
-                                        v-model="scope.row.storage"
-                                        clearable>
-                                    </el-input>
-                                </template>
-                            </el-table-column>
+                            <!--<el-table-column-->
+                                <!--label="SKU成本价">-->
+                                <!--<template slot-scope="scope">-->
+                                    <!--<el-input-->
+                                        <!--placeholder="请输入库存数量"-->
+                                        <!--v-model="scope.row.storage"-->
+                                        <!--clearable>-->
+                                    <!--</el-input>-->
+                                <!--</template>-->
+                            <!--</el-table-column>-->
                             <el-table-column
                                 label="SKU销售价">
                                 <template slot-scope="scope">
@@ -114,17 +110,7 @@
                 </el-form>
             </el-collapse-item>
         </el-collapse>
-        <el-button type="primary" @click="submitForm('ruleForm')">创建</el-button>
-        <!--<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">-->
-
-        <!--</el-form-item>-->
-        <!--<el-form-item label="商品详情" prop="goodsName">-->
-        <!--<el-input v-model="ruleForm.goodsName"></el-input>-->
-        <!--</el-form-item>-->
-        <!--<el-form-item>-->
-        <!--<el-button type="primary" @click="submitForm('ruleForm')">创建</el-button>-->
-        <!--</el-form-item>-->
-        <!--</el-form>-->
+        <el-button type="primary" @click="submitForm('ruleForm')">编辑完成</el-button>
     </div>
 </template>
 <script>
@@ -136,7 +122,7 @@
         components: {
             ElForm,ltsEditor
         },
-        name : 'addGoods',
+        name : 'editGoods',
         data () {
             return {
                 dialogImageUrl: '',
@@ -144,13 +130,7 @@
                 activeNames: ['1'],
                 stepActive: 3,
                 spuDO: {},
-                ruleForm: {
-                    itemName: '',
-                    promotionTitle : "",
-                    tag : "",
-                    rank : 0,
-                    status : "", // 0,删除 -1 失效 1 上架 9 冻结
-                },
+                ruleForm: {},
                 rules: {
                     itemName: [
                         {required: true, message: '请输入商品名称', trigger: 'blur'}
@@ -176,28 +156,30 @@
             },
             getWithProps () {
                 goodsService.getWithProps(this.$route.params.id).then((resp) => {
-                    // if (resp.data.spu_prop_d_o_list && resp.data.spu_prop_d_o_list.length > 0) {
-                    //     resp.data.spu_prop_d_o_list.forEach(function (value, index, array) {
-                    //         value.inputVisible = false // 自己加的 是否显示添加input
-                    //         value.propValues = value.prop_value.split(',');
-                    //         value.checkedProp = [];
-                    //         value.propValues.forEach(function (prop, key, array) {
-                    //             let Obj = {
-                    //                 isCanEdit: false,
-                    //                 isSelected: false,
-                    //                 value: prop
-                    //             };
-                    //             array[key] = Obj
-                    //         })
-                    //     })
-                    // }
-                    // resp.data.child_spu_d_t_o_list.forEach(function (value, index, array) {
-                    //     value.storage = '';
-                    //     value.price = ''
-                    // });
-                    this.spuDO = resp.data;console.log(this.spuDO);
+                    resp.data.item_prop_d_t_o.sku_item_prop_list.forEach(function(value,index,array){
+                      value.propValues = JSON.parse(value.prop_value);
+                      console.log(value.propValues);
+                    })
+                    resp.data.child_spu_d_t_o_list = resp.data.item_prop_d_t_o.sku_item_prop_list;
+                    this.spuDO = resp.data;
+                    this.ruleForm = {
+                        itemName: this.spuDO.item_name,
+                        promotionTitle : this.spuDO.promotion_title,
+                        tag : this.spuDO.tag,
+                        rank : this.spuDO.rank,
+                        status : this.spuDO.status // 0,删除 -1 失效 1 上架 9 冻结
+                    };
+                     for(let i in this.spuDO.item_images){
+                        let oneArr = {
+                            'name': '',
+                            'url': this.spuDO.item_images[i].url,
+                            'value': this.spuDO.item_images[i].value
+                        };
+                        this.fileList.push(oneArr);
+                     }
+                    this.$refs.Editor._data.content = this.spuDO.description;
                 }, (msg) => {
-                    console.log(msg)
+                    console.log(msg);
                 })
             },
             showInput (item) {
@@ -222,9 +204,10 @@
                 let descriptionContent = this.$refs.Editor._data.content;
                 let imagesUrl = '';
                 this.fileList.forEach(function (value, index, array) {
-                    imagesUrl = (imagesUrl == "") ? value.response.data.value : imagesUrl + "," + value.response.data.value;
+                    imagesUrl = (imagesUrl == "") ? value.value : imagesUrl + "," + value.value;
                 });
                 let wholesale_item = {
+                    'id' : this.spuDO.id,
                     'itemName': this.ruleForm.itemName,
                     'promotionTitle': this.ruleForm.promotionTitle,
                     'rank': this.ruleForm.rank,
@@ -243,57 +226,26 @@
                 };
                 let props = [];
                 this.spuDO.child_spu_d_t_o_list.forEach(function (value, index, array) {
-                    let propValue = {};
-                    let spu_id = 0;
-                    value.spu_prop_d_o_list.forEach(function (val, key, array) {
-                        let objKey = val.name;
-                        propValue[objKey] = val.prop_value;
-                        spu_id = val.spu_id;
-                        props.push(
-                            {
-                                'price': value.price * 100,
-                                'storage': value.storage,
-                                'priceAction': 0,
-                                'required': false,
-                                'valueType': 0,
-                                'spuId': val.spuId,
-                                'sku': true,
-                                'spu_id': val.spu_id,
-                                'propValue': JSON.stringify(propValue)
-                            }
-                        )
-                    })
-
-                });
-                this.spuDO.spu_prop_d_o_list.forEach(function (value, index, array) {
-                    let propValue = {};
-                    let objKey = value.name;
-                    let porpslist = [];
-                    value.checkedProp.forEach(function (val, key, array) {
-                        propValue[objKey] = val.value;
-                        props.push(
-                            {
-                                'attribute': 0,
-                                'multiSelect': false,
-                                'required': false,
-                                'search': false,
-                                'selectable': false,
-                                'show': false,
-                                'sku': false,
-                                'spec': false,
-                                'system': false,
-                                'valueType': 0,
-                                'propValue': JSON.stringify(propValue)
-                            }
-                        )
-                    })
+                    props.push(
+                        {
+                            'price': value.price * 100,
+                            'storage': value.storage,
+                            'priceAction': 0,
+                            'required': false,
+                            'valueType': 0,
+                            'spuId': value.spu_id,
+                            'sku': true,
+                            'spu_id': value.spu_id,
+                            'propValue': value.prop_value
+                        }
+                    )
                 });
                 let params = {
                     item_props: JSON.stringify(props),
-                    wholesale_item: JSON.stringify(wholesale_item),
+                    wholesale_item: JSON.stringify(wholesale_item)
                 };
-                goodsService.addWithProps(params).then((data) => {
-                    this.$ltsMessage.show({type: 'success', message: "新增成功"})
+                goodsService.modifyWithProps(params).then((data) => {
+                    this.$ltsMessage.show({type: 'success', message: "编辑成功"})
                 }, (msg) => {
                     this.$ltsMessage.show({type: 'error', message: msg.error_message})
                 });
