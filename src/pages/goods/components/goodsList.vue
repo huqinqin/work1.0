@@ -22,7 +22,7 @@
     data(){
       return{
         api: {
-          method: '/wholesale/item/get_manage_list',
+          method: '/store/item/get_manage_list',
           bizparams: {
 
           },
