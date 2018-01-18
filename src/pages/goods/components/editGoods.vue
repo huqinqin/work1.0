@@ -67,12 +67,7 @@
                             :data="spuDO.child_spu_d_t_o_list"
                             style="width: 100%">
                             <el-table-column
-                                prop="spu_name"
-                                label="SKU名称"
-                                width="180">
-                            </el-table-column>
-                            <el-table-column
-                                prop="sinr"
+                                prop="sin"
                                 label="SKU编码"
                                 width="180">
                             </el-table-column>
@@ -80,8 +75,8 @@
                                 label="SKU属性"
                                 width="380">
                                 <template slot-scope="scope">
-                                <span class="spec" v-for="(value,index) in scope.row.spu_prop_d_o_list" :key="value.id">
-                                    <el-tag type="success">{{value.name}}:</el-tag>{{value.prop_value}}
+                                <span class="spec" v-for="(value,key) in scope.row.propValues" :key="value.id">
+                                    <el-tag type="success">{{key}}:</el-tag>{{value}}
                                 </span>
                                 </template>
                             </el-table-column>
@@ -161,6 +156,10 @@
             },
             getWithProps () {
                 goodsService.getWithProps(this.$route.params.id).then((resp) => {
+                    resp.data.item_prop_d_t_o.sku_item_prop_list.forEach(function(value,index,array){
+                      value.propValues = JSON.parse(value.prop_value);
+                      console.log(value.propValues);
+                    })
                     resp.data.child_spu_d_t_o_list = resp.data.item_prop_d_t_o.sku_item_prop_list;
                     this.spuDO = resp.data;
                     this.ruleForm = {
@@ -209,6 +208,7 @@
                     imagesUrl = (imagesUrl == "") ? value.value : imagesUrl + "," + value.value;
                 });
                 let wholesale_item = {
+                    'id' : this.spuDO.id,
                     'itemName': this.ruleForm.itemName,
                     'promotionTitle': this.ruleForm.promotionTitle,
                     'rank': this.ruleForm.rank,
