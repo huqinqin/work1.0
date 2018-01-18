@@ -5,7 +5,6 @@
             <el-table-column type="expand">
                 <template slot-scope="scope">
                     <el-table :data="scope.row.wholesale_order_items" style="width: 100%">
-                        <el-table-column type="index" label="#" width="30"/>
                         <el-table-column label="商品" header-align="center" align="left" :show-overflow-tooltip="true" >
                             <template slot-scope="subscope">
                                 <img :src="subscope.row.wholesale_item_d_o.image_value + '@100w_2e'" class="item" />
@@ -14,16 +13,13 @@
                         </el-table-column>
                         <el-table-column prop="wholesale_item_d_o.spec" label="规格" align="center" width="100" />
                         <el-table-column prop="num" label="数量" align="center" width="80">
-                            <template slot-scope="subscope">{{subscope.row.num}}{{subscope.row.unit}}</template>
+                            <template slot-scope="subscope">{{subscope.row.num}}{{subscope.row.wholesale_item_d_o.unit}}</template>
                         </el-table-column>
-                        <el-table-column label="应付" align="center" width="80">
-                            <template slot-scope="subscope">{{subscope.row.pay | money2str}}</template>
-                        </el-table-column>
-                        <el-table-column label="优惠" align="center" width="80">
-                            <template slot-scope="subscope">{{subscope.row.discount | money2str}}</template>
-                        </el-table-column>
-                        <el-table-column label="实付" align="center" width="80">
-                            <template slot-scope="subscope">{{subscope.row.pay_real | money2str}}</template>
+                        <el-table-column label="小计" align="center" width="80">
+                            <template slot-scope="subscope">
+                                <del class="text-secondary" v-if="subscope.row.pay > subscope.row.pay_real">{{subscope.row.pay | money2str}}</del>
+                                <div>{{subscope.row.pay_real | money2str}}</div>
+                            </template>
                         </el-table-column>
                         <el-table-column prop="hd_status_title" label="配送状态" align="center" width="100" />
                         <el-table-column prop="status_title" label="状态" align="center" width="100" >
@@ -52,7 +48,7 @@
                         </el-table-column>
                         <el-table-column label="操作" align="center" width="80">
                             <template slot-scope="subscope">
-                                <el-dropdown @command="handleMenuItemClick">
+                                <el-dropdown @command="handleMenuItemClick" v-if="isCanRefund(subscope.row)">
                                     <span class="el-dropdown-link">
                                         操作<i class="el-icon-arrow-down el-icon--right"></i>
                                     </span>
@@ -70,11 +66,11 @@
             <el-table-column prop="user_name" label="工程商" header-align="center" align="left" width="200" :show-overflow-tooltip="true" />
             <el-table-column prop="receiver_mobile" label="手机" header-align="center" align="left" width="110" />
             <el-table-column prop="user_addr" label="地址" header-align="center" align="left" :show-overflow-tooltip="true" />
-            <el-table-column label="应付" align="center" width="80">
-                <template slot-scope="scope">{{scope.row.pay | money2str}}</template>
-            </el-table-column>
-            <el-table-column label="优惠" align="center" width="80">
-                <template slot-scope="scope">{{scope.row.discount | money2str}}</template>
+            <el-table-column label="货款" align="center" width="80">
+                <template slot-scope="scope">
+                    <del class="text-secondary" v-if="scope.row.pay > scope.row.pay_real">{{scope.row.pay | money2str}}</del>
+                    <div>{{scope.row.pay | money2str}}</div>
+                </template>
             </el-table-column>
             <el-table-column label="合计" align="center" width="80">
                 <template slot-scope="scope">

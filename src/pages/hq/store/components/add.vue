@@ -123,10 +123,6 @@
     }
 </script>
 <style lang="less" scoped>
-    .help-info {
-        color: #909399;
-        font-size: 12px;
-    }
     .el-form{
         h3{
             font-weight: normal;

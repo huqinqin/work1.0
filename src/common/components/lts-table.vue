@@ -13,7 +13,7 @@
                              :label="index">
             </el-table-column>
             <el-table-column v-for="(field, index) in table.tableField"
-                             v-if="field.type === 'menu' || field.type === 'inputNumber'"
+                             v-if="field.type === 'menu' || field.type === 'inputNumber' || field.type === 'img'"
                              :key="field.value"
                              :label="index"
                              :width="field.width">
@@ -34,13 +34,17 @@
                             </el-dropdown>
                             <el-button v-else :type="menu.type != null ? menu.type : 'primary'" :size="menu.size != null ? menu.size : 'small'" :background-color="menu.backgroundColor"
                                        @click="menuClick(menu.command, scope.row)">
-                                {{menu.value}}
+                                <router-link v-if="menu.command === 'link'" :to="menu.link + scope.row[menu.linkDataKey]">{{menu.value}}</router-link>
+                                <span v-else>{{menu.value}}</span>
                             </el-button>
                         </div>
                     </div>
                     <div v-else-if="field.type === 'inputNumber'">
                         <el-input-number v-model="scope.row[field.value]" :data="scope.row" size="small"
                                          @change="inputNumberhandleChange(scope.row)"  :min="0"></el-input-number>
+                    </div>
+                    <div v-else-if="field.type === 'img'">
+                        <img :src="scope.row[field.value]" alt="" style="width: 40px;height: 40px;">
                     </div>
                 </template>
             </el-table-column>

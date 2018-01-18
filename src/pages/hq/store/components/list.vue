@@ -52,7 +52,7 @@
                         this.$router.push({path: `/edit/${item.biz.id}`});
                         break;
                     case 'delete':
-                        this.$ltsMessage.show('info','删除：' + item.shop.shop_name);
+                        this.$ltsMessage.show({type:'info', message:'删除：' + item.shop.shop_name});
                         break
                 }
             },

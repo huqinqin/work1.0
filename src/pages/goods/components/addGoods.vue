@@ -84,16 +84,16 @@
                                 </span>
                               </template>
                           </el-table-column>
-                          <el-table-column
-                              label="SKU成本价">
-                              <template slot-scope="scope">
-                                  <el-input
-                                      placeholder="请输入库存数量"
-                                      v-model="scope.row.storage"
-                                      clearable>
-                                  </el-input>
-                              </template>
-                          </el-table-column>
+                          <!--<el-table-column-->
+                              <!--label="SKU成本价">-->
+                              <!--<template slot-scope="scope">-->
+                                  <!--<el-input-->
+                                      <!--placeholder="请输入库存数量"-->
+                                      <!--v-model="scope.row.storage"-->
+                                      <!--clearable>-->
+                                  <!--</el-input>-->
+                              <!--</template>-->
+                          <!--</el-table-column>-->
                           <el-table-column
                               label="SKU销售价">
                               <template slot-scope="scope">
@@ -110,7 +110,7 @@
           </el-collapse-item>
           <el-collapse-item title="商品详情设置" name="4">
               <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
-                  <lts-editor></lts-editor>
+                  <lts-editor ref="Editor"></lts-editor>
               </el-form>
           </el-collapse-item>
       </el-collapse>
@@ -176,7 +176,6 @@
           },
           getSpudtoist () {
               spuService.getSpudtoist(this.$route.query.id).then((resp) => {
-                  console.log(resp.data.spu_prop_d_o_list);
                   if (resp.data.spu_prop_d_o_list && resp.data.spu_prop_d_o_list.length > 0) {
                       resp.data.spu_prop_d_o_list.forEach(function (value, index, array) {
                           value.inputVisible = false // 自己加的 是否显示添加input
@@ -220,6 +219,7 @@
               proplist.splice(key, 1)
           },
           submitForm() {
+              let descriptionContent = this.$refs.Editor._data.content;
               let imagesUrl = '';
               this.fileList.forEach(function (value, index, array) {
                   imagesUrl = (imagesUrl == "") ? value.response.data.value : imagesUrl + "," + value.response.data.value;
@@ -238,7 +238,8 @@
                   'unit': this.spuDO.unit,
                   'spec': '无描述',
                   'categoryId': this.spuDO.categoryId,
-                  'url': imagesUrl
+                  'urls': imagesUrl,
+                  'description': descriptionContent
               };
               let props = [];
               this.spuDO.child_spu_d_t_o_list.forEach(function (value, index, array) {
@@ -292,7 +293,7 @@
                   wholesale_item: JSON.stringify(wholesale_item),
               };
               goodsService.addWithProps(params).then((data) => {
-                  this.$ltsMessage.show({type: 'success', message: "新增成功"})
+                  this.$ltsMessage.show({type: 'success', message: '新增成功'})
               }, (msg) => {
                   this.$ltsMessage.show({type: 'error', message: msg.error_message})
               });
@@ -306,7 +307,6 @@
           },
           handleUrlChange(file, fileList){
               this.fileList = fileList;
-              console.log(file);
           }
       },
       mounted () {

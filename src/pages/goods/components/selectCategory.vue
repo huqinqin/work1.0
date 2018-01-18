@@ -148,7 +148,7 @@
              this.productList = data.datalist;
              this.isCardShow = true
          },(msg)=>{
-             this.$ltsMessage.show({type:"error",message:message})
+             this.$ltsMessage.show({type:"error",message:msg.error_message})
           })
       },
       currentRowHandleCurrentChange(val){
