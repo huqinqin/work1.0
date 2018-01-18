@@ -21,8 +21,8 @@
             </el-form-item>
 
             <h3>详细信息</h3>
-            <el-form-item label="工程商名称" prop="shopName">
-                <el-input v-model="form.shopName" style="width: 500px" />
+            <el-form-item label="工程商名称" prop="installerName">
+                <el-input v-model="form.installerName" style="width: 500px" />
             </el-form-item>
             <el-form-item label="所在地区" prop="location">
                 <lts-location v-model="form.location" :labels.sync="locationLabel"/>
@@ -64,7 +64,7 @@
                     password: '',
                     checkPass: '',
                     contactMobile: '',
-                    shopName: '',
+                    installerName: '',
                     location: [],
                     address:'',
                     contact: '',
@@ -78,7 +78,7 @@
                         ValidatorConfig.checkPasswordRepeat(this.form.password, value, callback)
                     }),
                     contactMobile: ValidatorConfig.mobile,
-                    shopName: ValidatorConfig.storeName,
+                    installerName: ValidatorConfig.storeName,
                     location: ValidatorConfig.location,
                     address: ValidatorConfig.address,
                     contact: ValidatorConfig.contact,
@@ -97,7 +97,7 @@
                         let param = {
                             account : this.form.account,
                             password : this.form.password,
-                            store_name : this.form.storeName,
+                            installer_name : this.form.installerName,
                             address : this.locationLabel[0] + this.locationLabel[1] + this.locationLabel[2] + this.form.address,
                             lc_code : this.form.location[2],
                             contact : this.form.contact,

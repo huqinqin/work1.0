@@ -1,9 +1,9 @@
 <template>
     <div>
+        <lts-search-form @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"/>
         <el-button type="primary">
             <router-link to="/add">新增工程商</router-link>
         </el-button>
-        <lts-search-form @get-from="getParameter" :form-fileds="form.formFileds" :form-inlines="form.formInline"/>
         <lts-table :t-api="api" :t-form="form.formInline" :t-table="table" :t-pagination="pagination" @menuClick="handleMenuItemClick"/>
     </div>
 </template>
@@ -31,11 +31,11 @@
                             'search': {
                                 shopNmae: {
                                     'label': '',
-                                    'type': 'input',
+                                    type: 'input',
                                     'bindValue': 'shopName',
                                     'bindPlaceholder': '搜索店铺名称'
                                 },
-                                submit: {'bindValue': '确定', 'type': 'submitbutton'}
+                                submit: {'bindValue': '搜索', type: 'submitbutton'}
                             },
                         }
                     ],
@@ -54,24 +54,18 @@
                     datalist: true,
                     tableDataForm: 'api', // json
                     tableField: {
-                        '名字': {'value': 'shop_name', 'type': 'text'},
-                        '地址': {'value': 'address', 'type': 'text'},
-                        '联系人': {'value': 'contact', 'type': 'text'},
-                        '联系电话': {'value': 'contact_phone', 'type': 'text'},
-                        '功能': {
-                            'value': '',
-                            'type': 'menu',
-                            'width': '200',
-                            'menulist': [
-                                {value: '详情', command: 'detail'},
-                                {
-                                    value: '菜单',
-                                    command: 'default',
-                                    children: [
-                                        {value: '编辑', command: 'link', link: '/edit/', linkDataKey: 'id'},
-                                        {value: '删除', command: 'delete'}
-                                    ]
-                                }
+                        '工程商名称': {value: 'shop_name', type: 'text'},
+                        '地址': {value: 'address', type: 'text'},
+                        '联系人': {value: 'contact', type: 'text', width: '150px'},
+                        '联系电话': {value: 'contact_phone', type: 'text', width: '120px'},
+                        '状态': {value: 'status_title', type: 'text', width: '80px'},
+                        '操作': {
+                            value: '',
+                            type: 'menu',
+                            width: '160',
+                            menulist: [
+                                {value: '编辑', command: 'link', link: '/edit/', linkDataKey: 'id'},
+                                {value: '删除', command: 'delete', type:'' },
                             ]
                         }
                     }
@@ -81,17 +75,11 @@
         methods: {
             handleMenuItemClick(command, item) {
                 switch (command) {
-                    case 'detail':
-                        console.log(item)
-                        alert('详情：' + item.shop_name)
-                        break
-                    case 'edit':
-                        const uid = item.uid
-                        this.$router.push({path: `/edit/${uid}`})
-                        break
                     case 'delete':
-                        alert('删除：' + item.shop_name)
-                        break
+                        this.$ltsMessage.show({type:'info', message: '删除：' + item.shop_name});
+                        break;
+                    default:
+
                 }
             },
             getParameter(val) {
@@ -100,11 +88,10 @@
                 this.getList()
             },
             getList() {
-                let getList = installerService.getList(this.api.bizparams, this.pagination)
-                getList.then((data) => {
+                installerService.getList(this.api.bizparams, this.pagination).then((data) => {
                     console.log('success')
-                }, (msg) => {
-                    this.$ltsMessage.show({type: 'error', message: '2333'})
+                }, (error) => {
+                    this.$ltsMessage.show({type: 'error', message: error.error_message})
                 })
             }
         },

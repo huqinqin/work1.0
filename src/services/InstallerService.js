@@ -1,6 +1,6 @@
 import BaseService from "./abstract/BaseService";
 
-export default class MerchantsService extends BaseService {
+export default class InstallerService extends BaseService {
     /**
      * return  datalist 工程商列表
      * params {page: ''} 页数
@@ -28,10 +28,17 @@ export default class MerchantsService extends BaseService {
      * @auth taohua
      * @remark 新增工程商
      */
-    static add(formData) {
-        let params = {
-            store_request: JSON.stringify(formData)
-        };
+    static add(params = {
+        account : null,
+        password : null,
+        store_name : null,
+        address : null,
+        lc_code : null,
+        contact : null,
+        contact_phone : null,
+        contact_mobile : null,
+    }) {
+        params.password = md5(params.password);
         return super.postRequest('/installer/add', params)
     }
 

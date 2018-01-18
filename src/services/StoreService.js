@@ -35,7 +35,7 @@ export default class StoreService extends BaseService {
         contact_phone : null,
         contact_mobile : null,
     }) {
-        params.password = md5(params.password)
+        params.password = md5(params.password);
         return super.postRequest('/hq/store/add', params)
     }
 
