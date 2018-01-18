@@ -178,7 +178,7 @@
                     source: "work.500mi.com.shop.pifa.market"
                 };
                 orderService.createTrade(params).then((data)=>{
-
+                    this.$ltsMessage.show({type:'success',message:"下单成功"})
                 },(msg)=>{
                     this.$ltsMessage.show({type:'error',message:msg.error_message})
                 })
@@ -208,7 +208,6 @@
                     source: "work.500mi.com.shop.pifa.market"
                 };
                 orderService.simulateCreateTrade(params).then((data)=>{
-
                 },(msg)=>{
                     this.$ltsMessage.show({type:'error',message:msg.error_message})
                 })
