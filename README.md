@@ -66,3 +66,14 @@ server {
 - lts-search-form 列表页头部筛选表单
 - lts-table 列表
 - lts-toast 提示器
+
+### 其他问题
+- npm run dev 动态rebuild内存溢出解决方案
+
+```
+vi ~/node_modules/.bin/webpack-dev-server
+第一行加--max_old_space_size=4096
+
+#!/usr/bin/env node --max_old_space_size=4096
+
+```

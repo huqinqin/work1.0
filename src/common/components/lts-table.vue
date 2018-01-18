@@ -34,7 +34,8 @@
                             </el-dropdown>
                             <el-button v-else :type="menu.type != null ? menu.type : 'primary'" :size="menu.size != null ? menu.size : 'small'" :background-color="menu.backgroundColor"
                                        @click="menuClick(menu.command, scope.row)">
-                                {{menu.value}}
+                                <router-link v-if="menu.command === 'link'" :to="menu.link + scope.row[menu.linkDataKey]">{{menu.value}}</router-link>
+                                <span v-else>{{menu.value}}</span>
                             </el-button>
                         </div>
                     </div>
