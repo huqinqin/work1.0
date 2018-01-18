@@ -178,7 +178,6 @@
                         };
                         this.fileList.push(oneArr);
                      }
-                     this.c
                     this.$refs.Editor._data.content = this.spuDO.description;
                 }, (msg) => {
                     console.log(msg);
@@ -243,7 +242,7 @@
                 });
                 let params = {
                     item_props: JSON.stringify(props),
-                    wholesale_item: JSON.stringify(wholesale_item),
+                    wholesale_item: JSON.stringify(wholesale_item)
                 };
                 goodsService.modifyWithProps(params).then((data) => {
                     this.$ltsMessage.show({type: 'success', message: "编辑成功"})
