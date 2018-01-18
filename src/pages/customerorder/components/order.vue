@@ -108,7 +108,7 @@
                                 <span>合计$<span class="num">{{cart.cartPriceTotal}}</span>元</span>
                             </el-tag>
                             <span class="cart-price"></span>
-                            <el-button type="primary" @click="addCart(item)">确认订单</el-button>
+                            <el-button type="primary" @click="submit">确认订单</el-button>
                         </div>
                     </div>
                 </el-card>
@@ -206,7 +206,7 @@
                     // 若需要使用搜索插件 autocomplete  需要定义好接口来获取后端数据
                     autocomplete: {
                         api: '',
-                        method: '/installer/getStoreList',
+                        method: '/store/installer/get_list',
                         //定义一个转换的key autocomplete插件需要把显示的字段的key定义成value
                         autoShowKey: 'shop_name',
                         //参数回调函数 目前的用法是来处理返回结果
@@ -457,32 +457,19 @@
             },
             // 购物车结算
             submit () {
-                let items = []
-                this.cartItemList.forEach(function (value, index, array) {
-                    items.push({
-                        id: value.id,
-                        num: value.num,
-                        puser_id: value.puser_id,
-                        spu_id: 179886,
-                        item_prop_ids: [
-                            26,
-                            27
-                        ],
-                    })
-                })
-                this.$route.push({name:"/settle",params:{"cartItems":items}})
-                let param = {
-                    'userId': this.customerUid,
-                    'payMethod': 'online',
-                    'miliPay': 0,
-                    'items': items,
-                    'remarkList': {
-                        '37701': '阿亮发货啊',
-                        '42170': '雨茜发货啊'
-                    },
-                    'source': 'work.500mi.com.shop.pifa.market'
-                }
-                orderService.createTrade(param)
+                this.$router.push({name:"settle",params:{"cartItems":this.cartItemList,"cartTotal":this.cart,"userId":this.customerUid}})
+//                let param = {
+//                    'userId': this.customerUid,
+//                    'payMethod': 'online',
+//                    'miliPay': 0,
+//                    'items': items,
+//                    'remarkList': {
+//                        '37701': '阿亮发货啊',
+//                        '42170': '雨茜发货啊'
+//                    },
+//                    'source': 'work.500mi.com.shop.pifa.market'
+//                }
+//                orderService.createTrade(param)
             }
         },
         mounted () {

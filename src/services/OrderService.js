@@ -28,6 +28,18 @@ export default class OrderService extends BaseService{
       let params = {
         wholesale_trade_request : JSON.stringify(param)
       };
-      return super.getRequest('/store/trade/create_trade',params)
+      return super.postRequest('/store/trade/create_trade',params)
+    }
+
+    /**
+     * return
+     * @auth 小猪
+     * @remark 模拟下单
+     */
+    static simulateCreateTrade(param){
+        let params = {
+            wholesale_trade_request : JSON.stringify(param)
+        };
+        return super.postRequest('/store/trade/simulate_create_trade',params)
     }
 }

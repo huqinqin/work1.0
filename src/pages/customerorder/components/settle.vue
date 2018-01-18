@@ -36,46 +36,15 @@
                 </li>
             </ul>
         </div>
-        <div class="bill">
-            <h5>账单地址：</h5>
-            <ul>
-                <li class="default">
-                    <header>
-                        <div><p>{{defaultBillressData.name}} （{{defaultBillressData.city}}）</p></div>
-                        <div><span>默认地址</span></div>
-                    </header>
-                    <main>
-                        <p>{{defaultBillressData.address}}</p>
-                        <p>电话：{{defaultBillressData.mobile}}</p>
-                    </main>
-                    <footer>
-                        <button @click="setDefault">设为默认</button>
-                        <button @click="editAddress">修改</button>
-                    </footer>
-                </li>
-                <li v-for="item in billData">
-                    <header>
-                        <div><p>{{item.name}} （{{item.city}}）</p></div>
-                    </header>
-                    <main>
-                        <p>{{item.address}}</p>
-                        <p>电话：{{item.mobile}}</p>
-                    </main>
-                    <footer>
-                        <button @click="setDefault">设为默认</button>
-                        <button @click="editAddress">修改</button>
-                    </footer>
-                </li>
-                <li class="addBill" @click="addBill">
-                    <i class="iconfont icon-add"></i>
-                    <div>添加地址</div>
-                </li>
-            </ul>
-        </div>
         <div class="delivery">
             <h5>配送方式： </h5>
-            <el-button>快递</el-button>
-            <el-button>自提</el-button>
+            <el-radio-group v-model="deliveryType">
+                <el-radio-button label="SHSM" value="">快递</el-radio-button>
+                <el-radio-button label="ZITI" value="">自提</el-radio-button>
+
+            </el-radio-group>
+            <!--<el-button :class="[deliveryType == '快递' ? 'is-active' : '']">快递</el-button>-->
+            <!--<el-button :class="[deliveryType == '自提' ? 'is-active' : '']">自提</el-button>-->
         </div>
         <div class="order">
             <h5>订单信息： </h5>
@@ -83,12 +52,16 @@
                 <el-table-column label="商品信息" width="450" class="column-1"  align="center">
                     <template slot-scope="scope">
                         <div class="cart-item-info">
-                            <img :src="scope.row.img" alt="商品">
+                            <img :src="'http://res.500mi.com/item/' +  scope.row.url" alt="商品">
                             <div class="content">
-                                <p>{{scope.row.info}}</p>
+                                <p>{{scope.row.item_name}}</p>
                             </div>
                             <div class="other">
-                                <p v-for="(value,key) in scope.row.more">{{key}}: {{value}}</p>
+                                <p v-for="(value,index) in scope.row.item_props" :key="value.id">
+                                    <span v-for="(val,key) in value.prop_value">
+                                        {{key}}: {{val}}
+                                    </span>
+                                </p>
                             </div>
                         </div>
                     </template>
@@ -99,22 +72,23 @@
                 </el-table-column>
                 <el-table-column label="小计" align="center">
                     <template slot-scope="scope">
-                        <div class="count">{{scope.row.count}}</div>
+                        <div class="count">{{scope.row.num*scope.row.price}}</div>
                     </template>
                 </el-table-column>
             </el-table>
-            <div class="remark"><span>买家留言：</span><el-input></el-input></div>
+            <div class="remark"><span>留言：</span><el-input v-model="remark"></el-input></div>
         </div>
         <div class="coupon" @click="useCoupon"><p><i class="iconfont icon-icon-test1"></i>使用优惠券 <span>（没有优惠券可以使用）</span></p></div>
         <div class="submitOrder">
             <div>商品价格：{{sum.amount}} + 运费：{{sum.express}} + 税额：{{sum.tax}} - 红包：{{sum.benefit}} = 总计：${{sum.result}}</div>
             <div>应付金额：<span>$500.00</span></div>
-            <el-button @click="settle">提交订单</el-button>
+            <el-button @click="submitOrder">提交订单</el-button>
         </div>
     </div>
 </template>
 
 <script>
+    import orderService from '@/services/OrderService.js'
     export default {
         name: "settle",
         props: ['items'],
@@ -134,8 +108,7 @@
                     mobile: '183 **** 5921'
                 }],
                 tableData: [],
-                multipleTable: [],
-                num: 10,
+                deliveryType : "SHSM", // 自提 ZITI
                 sum: {
                     amount: 500.00,
                     express: 0.00,
@@ -143,15 +116,8 @@
                     benefit: 0.00,
                     result: 0
                 },
-                data:{
-                    类名: '',
-                    link: '',
-                    datalist:[
-                        {},
-                        {},
-                        {},
-                    ]
-                }
+                remark : '',
+                user_id : "",
             }
         },
         methods: {
@@ -185,12 +151,80 @@
             },
             useCoupon(){
                 alert('使用优惠券')
-            }
+            },
+            submitOrder(){
+                let items = [];
+                this.tableData.forEach(function(value,index,array){
+                    let item_prop_ids = [];
+                    value.item_props.forEach(function (val,key,array) {
+                        item_prop_ids.push(val.id)
+                    })
+
+                    let Obj = {
+                        "id":value.id,
+                        "num":value.num,
+                        "puser_id":value.puser_id,
+                        "spu_id":value.spu_id,
+                        "item_prop_ids": item_prop_ids
+                    }
+                    items.push(Obj);
+                })
+                let params = {
+                    user_id : this.user_id,
+                    items : JSON.stringify(items),
+                    hdMethod : this.deliveryType,
+                    remarkList : this.remark,
+                    payMethod: "online", //
+                    source: "work.500mi.com.shop.pifa.market"
+                };
+                orderService.createTrade(params).then((data)=>{
+
+                },(msg)=>{
+                    this.$ltsMessage.show({type:'error',message:msg.error_message})
+                })
+            },
+            // 模拟下单
+            simulateCreateTrade(){
+                let items = [];
+                this.tableData.forEach(function(value,index,array){
+                    let item_prop_ids = [];
+                    value.item_props.forEach(function (val,key,array) {
+                        item_prop_ids.push(val.id)
+                    })
+
+                    let Obj = {
+                        "id":value.id,
+                        "num":value.num,
+                        "puser_id":value.puser_id,
+                        "spu_id":value.spu_id,
+                        "item_prop_ids": item_prop_ids
+                    }
+                    items.push(Obj);
+                })
+                let params = {
+                    user_id : this.user_id,
+                    items : JSON.stringify(items),
+                    payMethod: "online", //
+                    source: "work.500mi.com.shop.pifa.market"
+                };
+                orderService.simulateCreateTrade(params).then((data)=>{
+
+                },(msg)=>{
+                    this.$ltsMessage.show({type:'error',message:msg.error_message})
+                })
+            },
         },
         mounted(){
-            console.log(this.$route.params.items)
-            this.formData = this.$route.params.items
-            this.sum.result = this.sum.amount + this.sum.express + this.sum.tax - this.sum.benefit
+            this.formData = this.$route.params.items;
+            this.tableData = this.$route.params.cartItems;
+            this.sum.result = this.$route.params.cartTotal.cartPriceTotal;
+            this.user_id = this.$route.params.userId;
+            this.tableData.forEach(function (value,index,array) {
+                value.item_props.forEach(function (val,key,array) {
+                    val.prop_value =  JSON.parse(val.prop_value);
+                })
+            })
+            this.simulateCreateTrade();
         }
   }
 </script>
@@ -202,6 +236,7 @@
         }
         p{
             padding: 0;
+            margin: 0;
         }
         .el-table__header-wrapper{
             height: 60px;
