@@ -72,7 +72,7 @@
                         v-if="value.inputVisible"
                         v-model="inputValue"
                         size="small"
-                        @blur="handleInputConfirm(value,value.propValues,'spec')"
+                        @blur="handleInputConfirm(value,value.prop_values,'spec')"
                       >
                       </el-input>
                       <el-button  class="button-new-tag" v-else size="small" @click="showInput(value,'spec')">+ 添加</el-button>
@@ -304,7 +304,7 @@
                   sinr: '',
               }
           },
-          handleInputConfirm(value, val, type) {debugger;
+          handleInputConfirm(value, val, type) {
               let inputValue = this.inputValue
               if (inputValue) {
                   val.push(
@@ -333,9 +333,10 @@
                       'isSelect': false,// 自己加的
                       'name': this.specName,
                       'propValue': '',
-                      'propValues': [],
+                      'prop_values': [],
                   }
               )
+              console.log(this.spuSpecList);
               this.specName = ''
               this.showSpecPopver = false
               this.showAttrPopver = false
@@ -348,7 +349,7 @@
                       'isSelect': false,// 自己加的
                       'name': this.specName,
                       'propValue': '',
-                      'propValues': [],
+                      'prop_values': [],
                   }
               )
               this.specName = ''
