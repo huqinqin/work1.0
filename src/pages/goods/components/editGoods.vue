@@ -9,7 +9,7 @@
             <el-collapse-item title="商品信息（不可更改）" name="1">
                 <el-form :inline="true"  label-width="100px" class="demo-ruleForm">
                     <el-form-item label="商品类目">
-                        <el-input v-model="spuDO.category_id" disabled></el-input>
+                        <el-input v-model="spuDO.category_name" disabled></el-input>
                     </el-form-item>
                     <el-form-item label="品牌">
                         <el-input v-model="spuDO.brand" disabled></el-input>
@@ -156,11 +156,12 @@
             },
             getWithProps () {
                 goodsService.getWithProps(this.$route.params.id).then((resp) => {
-                    resp.data.item_prop_d_t_o.sku_item_prop_list.forEach(function(value,index,array){
-                      value.propValues = JSON.parse(value.prop_value);
-                      console.log(value.propValues);
-                    })
-                    resp.data.child_spu_d_t_o_list = resp.data.item_prop_d_t_o.sku_item_prop_list;
+                    if(resp.data.item_prop_d_t_o && resp.data.item_prop_d_t_o.sku_item_prop_list.length > 0){
+                        resp.data.item_prop_d_t_o.sku_item_prop_list.forEach(function(value,index,array){
+                            value.propValues = JSON.parse(value.prop_value);
+                        });
+                        resp.data.child_spu_d_t_o_list = resp.data.item_prop_d_t_o.sku_item_prop_list;
+                    }
                     this.spuDO = resp.data;
                     this.ruleForm = {
                         itemName: this.spuDO.item_name,
@@ -204,7 +205,7 @@
                 let descriptionContent = this.$refs.Editor._data.content;
                 let imagesUrl = '';
                 this.fileList.forEach(function (value, index, array) {
-                    imagesUrl = (imagesUrl == "") ? value.value : imagesUrl + "," + value.value;
+                    imagesUrl = (imagesUrl == '') ? value.value : imagesUrl + "," + value.value;
                 });
                 let wholesale_item = {
                     'id' : this.spuDO.id,
@@ -222,7 +223,10 @@
                     'spec': '无描述',
                     'categoryId': this.spuDO.categoryId,
                     'urls': imagesUrl,
-                    'description': descriptionContent
+                    'description': descriptionContent,
+                    'orign': this.spuDO.orign,
+                    'brand': this.spuDO.brand,
+                    'categoryName': this.spuDO.category_name,
                 };
                 let props = [];
                 this.spuDO.child_spu_d_t_o_list.forEach(function (value, index, array) {
