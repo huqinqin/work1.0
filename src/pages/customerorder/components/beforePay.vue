@@ -31,7 +31,8 @@
 </template>
 
 <script>
-    import $ from 'jquery'
+    import $ from 'jquery';
+    import orderService from '@/services/OrderService.js';
     export default {
         name: "beforePay",
         data(){
@@ -64,6 +65,9 @@
                 },{
                     src: require('@/assets/img/xinyongka02_html.png'),
                     alt: 'online'
+                },{
+                    src: '',
+                    alt: '支付宝'
                 }]
             }
         },
@@ -72,16 +76,42 @@
                 alert('add credit')
             },
             goPay(){
-                this.$router.push({path: '/finish'})
-                this.$emit('submit',4)
-            },
+                /*this.$router.push({path: '/finish'});
+                this.$emit('submit',4);*/
+                //let tid = this.$route.params.tid;
+                let tid = 27520038876;
+                let commonIp = 'http://work.lts.com:8085';
+                let return_url = '/customerorder#/finish';
+                let fail_url = '/customerorder#/fail';
 
+                this.$confirm('正在支付。。。', '提示', {
+                    confirmButtonText: '支付完成',
+                    type: 'warning',
+                    showClose: false,
+                    showCancelButton: false
+                }).then(() => {
+                    this.checkOrder(tid);
+                }).catch(() => {
+                });
+                window.open(encodeURI(commonIp) + '/gateway/base/pay/alipay/create_pay?tid='+tid+'&return_url='+ encodeURI(commonIp) + encodeURI(return_url)  +'&fail_url='+ encodeURI(commonIp) + encodeURI(fail_url) +'');
+            },
+            checkOrder(tid){
+              orderService.checkOrder(tid).then((data)=>{
+                  if(data.data.pay_status == 2){//已支付
+                      this.$router.push({name:"finish",params:{}});
+                  }else{//未支付
+                      this.$router.push({name:"fail",params:{}});
+                  }
+              },(msg)=>{
+                  this.$router.push({name:"fail",params:{}});
+              });
+            }
         },
         mounted(){
             $('li').on('click',function(e){
-                $(e.currentTarget).addClass('chosen')
+                $(e.currentTarget).addClass('chosen');
                 $(e.currentTarget).siblings().removeClass('chosen')
-            })
+            });
         }
   }
 </script>

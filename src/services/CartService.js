@@ -20,13 +20,7 @@ export default class CartService extends BaseService{
           item_props: JSON.stringify([
               checkedSpu
           ]),
-          cart_item_key: JSON.stringify(
-              {
-                  puserId: 158635,
-                  spuId: param.spuId,
-                  itemId: param.id,
-              }
-          ),
+          item_id: param.id
       };
       return super.getRequest('/store/cart/putCartPlus',params);
   }

@@ -3,7 +3,7 @@
         <div class="mark"><p>您的订单已经生成，请尽快完成支付，防止商品被抢光</p></div>
         <div class="result">
             <div class="content">
-                <h3>支付成功</h3>
+                <h3>支付失败</h3>
                 <p>商品编号：325462766383462</p>
                 <p>收货人：抹茶 183 **** 5921</p>
                 <p>收货地址：西湖区三墩镇振华路西城博司12楼1201</p>
@@ -74,6 +74,7 @@
                 font-size: 14px;
                 color: rgba(0,0,0,0.5);
             }
+
             .button{
                 button{
                     margin-top: 10px;
@@ -97,6 +98,8 @@
                     background-color: rgba(0, 0, 0, 0.5);
                 }
             }
+
+
         }
     }
 </style>

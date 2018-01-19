@@ -23,25 +23,39 @@
                 </el-form>
             </el-collapse-item>
             <el-collapse-item title="商品信息（自定义）" name="2">
-                <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                    <el-form-item label="名称" prop="itemName">
-                        <el-input v-model="ruleForm.itemName"></el-input>
-                    </el-form-item>
-                    <el-form-item label="销售标题" prop="promotionTitle">
-                        <el-input v-model="ruleForm.promotionTitle"></el-input>
-                    </el-form-item>
-                    <el-form-item label="商品标签" prop="tag">
-                        <el-input v-model="ruleForm.tag"></el-input>
-                    </el-form-item>
-                    <el-form-item label="商品排序" prop="rank">
-                        <el-input v-model="ruleForm.rank"></el-input>
-                    </el-form-item>
-                    <el-form-item label="商品状态" prop="status">
-                        <el-select v-model="ruleForm.status" placeholder="请选择商品状态">
-                            <el-option label="草稿" value="0"></el-option>
-                            <el-option label="上架" value="1"></el-option>
-                        </el-select>
-                    </el-form-item>
+                <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                    <div>
+                        <el-form-item label="名称" prop="itemName" style="display:inline-block;">
+                            <el-input v-model="ruleForm.itemName"></el-input>
+                        </el-form-item>
+                        <el-form-item label="标签" prop="tag" style="display:inline-block;">
+                            <el-input v-model="ruleForm.tag"></el-input>
+                        </el-form-item>
+                    </div>
+                    <div>
+                        <el-form-item label="排序" prop="rank" style="display:inline-block;">
+                            <el-input v-model="ruleForm.rank"></el-input>
+                        </el-form-item>
+                        <el-form-item label="状态" prop="status" style="display:inline-block;">
+                            <el-select v-model="ruleForm.status" placeholder="请选择商品状态">
+                                <el-option label="草稿" value="0"></el-option>
+                                <el-option label="上架" value="1"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </div>
+                    <div>
+                        <el-form-item label="成本价" prop="costPrice" style="display:inline-block;">
+                            <el-input-number v-model="ruleForm.costPrice" placeholder="请输入成本价" :min="0"></el-input-number>
+                        </el-form-item>
+                        <el-form-item label="销售价" prop="price" style="display:inline-block;">
+                            <el-input-number v-model="ruleForm.price" placeholder="请输入销售价" :min="0"></el-input-number>
+                        </el-form-item>
+                    </div>
+                    <div>
+                        <el-form-item label="销售标题" prop="promotionTitle">
+                            <el-input v-model="ruleForm.promotionTitle" style="width: 904px;"></el-input>
+                        </el-form-item>
+                    </div>
                 </el-form>
                 <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                     <el-form-item label="商品主图" prop="goodsName">
@@ -214,10 +228,11 @@
                     'rank': this.ruleForm.rank,
                     'tag': this.ruleForm.tag,
                     'status': this.ruleForm.status,
+                    'costPrice': this.ruleForm.costPrice,
+                    'price': this.ruleForm.price,
                     'spuId': this.spuDO.id,
                     'sin': this.spuDO.sin,
                     'sinr': this.spuDO.sinr,
-                    'price': 100,
                     'storage': 0,
                     'unit': this.spuDO.unit,
                     'spec': '无描述',
@@ -226,7 +241,7 @@
                     'description': descriptionContent,
                     'orign': this.spuDO.orign,
                     'brand': this.spuDO.brand,
-                    'categoryName': this.spuDO.category_name,
+                    'categoryName': this.spuDO.category_name
                 };
                 let props = [];
                 this.spuDO.child_spu_d_t_o_list.forEach(function (value, index, array) {

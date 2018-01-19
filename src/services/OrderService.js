@@ -2,7 +2,7 @@ import BaseService from "./abstract/BaseService";
 export default class OrderService extends BaseService{
     static get(tid){
         let param = {
-            tid : tid,
+            tid : tid
         };
         return super.getRequest('/store/order/detail', param);
     }
@@ -14,7 +14,7 @@ export default class OrderService extends BaseService{
     }
     static accept(tid){
         let param = {
-            tid : tid,
+            tid : tid
         };
         return super.getRequest('/store/order/accept', param);
     }
@@ -40,6 +40,18 @@ export default class OrderService extends BaseService{
         let params = {
             wholesale_trade_request : JSON.stringify(param)
         };
-        return super.postRequest('/store/trade/simulate_create_trade',params)
+        return super.postRequest('/store/trade/simulate_create_trade',params);
+    }
+
+    /**
+     * return
+     * @auth maisi
+     * @remark check order
+     */
+    static checkOrder(param){
+        let params = {
+            tid: param
+        };
+        return super.getRequest('/store/order/detail',params);
     }
 }

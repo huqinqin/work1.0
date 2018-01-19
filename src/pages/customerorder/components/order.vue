@@ -457,7 +457,7 @@
             },
             // 购物车结算
             submit () {
-                this.$router.push({name:"settle",params:{"cartItems":this.cartItemList,"cartTotal":this.cart,"userId":this.customerUid}})
+                this.$router.push({name:"settle",params:{"cartItems":this.cartItemList,"cartTotal":this.cart,"userId":this.customerUid}});
 //                let param = {
 //                    'userId': this.customerUid,
 //                    'payMethod': 'online',

@@ -147,10 +147,10 @@
                 this.$router.push({path: '/beforePay'})
             },
             deleteHandle(){
-                alert('asf')
+                alert('asf');
             },
             useCoupon(){
-                alert('使用优惠券')
+                alert('使用优惠券');
             },
             submitOrder(){
                 let items = [];
@@ -178,10 +178,12 @@
                     source: "work.500mi.com.shop.pifa.market"
                 };
                 orderService.createTrade(params).then((data)=>{
-                    this.$ltsMessage.show({type:'success',message:"下单成功"})
+                    this.$ltsMessage.show({type:'success',message:"下单成功"});
+                    //跳转支付
+                    this.$router.push({name:"beforePay",params:{"tid":data.data}});
                 },(msg)=>{
                     this.$ltsMessage.show({type:'error',message:msg.error_message})
-                })
+                });
             },
             // 模拟下单
             simulateCreateTrade(){

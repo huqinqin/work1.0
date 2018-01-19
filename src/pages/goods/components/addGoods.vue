@@ -23,25 +23,39 @@
               </el-form>
           </el-collapse-item>
           <el-collapse-item title="商品信息（自定义）" name="2">
-              <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                  <el-form-item label="名称" prop="itemName">
-                      <el-input v-model="ruleForm.itemName"></el-input>
-                  </el-form-item>
-                  <el-form-item label="销售标题" prop="promotionTitle">
-                      <el-input v-model="ruleForm.promotionTitle"></el-input>
-                  </el-form-item>
-                  <el-form-item label="商品标签" prop="tag">
-                      <el-input v-model="ruleForm.tag"></el-input>
-                  </el-form-item>
-                  <el-form-item label="商品排序" prop="rank">
-                      <el-input v-model="ruleForm.rank"></el-input>
-                  </el-form-item>
-                  <el-form-item label="商品状态" prop="status">
-                      <el-select v-model="ruleForm.status" placeholder="请选择商品状态">
-                          <el-option label="草稿" value="0"></el-option>
-                          <el-option label="上架" value="1"></el-option>
-                      </el-select>
-                  </el-form-item>
+              <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                  <div>
+                      <el-form-item label="名称" prop="itemName" style="display:inline-block;">
+                          <el-input v-model="ruleForm.itemName"></el-input>
+                      </el-form-item>
+                      <el-form-item label="标签" prop="tag" style="display:inline-block;">
+                          <el-input v-model="ruleForm.tag"></el-input>
+                      </el-form-item>
+                  </div>
+                  <div>
+                      <el-form-item label="排序" prop="rank" style="display:inline-block;">
+                          <el-input v-model="ruleForm.rank"></el-input>
+                      </el-form-item>
+                      <el-form-item label="状态" prop="status" style="display:inline-block;">
+                          <el-select v-model="ruleForm.status" placeholder="请选择商品状态">
+                              <el-option label="草稿" value="0"></el-option>
+                              <el-option label="上架" value="1"></el-option>
+                          </el-select>
+                      </el-form-item>
+                  </div>
+                  <div>
+                      <el-form-item label="成本价" prop="costPrice" style="display:inline-block;">
+                          <el-input-number v-model="ruleForm.costPrice" placeholder="请输入成本价" :min="0"></el-input-number>
+                      </el-form-item>
+                      <el-form-item label="销售价" prop="price" style="display:inline-block;">
+                          <el-input-number v-model="ruleForm.price" placeholder="请输入销售价" :min="0"></el-input-number>
+                      </el-form-item>
+                  </div>
+                  <div>
+                      <el-form-item label="销售标题" prop="promotionTitle">
+                          <el-input v-model="ruleForm.promotionTitle" style="width: 904px;"></el-input>
+                      </el-form-item>
+                  </div>
               </el-form>
               <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                   <el-form-item label="商品主图" prop="goodsName">
@@ -115,16 +129,6 @@
           </el-collapse-item>
       </el-collapse>
       <el-button type="primary" @click="submitForm('ruleForm')">创建</el-button>
-      <!--<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">-->
-
-          <!--</el-form-item>-->
-          <!--<el-form-item label="商品详情" prop="goodsName">-->
-              <!--<el-input v-model="ruleForm.goodsName"></el-input>-->
-          <!--</el-form-item>-->
-          <!--<el-form-item>-->
-           <!--<el-button type="primary" @click="submitForm('ruleForm')">创建</el-button>-->
-          <!--</el-form-item>-->
-    <!--</el-form>-->
   </div>
 </template>
 <script>
@@ -149,7 +153,9 @@
                   promotionTitle : "",
                   tag : "",
                   rank : 0,
-                  status : "", // 0,删除 -1 失效 1 上架 9 冻结
+                  status : "草稿", // 0,删除 -1 失效 1 上架 9 冻结,
+                  costPrice: 0,
+                  price: 0
               },
               rules: {
                   itemName: [
@@ -230,6 +236,8 @@
                   'rank': this.ruleForm.rank,
                   'tag': this.ruleForm.tag,
                   'status': this.ruleForm.status,
+                  'costPrice': this.ruleForm.costPrice,
+                  'price': this.ruleForm.price,
                   'spuId': this.spuDO.id,
                   'sin': this.spuDO.sin,
                   'sinr': this.spuDO.sinr,
@@ -314,7 +322,7 @@
       },
       mounted () {
           this.getSpudtoist()
-      },
+      }
   }
 </script>
 <style lang="less" scoped>
@@ -340,5 +348,8 @@
       .el-select{
           width: 100%;
       }
+  }
+  .demo-ruleForm .el-input,.demo-ruleForm .el-select{
+      width: 400px;
   }
 </style>
