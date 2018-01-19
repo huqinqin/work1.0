@@ -111,7 +111,7 @@
                     this.tableData = data.data;
                     console.log(this.tableData);
                 },(msg)=>{
-                    this.$ltsMessage.show({type:'error',message:msg.errorMessage})
+                    this.$ltsMessage.show({type:'error',message:msg.error_message})
                 })
             },
             // 单选框

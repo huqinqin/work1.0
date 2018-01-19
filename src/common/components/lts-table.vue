@@ -76,7 +76,7 @@
     export default {
         name: 'lts-table',
         props: [
-            'tApi', 'tForm', 'tTable', 'TPagination', 'tTabledata'
+            'tApi', 'tForm', 'tTable', 'TPagination', 'tTabledata', 'datalist'
         ],
         data() {
             return {
@@ -242,6 +242,9 @@
                     this.getTableList()
                 },
                 deep: true
+            },
+            datalist(newVal){
+                this.table.datalist = newVal;
             }
         }
     }

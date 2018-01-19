@@ -13,11 +13,15 @@ export default class InstallerService extends BaseService {
     static getList(bizparams, pagination) {
         let params = {
             order_by: bizparams.order_by,
-            shop: bizparams.shop,
+            installer_name: bizparams.installer_name,
             page: pagination.page,
             page_size: pagination.pagesize
         }
         return super.getRequest('/store/installer/get_list', params)
+    }
+
+    static get(id) {
+        return super.getRequest('/store/installer/get', {id: id})
     }
 
     /**
@@ -50,10 +54,18 @@ export default class InstallerService extends BaseService {
      * @auth taohua
      * @remark 编辑工程商
      */
-    static edit(formData) {
-        let params = {
-            store_request: JSON.stringify(formData)
-        };
+    static update(params = {
+        uid : null,
+        store_name : null,
+        address : null,
+        lc_code : null,
+        contact : null,
+        contact_phone : null
+    }) {
         return super.postRequest('/store/installer/update', params)
+    }
+
+    static delete(uid) {
+        return super.postRequest('/store/installer/delete', {uid: uid})
     }
 }

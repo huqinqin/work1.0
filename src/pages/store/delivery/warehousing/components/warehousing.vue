@@ -10,7 +10,7 @@
         <el-table :data="datalist" v-loading="loading" style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="selection"/>
             <el-table-column type="index" label="#"/>
-            <el-table-column prop="spot_name" label="网点" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="spot_name" label="工程商" show-overflow-tooltip></el-table-column>
             <el-table-column prop="spot_addr" label="地址" show-overflow-tooltip></el-table-column>
             <el-table-column prop="stock_no" label="备货批次号" />
             <el-table-column label="备货时间">

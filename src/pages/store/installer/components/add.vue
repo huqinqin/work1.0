@@ -92,14 +92,15 @@
             },
             // 新增工程商提交
             submit() {
+                this.isSubmiting = true;
                 this.$refs.form.validate((valid) => {
                     if (valid) {
                         let param = {
                             account : this.form.account,
                             password : this.form.password,
                             installer_name : this.form.installerName,
-                            address : this.locationLabel[0] + this.locationLabel[1] + this.locationLabel[2] + this.form.address,
-                            lc_code : this.form.location[2],
+                            address : this.locationLabel[0] + ' ' + this.locationLabel[1] + ' ' + this.form.address,
+                            lc_code : this.form.location[1],
                             contact : this.form.contact,
                             contact_phone : this.form.contactPhone,
                             contact_mobile : this.form.contactMobile,
