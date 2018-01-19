@@ -13,7 +13,7 @@
             <el-table-column prop="status_title" label="状态" width="80" />
             <el-table-column label="操作" width="160" align="center">
                 <template slot-scope="scope">
-                    <el-button round type="primary" size="mini"><router-link :to="'/detail/' + scope.row.uid">编辑</router-link></el-button>
+                    <el-button round type="primary" size="mini"><router-link :to="'/edit/' + scope.row.id">编辑</router-link></el-button>
                     <el-popover
                         ref="popoverDelete"
                         placement="top"
