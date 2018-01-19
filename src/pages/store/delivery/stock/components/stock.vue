@@ -10,7 +10,7 @@
         <el-table :data="datalist" v-loading="loading" style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="selection"/>
             <el-table-column type="index" label="#"/>
-            <el-table-column prop="spot_name" label="网点" show-overflow-tooltip />
+            <el-table-column prop="spot_name" label="工程商" show-overflow-tooltip />
             <el-table-column prop="spot_addr" label="地址" show-overflow-tooltip />
             <el-table-column label="预期到达时间">
                 <template slot-scope="scope">{{scope.row.to_time | timestamp2str}}</template>
