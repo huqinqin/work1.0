@@ -99,7 +99,7 @@
                             account : this.form.account,
                             password : this.form.password,
                             installer_name : this.form.installerName,
-                            address : this.locationLabel[0] + this.locationLabel[1] + this.form.address,
+                            address : this.locationLabel[0] + ' ' + this.locationLabel[1] + ' ' + this.form.address,
                             lc_code : this.form.location[1],
                             contact : this.form.contact,
                             contact_phone : this.form.contactPhone,
