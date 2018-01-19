@@ -1,6 +1,6 @@
 <template>
     <div>
-        <vue-html5-editor :content="content" @change="updateData" :height="500"></vue-html5-editor>
+        <vue-html5-editor :content="content" @change="updateData" :height="500" ref="editor"></vue-html5-editor>
     </div>
 </template>
 <script>
@@ -38,11 +38,7 @@
             // 压缩参数,默认使用localResizeIMG进行压缩,设置为null禁止压缩
             // compression config,default resize image by localResizeIMG (https://github.com/think2011/localResizeIMG)
             // set null to disable compression
-            compress: {
-                width: 1600,
-                height: 1600,
-                quality: 80
-            },
+            compress: null,
             // 响应数据处理,最终返回图片链接
             // handle response data，return image url
             uploadHandler(responseText){
@@ -112,6 +108,7 @@
         },
         methods:{
             updateData(data){
+                console.log(this.$refs.editor);
                 this.content = data;
             }
         }

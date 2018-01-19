@@ -9,7 +9,7 @@
           <el-collapse-item title="商品信息（不可更改）" name="1">
               <el-form :inline="true"  label-width="100px" class="demo-ruleForm">
                   <el-form-item label="商品类目">
-                      <el-input v-model="spuDO.category_id" disabled></el-input>
+                      <el-input v-model="spuDO.category_name" disabled></el-input>
                   </el-form-item>
                   <el-form-item label="品牌">
                       <el-input v-model="spuDO.brand" disabled></el-input>
@@ -71,7 +71,7 @@
                               width="180">
                           </el-table-column>
                           <el-table-column
-                              prop="sin"
+                              prop="sinr"
                               label="SKU编码"
                               width="180">
                           </el-table-column>
@@ -193,7 +193,7 @@
                   }
                   resp.data.child_spu_d_t_o_list.forEach(function (value, index, array) {
                       value.storage = '';
-                      value.price = ''
+                      value.price = '';
                   });
                   this.spuDO = resp.data
               }, (msg) => {
@@ -237,9 +237,12 @@
                   'storage': 0,
                   'unit': this.spuDO.unit,
                   'spec': '无描述',
-                  'categoryId': this.spuDO.categoryId,
+                  'categoryId': this.spuDO.category_id,
                   'urls': imagesUrl,
-                  'description': descriptionContent
+                  'description': descriptionContent,
+                  'orign': this.spuDO.orign,
+                  'brand': this.spuDO.brand,
+                  'categoryName': this.spuDO.category_name
               };
               let props = [];
               this.spuDO.child_spu_d_t_o_list.forEach(function (value, index, array) {

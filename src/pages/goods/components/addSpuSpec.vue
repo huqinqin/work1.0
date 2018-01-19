@@ -333,9 +333,10 @@
                       'isSelect': false,// 自己加的
                       'name': this.specName,
                       'propValue': '',
-                      'propValues': [],
+                      'prop_values': [],
                   }
               )
+              console.log(this.spuSpecList);
               this.specName = ''
               this.showSpecPopver = false
               this.showAttrPopver = false
@@ -348,7 +349,7 @@
                       'isSelect': false,// 自己加的
                       'name': this.specName,
                       'propValue': '',
-                      'propValues': [],
+                      'prop_values': [],
                   }
               )
               this.specName = ''
