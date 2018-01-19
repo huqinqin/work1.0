@@ -71,7 +71,7 @@
                               width="180">
                           </el-table-column>
                           <el-table-column
-                              prop="sin"
+                              prop="sinr"
                               label="SKU编码"
                               width="180">
                           </el-table-column>
