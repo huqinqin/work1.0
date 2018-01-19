@@ -31,6 +31,7 @@
         watch:{
             value(newVal){
                 this.location = newVal;
+                this.changeHandler(newVal);
             },
             location(newVal){
                 this.$emit('input', newVal);
