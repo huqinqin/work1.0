@@ -1,4 +1,5 @@
 import BaseService from "./abstract/BaseService";
+import {dataConvertorUtils} from 'ltsutil'
 export default class CategoryService extends BaseService {
     /**
      * return LONG 类目id
@@ -21,6 +22,14 @@ export default class CategoryService extends BaseService {
      */
     static getAllCategoryList(){
         return super.getRequest('/category/getCarrierCategoryList');
+    }
+    static getAllCategoryListForTree(){
+        return this.getAllCategoryList().then((resp)=>{
+            resp.datalist = dataConvertorUtils.convertorCate(resp.datalist);
+            return resp;
+        },(error)=>{
+            return error;
+        });
     }
     /**
      * return LONG 类目id

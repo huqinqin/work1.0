@@ -240,7 +240,7 @@
             "sort": 1010,
             "status": 1,
             "type": 1,
-            "url": '/repertory'
+            "url": '/store/warehouse'
         },
     ];
     export default {
