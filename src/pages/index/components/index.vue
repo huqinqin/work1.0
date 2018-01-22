@@ -4,7 +4,7 @@
 <script>
   import ltsTable from '@/common/components/lts-table.vue'
   export  default {
-    props: '',
+    props: {},
     components : {
       ltsTable
     },
